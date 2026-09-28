@@ -267,7 +267,7 @@ function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
     <ul>{plan.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
     <ul>{plan.extras.map(x=><li key={x}><Check/>{x}</li>)}</ul>
    </div>
-   <a className="btn btn-fluo" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
+   <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
   </div>}
  </dialog>
 }
@@ -293,7 +293,7 @@ function Plans(){
      <p className="plan-intro">{p.intro}</p>
      <p className="plan-price">{p.price}</p>
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
-     <button className={"btn "+(p.featured?"btn-fluo":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
+     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
     </article>
    </div>)}
   </div>
