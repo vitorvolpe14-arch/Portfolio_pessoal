@@ -262,3 +262,46 @@
 @media(prefers-reduced-motion:reduce){
   .hero-depth-image{animation:none;filter:none!important}
 }
+
+/* Color-shifting motion layer */
+.hero{background:#06080b!important}
+.hero-depth-image{opacity:.78!important;mix-blend-mode:screen!important}
+.hero-aurora{position:absolute;z-index:1;pointer-events:none;border-radius:50%;filter:blur(55px);mix-blend-mode:screen;will-change:transform,filter}
+.aurora-cyan{width:34vw;height:34vw;left:-10vw;top:12%;background:radial-gradient(circle,#20e6d0 0%,rgba(32,230,208,.32) 30%,transparent 70%);animation:auroraCyan 13s ease-in-out infinite alternate}
+.aurora-violet{width:42vw;height:42vw;right:-12vw;top:8%;background:radial-gradient(circle,#7657ff 0%,rgba(118,87,255,.32) 32%,transparent 72%);animation:auroraViolet 17s ease-in-out infinite alternate}
+.aurora-coral{width:31vw;height:31vw;right:28%;bottom:-15%;background:radial-gradient(circle,#ff6b62 0%,rgba(255,107,98,.22) 32%,transparent 72%);animation:auroraCoral 15s ease-in-out infinite alternate}
+@keyframes auroraCyan{0%{transform:translate3d(-4vw,3vh,0) scale(.85);opacity:.45}100%{transform:translate3d(12vw,20vh,0) scale(1.25);opacity:.82}}
+@keyframes auroraViolet{0%{transform:translate3d(3vw,-2vh,0) scale(.8);opacity:.5}100%{transform:translate3d(-13vw,17vh,0) scale(1.18);opacity:.86}}
+@keyframes auroraCoral{0%{transform:translate3d(4vw,3vh,0) scale(.7);opacity:.28}100%{transform:translate3d(-8vw,-18vh,0) scale(1.25);opacity:.7}}
+.hero-orbit{position:absolute;z-index:2;pointer-events:none;border:1px solid rgba(91,235,222,.24);border-radius:50%;transform-style:preserve-3d;will-change:transform}
+.hero-orbit span{position:absolute;width:9px;height:9px;border-radius:50%;background:#58f0dc;box-shadow:0 0 22px #58f0dc;left:8%;top:20%}
+.orbit-one{width:31vw;height:18vw;right:9%;top:25%;transform:rotate(-18deg);animation:orbitFloat 12s ease-in-out infinite}
+.orbit-two{width:22vw;height:38vw;left:7%;bottom:3%;border-color:rgba(255,116,103,.2);transform:rotate(27deg);animation:orbitFloat2 16s ease-in-out infinite}
+.orbit-two span{background:#ff7467;box-shadow:0 0 22px #ff7467;left:auto;right:12%;top:auto;bottom:16%}
+@keyframes orbitFloat{0%,100%{rotate:-18deg;scale:.94;opacity:.35}50%{rotate:-8deg;scale:1.08;opacity:.78}}
+@keyframes orbitFloat2{0%,100%{rotate:27deg;translate:0 0}50%{rotate:39deg;translate:2vw -3vh}}
+.hero-scanline{position:absolute;z-index:2;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#54f0dc,transparent);box-shadow:0 0 18px rgba(84,240,220,.5);opacity:.35;animation:scanDown 9s linear infinite}
+@keyframes scanDown{0%{top:4%}100%{top:96%}}
+.hero-particles i{animation:particleDrift 6s ease-in-out infinite}
+.hero-particles i:nth-child(1){left:13%;top:23%;animation-delay:-1s;background:#58f0dc}
+.hero-particles i:nth-child(2){right:27%;top:18%;animation-delay:-3s;background:#8170ff}
+.hero-particles i:nth-child(3){left:48%;bottom:22%;animation-delay:-4s;background:#ff7467}
+.hero-particles i:nth-child(4){right:11%;bottom:30%;animation-delay:-2s;background:#58f0dc}
+.hero-particles i:nth-child(5){left:30%;top:43%;animation-delay:-5s;background:#b9ff63}
+.hero-particles i:nth-child(6){right:39%;bottom:16%;animation-delay:-1.5s;background:#8170ff}
+.hero-particles i:nth-child(7){left:7%;bottom:34%;animation-delay:-3.5s;background:#ff7467}
+.hero-particles i:nth-child(8){right:5%;top:47%;animation-delay:-4.5s;background:#b9ff63}
+@keyframes particleDrift{0%,100%{transform:translate3d(0,0,0) rotate(45deg);opacity:.25}50%{transform:translate3d(12px,-18px,0) rotate(135deg);opacity:.9}}
+.hero-grid{opacity:.72!important;background-image:linear-gradient(rgba(84,240,220,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(129,112,255,.045) 1px,transparent 1px)!important}
+@media(max-width:900px){
+ .hero-aurora{filter:blur(42px)}
+ .aurora-cyan{width:68vw;height:68vw}
+ .aurora-violet{width:75vw;height:75vw}
+ .aurora-coral{width:62vw;height:62vw}
+ .orbit-one{width:58vw;height:30vw;right:-8%;top:22%}
+ .orbit-two{width:40vw;height:66vw;left:-12%;bottom:8%}
+ .hero-scanline{opacity:.2}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-aurora,.hero-orbit,.hero-scanline,.hero-particles i{animation:none!important}
+}
