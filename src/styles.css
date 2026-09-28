@@ -14,8 +14,8 @@
 
 /* Real sculptural fox logo */
 .logo-3d{position:relative;display:grid;place-items:center;transform-style:preserve-3d;overflow:visible;background:none!important;filter:none!important}
-.logo-3d-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center;transform:translate3d(var(--logo-mx,0px),var(--logo-my,0px),0) rotateX(var(--logo-rx,0deg)) rotateY(var(--logo-ry,0deg));transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s ease;filter:drop-shadow(0 20px 35px rgba(0,0,0,.5))}
-.logo-3d-large .logo-3d-image{filter:drop-shadow(0 35px 55px rgba(0,0,0,.65)) drop-shadow(0 0 35px rgba(213,167,125,.16));}
+.logo-3d-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center;transform:translate3d(var(--logo-mx,0px),var(--logo-my,0px),0) rotateX(var(--logo-rx,0deg)) rotateY(var(--logo-ry,0deg));transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s ease;filter:brightness(0) invert(1) drop-shadow(0 20px 35px rgba(0,0,0,.5))}
+.logo-3d-large .logo-3d-image{filter:brightness(0) invert(1) drop-shadow(0 35px 55px rgba(0,0,0,.65)) drop-shadow(0 0 35px rgba(213,167,125,.16));}
 .logo-3d-glow,.logo-3d-stack,.logo-3d-layer,.logo-3d-face{display:none!important}
 .hero-logo-stage{z-index:3}
 @media(max-width:900px){.logo-3d-large{width:min(70vw,420px)!important;height:min(70vw,520px)!important}.hero-logo-stage{right:4vw;top:17vh;width:72vw;height:52vh;opacity:.78}}
