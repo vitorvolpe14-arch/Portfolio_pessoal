@@ -1,7 +1,7 @@
 import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
-import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
+import{contact,disciplines,nav,plans,projects,stack,steps,type Plan}from"./content";
 import{ArrowRight,ArrowUpRight,Check,Play}from"./art";
 
 document.documentElement.classList.add("js");
@@ -134,20 +134,6 @@ function useScrolled(offset=24){
  return scrolled;
 }
 
-/** Inclinação 3D dos cards ao passar o ponteiro. */
-function useTilt(){
- useEffect(()=>{
-  if(reducedMotion()||!window.matchMedia("(hover: hover)").matches)return;
-  const cleanups=[...document.querySelectorAll<HTMLElement>("[data-tilt]")].map(el=>{
-   const move=(e:PointerEvent)=>{const r=el.getBoundingClientRect();el.style.setProperty("--tx",((e.clientX-r.left)/r.width-.5).toFixed(3));el.style.setProperty("--ty",((e.clientY-r.top)/r.height-.5).toFixed(3))};
-   const leave=()=>{el.style.setProperty("--tx","0");el.style.setProperty("--ty","0")};
-   el.addEventListener("pointermove",move);el.addEventListener("pointerleave",leave);
-   return()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerleave",leave)};
-  });
-  return()=>cleanups.forEach(fn=>fn());
- },[]);
-}
-
 /** Destaca uma disciplina por vez na lateral do hero. */
 function useCycle(length:number,ms=2400){
  const[index,setIndex]=useState(0);
@@ -180,6 +166,9 @@ function Header(){
 }
 
 /** Logo Volpe em 3D: camadas empilhadas formam a espessura e a face é a raposa com textura aveludada. */
+/** Camadas da espessura: afinam em perfil circular para trás, deixando a borda da logo arredondada. */
+const layers=Array.from({length:20},(_,z)=>{const u=(19-z)/19;return{z,r:(1-.075*(1-Math.sqrt(1-u*u))).toFixed(4)}});
+
 /** Logo pequena do cabeçalho e rodapé: versão preta sobre fundos claros, branca sobre escuros. */
 function BrandMark(){
  return <span className="brand-mark" aria-hidden="true">
@@ -194,7 +183,7 @@ function FurLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:str
   <div className={"logo3d tone-"+tone} data-speed={speed} data-depth={depth} aria-hidden="true">
    <div className="logo3d-float">
     <div className="logo3d-rig">
-     {Array.from({length:20},(_,i)=><span key={i} className="logo3d-layer" style={vars({"--z":i})}/>)}
+     {layers.map(l=><span key={l.z} className="logo3d-layer" style={vars({"--z":l.z,"--r":l.r})}/>)}
      <img className="logo3d-face" src={tone==="black"?"/fox-fur-black.webp":"/fox-fur-white.webp"} alt="" draggable={false} decoding="async"/>
     </div>
    </div>
@@ -232,9 +221,6 @@ function Hero(){
      <a className="play-link" href="#sobre"><span className="play-ring"><Play/></span>Como trabalho</a>
     </div>
    </div>
-   <dl className="hero-stats" data-reveal data-speed=".04">
-    {stats.map(s=><div key={s.label}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
-   </dl>
   </div>
 
   <ul className="hero-disciplines" aria-label="Áreas de atuação" data-speed=".14" data-depth="-.15">
@@ -255,18 +241,14 @@ function Projects(){
     <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
    </div>
   </div>
-  <div className="project-deck">
-   {projects.map((p,i)=><div key={p.title} className="project-slot" data-speed={i%2?".05":"-.07"}>
-    <article className="project-card" data-tilt data-reveal style={vars({"--i":i})}>
-     {p.url
-      ?<a className="project-card-inner" href={p.url} target="_blank" rel="noopener noreferrer" aria-label={p.title+" — abrir o site do projeto em nova aba"}>
-        <h3>{p.title}</h3>
-        <span className="project-open" aria-hidden="true"><ArrowUpRight/></span>
-       </a>
-      :<div className="project-card-inner"><h3>{p.title}</h3></div>}
-    </article>
-   </div>)}
-  </div>
+  <ul className="project-logos">
+   {projects.map((p,i)=><li key={p.title} data-speed={i%2?".04":"-.04"}>
+    <a className={"project-logo font-"+p.font} href={p.url} target="_blank" rel="noopener noreferrer" data-reveal style={vars({"--i":i})} aria-label={p.title+" — abrir o site em nova aba"}>
+     <span className="project-logo-mark">{p.wordmark}</span>
+     <span className="project-logo-go" aria-hidden="true"><ArrowUpRight/></span>
+    </a>
+   </li>)}
+  </ul>
  </section>
 }
 
@@ -392,7 +374,7 @@ function Footer(){
 }
 
 function App(){
- useReveal();useTilt();useParallax();useInPageLinks();
+ useReveal();useParallax();useInPageLinks();
  return <>
   <a className="skip-link" href="#projetos">Pular para o conteúdo</a>
   <Header/>

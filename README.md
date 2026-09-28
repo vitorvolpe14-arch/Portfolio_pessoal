@@ -7,8 +7,8 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
-  - Por enquanto os cards de projeto mostram só o nome; descrição, tags e `url` já ficam guardados no arquivo.
-- **Logo:** `public/fox-fur-black.webp` e `public/fox-fur-white.webp` (raposa com textura, usadas no topo, no contato, no cabeçalho e no rodapé). `public/fox-logo.svg` é a silhueta vetorial avulsa.
+  - Projetos aparecem como a logo de cada marca (texto e fonte em `wordmark`/`font`) com link para o site (`url`). A fonte Lovelo da Montê fica em `public/fonts/`.
+- **Logo:** `public/fox-fur-black.webp` e `public/fox-fur-white.webp` (raposa com pelos, usadas no topo, no contato, no cabeçalho e no rodapé). `public/fox-logo.svg` é a silhueta vetorial avulsa.
 - **Ícones:** `src/art.tsx`.
 - **Estilos:** `src/styles.css`.
 

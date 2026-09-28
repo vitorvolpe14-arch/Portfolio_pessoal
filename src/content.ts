@@ -1,13 +1,13 @@
 // Todo o conteúdo editável do site fica aqui.
 
-/** Por enquanto os cards mostram só o nome e levam ao site do projeto; descrição e tags ficam guardadas para depois. */
+/** Cada projeto aparece como a logo da marca, com link para o site publicado. */
 export type Project={
- number:string;
  title:string;
- description:string;
- tags:string[];
- /** Site publicado do projeto, aberto ao clicar no card. */
- url?:string;
+ /** Texto da logo, escrito como a marca usa. */
+ wordmark:string;
+ /** Fonte da logo: Lovelo Black (Montê) ou Playfair Display (Key). */
+ font:"lovelo"|"playfair";
+ url:string;
 };
 
 export type Plan={
@@ -36,32 +36,26 @@ export const nav=[
 
 export const disciplines=["Design","Web","Branding","E-commerce","Estratégia"];
 
-export const stats=[
- {value:"2",label:"Projetos"},
- {value:"+50K",label:"Usuários alcançados"},
- {value:"100%",label:"Foco em resultado"},
-];
-
 export const projects:Project[]=[
- {number:"01",title:"Montê",description:"E-commerce de bolsas em couro com identidade visual e experiência premium.",tags:["E-commerce","Branding","UI/UX"],url:"https://monte-site-itjk.onrender.com/"},
- {number:"02",title:"Key",description:"Marca de moda com identidade minimalista e e-commerce integrado.",tags:["E-commerce","Branding","UI/UX"],url:"https://key-site-jaut.onrender.com/"},
+ {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://monte-site-itjk.onrender.com/"},
+ {title:"Key",wordmark:"KEY",font:"playfair",url:"https://key-site-jaut.onrender.com/"},
 ];
 
 export const plans:Plan[]=[
  {
-  number:"01",name:"Start",price:"R$ 1.500",intro:"Ideal para marcas que estão começando.",
+  number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",
   items:["Site institucional (até 5 páginas)","Design personalizado","Responsivo (mobile e desktop)","Integração com redes sociais","Suporte por 30 dias"],
   details:[{label:"Prazo",value:"7–10 dias úteis"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
   extras:["SEO básico","Formulário / WhatsApp","Publicação e configuração de domínio"],
  },
  {
-  number:"02",name:"Studio",price:"R$ 3.500",intro:"Para marcas que querem crescer.",featured:true,
+  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem crescer.",featured:true,
   items:["E-commerce completo","Design exclusivo e estratégico","Integração com pagamentos e envio","Área administrativa","Suporte por 90 dias"],
   details:[{label:"Prazo",value:"12–18 dias úteis"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
   extras:["Animações e microinterações","SEO técnico e Open Graph","Deploy e configuração de produção"],
  },
  {
-  number:"03",name:"Signature",price:"R$ 6.500",intro:"Solução completa e personalizada.",
+  number:"03",name:"Signature",price:"R$ 2.000",intro:"Solução completa e personalizada.",
   items:["Tudo do plano Studio","Identidade visual da marca","Estratégia de conteúdo","Integrações avançadas (ERP, CRM, etc)","Acompanhamento contínuo"],
   details:[{label:"Prazo",value:"20–30 dias úteis"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
   extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir"],
