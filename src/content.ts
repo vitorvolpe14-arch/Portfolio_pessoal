@@ -38,7 +38,7 @@ export const nav=[
 export const disciplines=["Sites","E-commerce","Design","Branding"];
 
 export const projects:Project[]=[
- {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://monte-site-itjk.onrender.com/"},
+ {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://oficialmontee.com.br/"},
  {title:"Key",wordmark:"KEY",font:"playfair",url:"https://key-site-jaut.onrender.com/"},
 ];
 
@@ -46,19 +46,19 @@ export const plans:Plan[]=[
  {
   number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",
   items:["Site institucional (até 5 páginas)","Design personalizado","Responsivo (mobile e desktop)","Integração com redes sociais","Suporte por 30 dias"],
-  details:[{label:"Prazo",value:"7–10 dias úteis"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
+  details:[{label:"Prazo",value:"12–18 dias"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
   extras:["SEO básico","Formulário / WhatsApp","Publicação e configuração de domínio"],
  },
  {
   number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem crescer.",featured:true,
   items:["E-commerce completo","Design exclusivo e estratégico","Integração com pagamentos e envio","Área administrativa","Suporte por 90 dias"],
-  details:[{label:"Prazo",value:"12–18 dias úteis"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
+  details:[{label:"Prazo",value:"10–12 dias"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
   extras:["Animações e microinterações","SEO técnico e Open Graph","Deploy e configuração de produção"],
  },
  {
   number:"03",name:"Signature",price:"R$ 2.000",intro:"Solução completa e personalizada.",
   items:["Tudo do plano Studio","Identidade visual da marca","Estratégia de conteúdo","Integrações avançadas (ERP, CRM, etc)","Acompanhamento contínuo"],
-  details:[{label:"Prazo",value:"20–30 dias úteis"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
+  details:[{label:"Prazo",value:"15–20 dias"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
   extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir"],
  },
 ];
