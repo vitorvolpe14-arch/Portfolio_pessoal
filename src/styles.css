@@ -124,6 +124,7 @@ h2 em{font-style:italic}
 .play-link{display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .play-ring{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid rgba(20,17,16,.5);transition:background .35s var(--ease),border-color .35s,color .35s}
 .play-ring svg{width:11px;height:11px;margin-left:2px}
+.play-ring .play-arrow{width:16px;height:11px;margin:0;transform:rotate(90deg)}
 .play-link:hover .play-ring{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .hero-disciplines{position:absolute;right:max(var(--gutter),13vw);top:36%;display:flex;flex-direction:column;gap:22px}
 .hero-disciplines li{display:flex;align-items:center;gap:12px;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(20,17,16,.48);transition:color .6s}

@@ -35,7 +35,7 @@ export const nav=[
  {id:"contato",label:"Contato"},
 ];
 
-export const disciplines=["Design","Web","Branding","E-commerce","Estratégia"];
+export const disciplines=["Sites","E-commerce","Design","Branding"];
 
 export const projects:Project[]=[
  {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://monte-site-itjk.onrender.com/"},
