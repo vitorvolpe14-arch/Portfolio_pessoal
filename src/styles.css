@@ -643,3 +643,62 @@
   .project-info h3{font-size:29px!important}
   .project-info>p:not(.project-type){font-size:11px!important}
 }
+
+/* Final hero: absolutely static background and static black 3D logo */
+.hero-white{
+  background:#f7f6f2!important;
+  overflow:hidden!important;
+}
+.hero-white .hero-depth-image,
+.hero-white .hero-aurora,
+.hero-white .hero-orb,
+.hero-white .hero-particles,
+.hero-white .hero-scanline,
+.hero-white .hero-grid,
+.hero-white .logo-halo,
+.hero-white .logo-orbit{
+  display:none!important;
+  animation:none!important;
+}
+.hero-white .hero-logo-stage{
+  right:4vw!important;
+  top:7vh!important;
+  width:min(44vw,620px)!important;
+  height:min(82vh,760px)!important;
+  transform:none!important;
+  transition:none!important;
+  animation:none!important;
+  will-change:auto!important;
+}
+.hero-white .hero-logo-stage .logo-3d-large{
+  width:min(31vw,440px)!important;
+  height:min(58vh,600px)!important;
+  transform:none!important;
+  filter:drop-shadow(18px 30px 28px rgba(0,0,0,.16))!important;
+  animation:none!important;
+}
+.hero-white .hero-logo-stage .logo-3d-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  filter:none!important;
+  transform:none!important;
+  animation:none!important;
+}
+.hero-white .logo-shadow{
+  opacity:.18!important;
+  animation:none!important;
+}
+@media(max-width:900px){
+  .hero-white .hero-logo-stage{
+    right:-8vw!important;
+    top:25vh!important;
+    width:90vw!important;
+    height:62vw!important;
+    transform:none!important;
+  }
+  .hero-white .hero-logo-stage .logo-3d-large{
+    width:58vw!important;
+    height:64vw!important;
+  }
+}
