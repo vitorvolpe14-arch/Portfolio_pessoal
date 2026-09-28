@@ -214,7 +214,7 @@ function Hero(){
   <div className="hero-inner">
    <div className="hero-copy" data-speed=".1" data-depth="-.06">
     <p className="hero-kicker" data-reveal>Vitor Volpato / Desenvolvedor de sites</p>
-    <h1 data-reveal><span>Desenvolvo</span><span>sites que</span><span><em>vendem.</em></span></h1>
+    <h1 data-reveal><span>Eu crio</span><span>seu <em>site.</em></span></h1>
     <p className="hero-lede" data-reveal>Crio sites institucionais e lojas virtuais sob medida para a sua marca, do design à publicação no ar.</p>
     <div className="hero-actions" data-reveal>
      <a className="btn btn-dark" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Pedir orçamento <ArrowRight className="btn-arrow"/></a>
