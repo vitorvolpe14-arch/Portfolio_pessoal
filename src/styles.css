@@ -450,3 +450,90 @@
   .hero-logo-stage{transform:none!important;transition:none!important}
   .logo-orbit-a,.logo-orbit-b{animation:none!important}
 }
+
+/* Compact horizontal service cards + scroll-fan parallax */
+.plans{
+  overflow:hidden!important;
+}
+.plans-grid{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch;
+  gap:24px!important;
+  margin:0 7vw!important;
+  perspective:1600px!important;
+  overflow:visible!important;
+  padding:18px 0 34px;
+}
+.plan-card-shell{
+  flex:0 0 calc((100% - 48px)/3)!important;
+  width:calc((100% - 48px)/3)!important;
+  min-width:0!important;
+  height:460px!important;
+  min-height:460px!important;
+  transform:translate3d(var(--plan-x,0px),var(--plan-y,0px),0)!important;
+  transition:transform .14s linear!important;
+  will-change:transform;
+}
+.plan-card-inner{
+  height:100%!important;
+}
+.plan-face{
+  padding:28px!important;
+  border-radius:20px!important;
+}
+.plan-front h3,.plan-back h3{
+  font-size:32px!important;
+}
+.plan-front h3{
+  margin:48px 0 10px!important;
+}
+.plan-front .price{
+  font-size:27px!important;
+  margin-top:30px!important;
+}
+.plan-back h3{
+  margin:34px 0 8px!important;
+}
+.plan-back .price{
+  font-size:26px!important;
+  margin-bottom:18px!important;
+}
+.plan-details-grid{
+  gap:20px!important;
+}
+.plan-details-grid li{
+  font-size:10px!important;
+}
+.plan-details-grid dl div{
+  font-size:9px!important;
+  padding:7px 0!important;
+}
+.plans-grid:before{
+  content:"";
+  position:absolute;
+  left:7vw;
+  right:7vw;
+  bottom:0;
+  height:1px;
+  background:rgba(255,255,255,.08);
+  pointer-events:none;
+}
+@media(max-width:900px){
+  .plans-grid{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:18px!important;
+    margin:0 6vw!important;
+    padding-bottom:10px;
+  }
+  .plan-card-shell{
+    flex:0 0 auto!important;
+    width:100%!important;
+    height:430px!important;
+    min-height:430px!important;
+    transform:translate3d(var(--plan-x,0px),var(--plan-y,0px),0)!important;
+  }
+  .plan-face{padding:25px!important}
+  .plan-front h3,.plan-back h3{font-size:30px!important}
+}
