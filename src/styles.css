@@ -120,3 +120,31 @@
 .plan-card-shell .plan-back{transform:rotateY(180deg) translateZ(1px)!important}
 .plan-card-shell.is-flipped .plan-card-inner{-webkit-transform:rotateY(180deg)!important;transform:rotateY(180deg)!important}
 @media (hover:none){.plan-card-shell .plan-card:hover{transform:none!important}}
+
+/* Final fix: animate the two faces independently to avoid iOS/Safari mirrored text. */
+.plan-card-shell{perspective:1400px!important}
+.plan-card-inner{transform:none!important;-webkit-transform:none!important;transition:none!important}
+.plan-card-shell .plan-face{
+  transition:transform .8s cubic-bezier(.2,.75,.2,1)!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+}
+.plan-card-shell .plan-front{
+  transform:rotateY(0deg)!important;
+  -webkit-transform:rotateY(0deg)!important;
+}
+.plan-card-shell .plan-back{
+  transform:rotateY(-180deg)!important;
+  -webkit-transform:rotateY(-180deg)!important;
+}
+.plan-card-shell.is-flipped .plan-front{
+  transform:rotateY(180deg)!important;
+  -webkit-transform:rotateY(180deg)!important;
+}
+.plan-card-shell.is-flipped .plan-back{
+  transform:rotateY(0deg)!important;
+  -webkit-transform:rotateY(0deg)!important;
+}
+.plan-card-shell .plan-face *{
+  transform-style:preserve-3d;
+}
