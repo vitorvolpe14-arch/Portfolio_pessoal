@@ -881,3 +881,53 @@ body{background:var(--black);overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){
   .rebuilt-logo-stage .logo-3d-image{transform:none!important}
 }
+
+
+/* Logo final — mesma marca, menor e com relevo 3D */
+.hero-white .hero-logo-stage.rebuilt-logo-stage{
+  right:6vw!important;
+  top:14vh!important;
+  width:min(36vw,520px)!important;
+  height:min(68vh,610px)!important;
+  perspective:1100px!important;
+  transform-style:preserve-3d!important;
+}
+.hero-white .rebuilt-logo-stage .logo-3d-large{
+  width:min(23vw,330px)!important;
+  height:min(48vh,500px)!important;
+  transform-style:preserve-3d!important;
+  transform:rotateX(var(--logo-rx,0deg)) rotateY(var(--logo-ry,0deg)) translateZ(12px)!important;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1)!important;
+  filter:
+    drop-shadow(2px 3px 0 rgba(255,255,255,.9))
+    drop-shadow(4px 6px 0 rgba(205,202,196,.8))
+    drop-shadow(7px 10px 0 rgba(130,127,121,.45))
+    drop-shadow(12px 18px 18px rgba(0,0,0,.20))!important;
+}
+.hero-white .rebuilt-logo-stage .logo-3d-image{
+  filter:
+    drop-shadow(-1px -1px 0 rgba(255,255,255,.75))
+    drop-shadow(1px 2px 0 rgba(0,0,0,.30))
+    drop-shadow(3px 5px 3px rgba(0,0,0,.22))!important;
+  transform:translateZ(28px)!important;
+}
+.hero-white .rebuilt-logo-stage .logo-shadow{
+  width:42%!important;
+  height:7%!important;
+  bottom:16%!important;
+  opacity:.22!important;
+  filter:blur(15px)!important;
+}
+@media(max-width:900px){
+  .hero-white .hero-logo-stage.rebuilt-logo-stage{
+    right:-3vw!important;
+    top:47vh!important;
+    width:72vw!important;
+    height:43vw!important;
+    opacity:1!important;
+  }
+  .hero-white .rebuilt-logo-stage .logo-3d-large{
+    width:39vw!important;
+    height:43vw!important;
+  }
+}
