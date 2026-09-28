@@ -8,11 +8,11 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
   - Projetos aparecem como a logo de cada marca (texto e fonte em `wordmark`/`font`) com link para o site (`url`). A fonte Lovelo da Montê fica em `public/fonts/`.
-- **Logo:**
-  - Preta com pelos (topo): `public/fox-fur-black.webp`. As versões `fox-fur-black-<largura>.webp` são a mesma imagem já reduzida para cada tamanho de tela (o site escolhe a certa via `srcset`, o que mantém a logo nítida). `fox-fur-mask.webp` é a silhueta usada na espessura 3D.
-  - Branca vetorizada (contato, cabeçalho e rodapé sobre fundo escuro): `public/fox-vector-white.svg`, com `fox-vector-white-mask.svg` (silhueta da espessura 3D) e `fox-vector-white-mark.svg` (versão sem margem para a logo pequena).
-  - Logo pequena preta (cabeçalho sobre fundo claro): `fox-mark-black-48/96.webp`.
-  - `public/fox-logo.svg` é a silhueta vetorial avulsa.
+- **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace e está em SVG, nítida em qualquer tamanho.
+  - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
+  - `public/fox-vector-mask.svg`: silhueta usada na espessura 3D e na sombra.
+  - `public/fox-vector-black-mark.svg` e `public/fox-vector-white-mark.svg`: versões sem margem para a logo pequena do cabeçalho e do rodapé.
+  - `public/fox-logo.svg` é a silhueta vetorial avulsa antiga.
 - **Ícones:** `src/art.tsx`.
 - **Estilos:** `src/styles.css`.
 
