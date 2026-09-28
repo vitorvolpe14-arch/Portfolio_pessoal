@@ -1,0 +1,10 @@
+services:
+  - type: web
+    runtime: static
+    name: portfolio-pessoal
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    autoDeployTrigger: checksPass
+    previews:
+      generation: automatic
