@@ -19,3 +19,33 @@
 .logo-3d-glow,.logo-3d-stack,.logo-3d-layer,.logo-3d-face{display:none!important}
 .hero-logo-stage{z-index:3}
 @media(max-width:900px){.logo-3d-large{width:min(70vw,420px)!important;height:min(70vw,520px)!important}.hero-logo-stage{right:4vw;top:17vh;width:72vw;height:52vh;opacity:.78}}
+
+/* 3D flip interaction for service plans */
+.plan-card-shell{position:relative;min-height:540px;cursor:pointer;perspective:1600px;transform-style:preserve-3d;outline:none}
+.plan-card-inner{position:relative;width:100%;height:100%;min-height:540px;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.2,.78,.2,1);will-change:transform}
+.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}
+.plan-face{position:absolute;inset:0;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:34px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:left;overflow:hidden}
+.plan-front{display:flex;flex-direction:column;color:#fff;background:linear-gradient(145deg,#191919,#111);box-shadow:0 25px 70px rgba(0,0,0,.16)}
+.plan-card-shell.featured .plan-front{background:linear-gradient(145deg,#eee9df,#d9d1c5);color:#111;border-color:rgba(219,179,139,.9);box-shadow:0 25px 70px rgba(214,171,130,.16)}
+.plan-back{transform:rotateY(180deg);display:flex;flex-direction:column;color:#111;background:linear-gradient(145deg,#f2eee7,#dcd4c8);border-color:rgba(219,179,139,.85);box-shadow:0 30px 80px rgba(214,171,130,.2)}
+.plan-card-shell:not(.featured) .plan-back{color:#fff;background:linear-gradient(145deg,#26231f,#121212);border-color:rgba(255,255,255,.2)}
+.plan-face .plan-top{display:flex;justify-content:space-between;font:11px "DM Mono";color:#777}
+.plan-front h3{font-size:40px;letter-spacing:-.05em;margin:70px 0 12px;transform:translateZ(35px)}
+.plan-front .plan-intro{line-height:1.5;max-width:260px;color:#999}
+.plan-card-shell.featured .plan-front .plan-intro{color:#666}
+.plan-front .price{font-size:32px;font-weight:700;margin-top:42px;transform:translateZ(35px)}
+.plan-front .price small{font-size:10px;font-weight:400;color:#777}
+.plan-front .plan-tease{margin-top:auto;display:grid;gap:8px;font-size:11px;color:#aaa}
+.plan-card-shell.featured .plan-front .plan-tease{color:#666}
+.plan-link{margin-top:28px;font:11px "DM Mono";text-transform:uppercase;letter-spacing:.04em}
+.plan-back-head{display:flex;justify-content:space-between;align-items:center;font:11px "DM Mono";text-transform:uppercase;letter-spacing:.08em;color:#777}
+.plan-back-price{font-weight:700;color:inherit}
+.plan-back-intro{font-size:18px;line-height:1.35;margin:48px 0 22px;max-width:320px}
+.plan-back-list{display:grid;gap:10px;overflow:auto;padding-right:6px;scrollbar-width:thin}
+.plan-back-list span{font-size:12px;line-height:1.35;padding-bottom:9px;border-bottom:1px solid rgba(127,127,127,.24)}
+.plan-back-scope{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:auto}
+.plan-back-scope span{font:9px "DM Mono";text-transform:uppercase;line-height:1.4;padding:10px 8px;border:1px solid rgba(127,127,127,.3);border-radius:10px}
+.plan-card-shell:focus-visible{outline:2px solid #d7b18d;outline-offset:5px;border-radius:26px}
+.plan-card-shell.is-flipped .plan-back .plan-link{margin-top:18px}
+@media(max-width:900px){.plan-card-shell,.plan-card-inner{min-height:460px}.plan-face{padding:28px}.plan-front h3{font-size:36px;margin-top:52px}.plan-back-intro{margin-top:28px}.plan-back-list{max-height:210px}.plan-back-scope{grid-template-columns:1fr 1fr}.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}}
+@media(prefers-reduced-motion:reduce){.plan-card-inner{transition:none}.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}}
