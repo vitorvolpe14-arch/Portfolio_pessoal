@@ -702,3 +702,182 @@
     height:64vw!important;
   }
 }
+
+
+/* =========================================================
+   DIRECT UI/UX RECONSTRUCTION — no Figma dependency
+   ========================================================= */
+:root{
+  --paper:#f4f2ed;
+  --paper-2:#ebe8e1;
+  --black:#0a0a0a;
+  --soft-black:#111;
+  --gray:#74716b;
+  --hairline:rgba(10,10,10,.13);
+  --dark-line:rgba(255,255,255,.12);
+}
+body{background:var(--black);overflow-x:hidden}
+::selection{background:#111;color:#fff}
+.nav-rebuilt{
+  height:76px;
+  padding:0 5.5vw;
+  background:rgba(10,10,10,.88);
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+.nav-rebuilt .logo{display:flex;align-items:center;gap:10px}
+.nav-rebuilt .logo-wordmark{
+  font:800 15px Manrope,sans-serif;
+  letter-spacing:.16em;
+  color:#fff;
+}
+.nav-rebuilt nav{gap:28px}
+.nav-rebuilt nav a{font-size:10px;letter-spacing:.12em}
+.nav-rebuilt .nav-cta{border-radius:999px;padding:11px 15px;border-color:rgba(255,255,255,.2);font-size:10px}
+.rebuilt-hero{
+  min-height:100svh;
+  padding:150px 7vw 70px;
+  display:flex;
+  align-items:center;
+  background:var(--paper)!important;
+}
+.rebuilt-hero .hero-content{max-width:720px}
+.rebuilt-hero h1{
+  font-size:clamp(55px,7.7vw,112px);
+  line-height:.9;
+  letter-spacing:-.075em;
+}
+.rebuilt-hero h1 em{font-style:italic}
+.rebuilt-hero .hero-copy{max-width:500px;margin:32px 0 30px;color:#666;line-height:1.65}
+.rebuilt-hero .hero-actions{gap:22px}
+.rebuilt-hero .button{border-radius:999px;padding:15px 19px}
+.rebuilt-hero .text-link{border-bottom:1px solid #aaa;padding-bottom:5px;color:#333}
+.rebuilt-logo-stage{
+  right:2vw!important;
+  top:8vh!important;
+  width:min(45vw,650px)!important;
+  height:min(84vh,770px)!important;
+}
+.rebuilt-logo-stage .logo-3d-large{
+  width:min(29vw,430px)!important;
+  height:min(59vh,600px)!important;
+}
+.rebuilt-logo-stage .logo-3d-image{filter:brightness(0)!important}
+.rebuilt-hero .hero-meta{
+  left:7vw;right:7vw;bottom:28px;
+  font-size:9px;letter-spacing:.12em;color:#8a8882;
+}
+.hero-index{
+  position:absolute;left:50%;bottom:27px;
+  transform:translateX(-50%);
+  font:10px "DM Mono",monospace;color:#aaa;
+}
+.intro-strip{
+  min-height:220px;
+  padding:54px 7vw;
+  display:grid;
+  grid-template-columns:.45fr 1fr auto;
+  gap:6vw;
+  align-items:center;
+  border-top:1px solid var(--dark-line);
+  border-bottom:1px solid var(--dark-line);
+}
+.intro-label{font:10px "DM Mono";letter-spacing:.14em;color:#777}
+.intro-strip p{
+  margin:0;
+  max-width:800px;
+  font-size:clamp(24px,3vw,42px);
+  line-height:1.12;
+  letter-spacing:-.045em;
+}
+.intro-strip strong{font-weight:700;color:#fff}
+.intro-arrow{font-size:26px;color:#777}
+.rebuilt-projects{padding-bottom:150px}
+.rebuilt-projects .section-head{padding-top:140px}
+.rebuilt-projects .section-head h2,
+.rebuilt-services .section-head h2,
+.rebuilt-process .section-head h2,
+.rebuilt-contact h2{font-size:clamp(55px,7vw,100px)}
+.rebuilt-projects .section-intro{font-size:13px}
+.rebuilt-services{
+  padding-bottom:145px;
+  background:#0b0b0b!important;
+}
+.rebuilt-services .section-head{padding-top:140px}
+.rebuilt-services .section-intro{color:#858585}
+.rebuilt-services .plans-grid{margin-top:10px!important}
+.rebuilt-process{padding-bottom:145px}
+.rebuilt-process .section-head{padding-top:140px}
+.rebuilt-process .process-grid{margin-top:25px}
+.rebuilt-process .step{padding:34px 32px;min-height:310px;background:#f4f2ed}
+.rebuilt-process .step h3{font-size:23px;margin-top:72px}
+.rebuilt-process .step p{max-width:230px}
+.rebuilt-about{
+  padding:155px 7vw 165px;
+  min-height:680px;
+  display:flex;
+  align-items:center;
+}
+.rebuilt-about .about-inner{position:relative;z-index:2}
+.rebuilt-about h2{font-size:clamp(58px,8vw,116px)}
+.rebuilt-about .about-copy{max-width:760px;font-size:clamp(21px,2.5vw,32px);margin:48px 0 45px}
+.rebuilt-about .about-bg{
+  right:-2vw;top:25%;font-size:31vw;color:rgba(255,255,255,.018);
+}
+.rebuilt-contact{
+  padding:155px 7vw 175px;
+  min-height:680px;
+  display:flex;
+  align-items:center;
+}
+.rebuilt-contact>div{max-width:1000px!important}
+.rebuilt-contact h2{margin-bottom:32px}
+.rebuilt-contact>div>p:not(.eyebrow){
+  max-width:510px;font-size:15px;line-height:1.7;color:#6d6b66;
+}
+.contact-actions{
+  margin-top:38px;
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+}
+.rebuilt-contact .contact-mail{margin-top:0;font-size:clamp(20px,3vw,42px)}
+.rebuilt-contact .button{border-radius:999px}
+.rebuilt-footer{
+  min-height:100px;padding:30px 7vw;
+}
+.rebuilt-footer .logo-wordmark{font:800 13px Manrope,sans-serif;letter-spacing:.15em;color:#fff}
+.rebuilt-footer>div{display:flex;gap:24px}
+.rebuilt-footer a{color:#888;transition:color .2s}
+.rebuilt-footer a:hover{color:#fff}
+@media(max-width:900px){
+  .nav-rebuilt{height:68px;padding:0 6vw}
+  .nav-rebuilt nav{display:none}
+  .nav-rebuilt .nav-cta{padding:10px 13px}
+  .rebuilt-hero{padding:125px 7vw 80px;min-height:100svh;align-items:flex-start}
+  .rebuilt-hero .hero-content{padding-top:6vh;max-width:88vw}
+  .rebuilt-hero h1{font-size:clamp(49px,13vw,82px);max-width:95%}
+  .rebuilt-hero .hero-copy{max-width:75vw;font-size:13px}
+  .rebuilt-logo-stage{
+    right:-13vw!important;
+    top:49vh!important;
+    width:90vw!important;
+    height:48vw!important;
+    opacity:.2;
+  }
+  .rebuilt-logo-stage .logo-3d-large{
+    width:54vw!important;height:58vw!important;
+  }
+  .hero-index{left:auto;right:7vw;transform:none}
+  .intro-strip{grid-template-columns:1fr auto;padding:48px 7vw;gap:24px}
+  .intro-strip p{grid-column:1/-1;grid-row:1;font-size:28px}
+  .intro-label{grid-row:2}.intro-arrow{grid-row:2}
+  .rebuilt-projects .section-head,.rebuilt-services .section-head,.rebuilt-process .section-head{padding-top:95px}
+  .rebuilt-projects .section-head h2,.rebuilt-services .section-head h2,.rebuilt-process .section-head h2,.rebuilt-contact h2{font-size:clamp(48px,12vw,78px)}
+  .rebuilt-about{min-height:600px;padding:110px 7vw}
+  .rebuilt-about .about-copy{font-size:21px}
+  .rebuilt-contact{min-height:590px;padding:110px 7vw}
+  .rebuilt-contact .contact-actions{gap:20px}
+  .rebuilt-footer{padding:28px 7vw;gap:18px;flex-wrap:wrap}
+  .rebuilt-footer>div{width:100%;justify-content:space-between}
+}
+@media(prefers-reduced-motion:reduce){
+  .rebuilt-logo-stage .logo-3d-image{transform:none!important}
+}
