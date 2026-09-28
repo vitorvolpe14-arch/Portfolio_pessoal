@@ -61,7 +61,7 @@ h2 em{font-style:italic}
 .site-header.theme-light{--h-fg:#141110;--h-soft:rgba(20,17,16,.64);--h-bg:rgba(250,248,245,.74);--h-border:rgba(20,17,16,.08)}
 .site-header.is-scrolled{height:72px;background:var(--h-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-color:var(--h-border)}
 .brand{display:inline-flex;align-items:center;gap:12px;color:inherit}
-.brand-mark{position:relative;display:block;height:48px;aspect-ratio:800/1398;transition:transform .5s var(--ease)}
+.brand-mark{position:relative;display:block;height:54px;aspect-ratio:852/1450;transition:transform .5s var(--ease)}
 .brand-mark img{position:absolute;inset:0;width:100%;height:100%;transition:opacity .4s}
 .brand-mark .is-white,.theme-light .brand-mark .is-white{opacity:0}
 .theme-light .brand-mark .is-black{opacity:1}
@@ -86,7 +86,7 @@ h2 em{font-style:italic}
 .is-open .menu-toggle span:last-child{transform:translateY(-3px) rotate(-45deg)}
 
 /* ---------- 3D logo (shared by hero and contact) ---------- */
-.logo3d,.logo3d-shadow{position:absolute;left:62%;top:50%;height:var(--logo-h);aspect-ratio:800/1398;max-width:none;transform:translate(-50%,-50%)}
+.logo3d,.logo3d-shadow{position:absolute;left:62%;top:50%;height:var(--logo-h);aspect-ratio:852/1450;max-width:none;transform:translate(-50%,-50%)}
 .logo3d-shadow{-webkit-mask:url(/fox-fur-black.webp) center/contain no-repeat;mask:url(/fox-fur-black.webp) center/contain no-repeat;background:rgba(30,24,20,.2);filter:blur(44px);transform:translate(-50%,-50%) translate(calc(6% + var(--s,0)*6%),5%) scale(.96);opacity:calc(1 - var(--s,0)*.5)}
 .logo3d-shadow.tone-white{background:rgba(255,248,240,.09);filter:blur(70px);transform:translate(-50%,-50%) scale(1.1)}
 .logo3d-float{width:100%;height:100%;perspective:1500px;animation:float 9s ease-in-out infinite}
