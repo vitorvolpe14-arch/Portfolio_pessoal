@@ -582,3 +582,64 @@
 .hero-white .hero-content h1{
   color:#0b0b0b!important;
 }
+
+/* Projects: compact stacked cards with continuous scroll parallax */
+.project-list{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:18px!important;
+  padding:0 12vw!important;
+  perspective:1600px!important;
+}
+.project{
+  width:100%!important;
+  max-width:900px!important;
+  margin:0 auto!important;
+  height:430px!important;
+  min-height:430px!important;
+  display:grid!important;
+  grid-template-columns:1.15fr .85fr!important;
+  transform:translate3d(0,var(--project-stack-y,0px),var(--project-stack-z,0px)) rotateZ(var(--project-stack-r,0deg))!important;
+  will-change:transform;
+  transition:transform .12s linear!important;
+}
+.project:nth-child(2),.project:nth-child(3){margin-top:0!important}
+.project-visual{
+  height:auto!important;
+  min-height:390px!important;
+  flex:unset!important;
+  margin:14px!important;
+}
+.project-info{
+  padding:34px 32px!important;
+}
+.project-info h3{
+  font-size:34px!important;
+  margin:18px 0 12px!important;
+}
+.project-info>p:not(.project-type){
+  font-size:12px!important;
+  line-height:1.5!important;
+}
+@media(max-width:900px){
+  .project-list{
+    padding:0 7vw!important;
+    gap:14px!important;
+  }
+  .project{
+    max-width:none!important;
+    height:390px!important;
+    min-height:390px!important;
+    grid-template-columns:1fr!important;
+  }
+  .project-visual{
+    min-height:225px!important;
+    height:225px!important;
+    margin:10px!important;
+  }
+  .project-info{
+    padding:20px 22px 24px!important;
+  }
+  .project-info h3{font-size:29px!important}
+  .project-info>p:not(.project-type){font-size:11px!important}
+}
