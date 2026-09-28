@@ -94,6 +94,7 @@ h2 em{font-style:italic}
 .logo3d-rig{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform-origin:50% 50% -14px;transform:rotateX(calc(var(--mouse-y,0)*-18deg + var(--s,0)*10deg)) rotateY(calc(var(--mouse-x,0)*30deg + var(--s,0)*34deg)) scale(calc(1 - max(var(--s,0),0)*.06))}
 .logo3d-layer{position:absolute;inset:0;transform:translateZ(calc((var(--z) - 20)*1.4px)) scale(var(--r,1));-webkit-mask:url(/fox-fur-mask.webp) center/contain no-repeat;mask:url(/fox-fur-mask.webp) center/contain no-repeat}
 .tone-black .logo3d-layer{background:linear-gradient(140deg,hsl(20 4% calc(7% + var(--z)*.55%)),hsl(20 3% calc(2% + var(--z)*.35%)))}
+.is-vector .logo3d-layer,.logo3d-shadow.is-vector{-webkit-mask-image:url(/fox-vector-white-mask.svg);mask-image:url(/fox-vector-white-mask.svg)}
 .tone-white .logo3d-layer{background:linear-gradient(140deg,hsl(34 8% calc(76% + var(--z)*.7%)),hsl(30 5% calc(54% + var(--z)*.9%)))}
 .hero .logo3d-rig{transform:rotateX(calc(var(--mouse-y,0)*-18deg + var(--s,0)*18deg)) rotateY(calc(var(--mouse-x,0)*30deg + var(--s,0)*64deg)) rotateZ(calc(var(--s,0)*-7deg)) scale(calc(1 - max(var(--s,0),0)*.16));animation:fox-turn 1.6s var(--ease) both}
 .logo3d-face{position:absolute;inset:0;width:100%;height:100%;transform:translateZ(0);-webkit-user-select:none;user-select:none;-webkit-user-drag:none}

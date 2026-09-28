@@ -165,7 +165,6 @@ function Header(){
  </header>
 }
 
-/** Logo Volpe em 3D: camadas empilhadas formam a espessura e a face é a raposa com textura aveludada. */
 /** Camadas da espessura: afinam em perfil circular para trás, deixando a borda da logo arredondada. */
 const layers=Array.from({length:20},(_,z)=>{const u=(19-z)/19;return{z,r:(1-.075*(1-Math.sqrt(1-u*u))).toFixed(4)}});
 
@@ -173,7 +172,7 @@ const layers=Array.from({length:20},(_,z)=>{const u=(19-z)/19;return{z,r:(1-.075
 function BrandMark(){
  return <span className="brand-mark" aria-hidden="true">
   <img className="is-black" src="/fox-mark-black-48.webp" srcSet="/fox-mark-black-48.webp 1x, /fox-mark-black-96.webp 2x" alt="" draggable={false}/>
-  <img className="is-white" src="/fox-mark-white-48.webp" srcSet="/fox-mark-white-48.webp 1x, /fox-mark-white-96.webp 2x" alt="" draggable={false}/>
+  <img className="is-white" src="/fox-vector-white-mark.svg" alt="" draggable={false}/>
  </span>
 }
 
@@ -182,21 +181,26 @@ function BrandMark(){
  * Reduzir a imagem grande no navegador a deixa borrada; com srcset ele baixa a mais próxima.
  */
 const FUR_WIDTHS=[200,240,280,330,380,420,480,560,660];
-const furSrcSet=(tone:"black"|"white")=>[...FUR_WIDTHS.map(w=>`/fox-fur-${tone}-${w}.webp ${w}w`),`/fox-fur-${tone}.webp 812w`].join(", ");
-/** Largura exibida da logo: altura --logo-h de cada tela × proporção 812/1410. */
-const FUR_SIZES={
- hero:"(max-width: 560px) min(24.2vh, 208px), (max-width: 920px) min(26.5vh, 254px), min(42.6vh, 404px)",
- contact:"(max-width: 920px) min(25.4vh, 219px), min(42.6vh, 369px)",
-};
+const furSrcSet=(tone:"black")=>[...FUR_WIDTHS.map(w=>`/fox-fur-${tone}-${w}.webp ${w}w`),`/fox-fur-${tone}.webp 812w`].join(", ");
+/** Largura exibida da logo do topo: altura --logo-h de cada tela × proporção 812/1410. */
+const FUR_SIZES="(max-width: 560px) min(24.2vh, 208px), (max-width: 920px) min(26.5vh, 254px), min(42.6vh, 404px)";
 
-function FurLogo({tone,speed,depth,place}:{tone:"black"|"white";speed:string;depth:string;place:keyof typeof FUR_SIZES}){
+/**
+ * Logo em 3D. A preta (topo) usa a imagem com pelos; a branca (contato) usa o SVG vetorizado
+ * public/fox-vector-white.svg, nítido em qualquer tamanho.
+ */
+function FurLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:string}){
+ const vector=tone==="white";
+ const kind=" tone-"+tone+(vector?" is-vector":"");
  return <>
-  <div className={"logo3d-shadow tone-"+tone} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
-  <div className={"logo3d tone-"+tone} data-speed={speed} data-depth={depth} aria-hidden="true">
+  <div className={"logo3d-shadow"+kind} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
+  <div className={"logo3d"+kind} data-speed={speed} data-depth={depth} aria-hidden="true">
    <div className="logo3d-float">
     <div className="logo3d-rig">
      {layers.map(l=><span key={l.z} className="logo3d-layer" style={vars({"--z":l.z,"--r":l.r})}/>)}
-     <img className="logo3d-face" src={`/fox-fur-${tone}-420.webp`} srcSet={furSrcSet(tone)} sizes={FUR_SIZES[place]} alt="" draggable={false} decoding="async"/>
+     {vector
+      ?<img className="logo3d-face" src="/fox-vector-white.svg" alt="" draggable={false} decoding="async"/>
+      :<img className="logo3d-face" src="/fox-fur-black-420.webp" srcSet={furSrcSet("black")} sizes={FUR_SIZES} alt="" draggable={false} decoding="async"/>}
     </div>
    </div>
   </div>
@@ -219,7 +223,7 @@ function Hero(){
    <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
    <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
    <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
-   <FurLogo tone="black" speed=".16" depth=".45" place="hero"/>
+   <FurLogo tone="black" speed=".16" depth=".45"/>
    {orbs.map((o,i)=><span key={i} className={"orb orb-"+i} data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
@@ -364,7 +368,7 @@ function CopyEmail(){
 function Contact(){
  return <section id="contato" className="contact" data-theme="dark" data-scene>
   <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
-  <FurLogo tone="white" speed=".12" depth=".4" place="contact"/>
+  <FurLogo tone="white" speed=".12" depth=".4"/>
   <div className="contact-inner" data-speed="-.05">
    <div data-reveal>
     <p className="label"><i className="dot"/>Contato</p>
