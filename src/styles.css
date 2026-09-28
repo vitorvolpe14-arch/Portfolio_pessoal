@@ -93,3 +93,15 @@
 @media(prefers-reduced-motion:reduce){
   .plan-card-inner{transition:none}
 }
+
+/* Final 3D flip stability fix: let backface-visibility control the two faces. */
+.plan-card-shell{overflow:visible!important;transform-style:preserve-3d!important;perspective:1800px!important}
+.plan-card-inner{transform-style:preserve-3d!important;-webkit-transform-style:preserve-3d!important}
+.plan-face{opacity:1!important;visibility:visible!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.plan-front{transform:rotateY(0deg) translateZ(1px)!important;-webkit-transform:rotateY(0deg) translateZ(1px)!important}
+.plan-back{transform:rotateY(180deg) translateZ(1px)!important;-webkit-transform:rotateY(180deg) translateZ(1px)!important}
+.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)!important;-webkit-transform:rotateY(180deg)!important}
+.plan-card-shell.is-flipped .plan-front{opacity:1!important;visibility:visible!important}
+.plan-card-shell.is-flipped .plan-back{opacity:1!important;visibility:visible!important}
+.logo-3d-image{filter:brightness(0) invert(1) drop-shadow(0 20px 35px rgba(0,0,0,.5))!important}
+.logo-3d-large .logo-3d-image{filter:brightness(0) invert(1) drop-shadow(0 35px 55px rgba(0,0,0,.65)) drop-shadow(0 0 35px rgba(213,167,125,.16))!important}
