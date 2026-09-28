@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+  <radialGradient id="g1" cx="72%" cy="42%" r="38%">
+    <stop offset="0%" stop-color="#5f6cff" stop-opacity=".72"><animate attributeName="stop-color" values="#5f6cff;#b45cff;#35c9ff;#5f6cff" dur="14s" repeatCount="indefinite"/></stop>
+    <stop offset="55%" stop-color="#9a5cff" stop-opacity=".18"><animate attributeName="stop-color" values="#9a5cff;#ff5c91;#5c9cff;#9a5cff" dur="14s" repeatCount="indefinite"/></stop>
+    <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="g2" cx="32%" cy="70%" r="42%">
+    <stop offset="0%" stop-color="#e29a62" stop-opacity=".48"><animate attributeName="stop-color" values="#e29a62;#d85cff;#5ce0d8;#e29a62" dur="17s" repeatCount="indefinite"/></stop>
+    <stop offset="60%" stop-color="#9d5cff" stop-opacity=".1"/>
+    <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="flow" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#171717"/>
+    <stop offset="45%" stop-color="#080808"/>
+    <stop offset="70%" stop-color="#1b1511"/>
+    <stop offset="100%" stop-color="#050505"/>
+    <animate attributeName="x1" values="0;1;0" dur="18s" repeatCount="indefinite"/>
+    <animate attributeName="y2" values="1;0;1" dur="22s" repeatCount="indefinite"/>
+  </linearGradient>
+  <filter id="blur60"><feGaussianBlur stdDeviation="60"/></filter>
+  <filter id="blur25"><feGaussianBlur stdDeviation="25"/></filter>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .055 0"/></filter>
+</defs>
+<rect width="1600" height="1000" fill="url(#flow)"/>
+<ellipse cx="1180" cy="400" rx="520" ry="430" fill="url(#g1)" filter="url(#blur60)">
+  <animate attributeName="cx" values="1180;1320;1080;1180" dur="18s" repeatCount="indefinite"/>
+  <animate attributeName="cy" values="400;330;500;400" dur="15s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="420" cy="760" rx="500" ry="380" fill="url(#g2)" filter="url(#blur60)">
+  <animate attributeName="cx" values="420;300;520;420" dur="21s" repeatCount="indefinite"/>
+  <animate attributeName="cy" values="760;680;820;760" dur="18s" repeatCount="indefinite"/>
+</ellipse>
+<path d="M900 0 C760 220 900 330 760 510 C650 650 780 760 610 1000 L1450 1000 C1260 790 1390 640 1280 470 C1170 300 1320 160 1240 0Z" fill="#d7a77c" opacity=".08" filter="url(#blur25)">
+  <animate attributeName="d" dur="20s" repeatCount="indefinite" values="M900 0 C760 220 900 330 760 510 C650 650 780 760 610 1000 L1450 1000 C1260 790 1390 640 1280 470 C1170 300 1320 160 1240 0Z;M1040 0 C900 210 1020 360 850 540 C730 690 900 800 700 1000 L1510 1000 C1320 780 1450 610 1320 430 C1190 250 1410 150 1350 0Z;M900 0 C760 220 900 330 760 510 C650 650 780 760 610 1000 L1450 1000 C1260 790 1390 640 1280 470 C1170 300 1320 160 1240 0Z"/>
+</path>
+<rect width="1600" height="1000" filter="url(#grain)" opacity=".35"/>
+</svg>
