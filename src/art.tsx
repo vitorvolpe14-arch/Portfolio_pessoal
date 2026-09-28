@@ -1,9 +1,3 @@
-import{FOX_PATH,FOX_VIEWBOX}from"./foxPath";
-
-export function FoxMark({className}:{className?:string}){
- return <svg className={className} viewBox={FOX_VIEWBOX} aria-hidden="true"><path d={FOX_PATH} fill="currentColor"/></svg>
-}
-
 export function ArrowRight({className}:{className?:string}){
  return <svg className={className} viewBox="0 0 20 12" aria-hidden="true"><path d="M1 6h17M13 1l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }

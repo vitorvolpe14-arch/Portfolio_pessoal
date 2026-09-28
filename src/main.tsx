@@ -2,7 +2,7 @@ import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
-import{ArrowRight,Check,FoxMark,Play}from"./art";
+import{ArrowRight,Check,Play}from"./art";
 
 document.documentElement.classList.add("js");
 
@@ -139,7 +139,7 @@ function Header(){
  useEffect(()=>{document.body.classList.toggle("menu-open",open)},[open]);
  useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false)};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
  return <header className={"site-header theme-"+(open?"dark":theme)+(scrolled?" is-scrolled":"")+(open?" is-open":"")}>
-  <a className="brand" href="#top" aria-label="Volpe — início"><FoxMark className="brand-mark"/></a>
+  <a className="brand" href="#top" aria-label="Volpe — início"><BrandMark/></a>
   <nav id="menu" className="site-nav" aria-label="Principal">
    {nav.map(n=><a key={n.id} href={"#"+n.id} className={active===n.id?"is-active":undefined} aria-current={active===n.id?"true":undefined} onClick={()=>setOpen(false)}>{n.label}</a>)}
    <a className="btn btn-outline nav-cta-mobile" href="#contato" onClick={()=>setOpen(false)}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
@@ -153,6 +153,14 @@ function Header(){
 }
 
 /** Logo Volpe em 3D: camadas empilhadas formam a espessura e a face é a raposa com textura aveludada. */
+/** Logo pequena do cabeçalho e rodapé: versão preta sobre fundos claros, branca sobre escuros. */
+function BrandMark(){
+ return <span className="brand-mark" aria-hidden="true">
+  <img className="is-black" src="/fox-fur-black.webp" alt="" draggable={false}/>
+  <img className="is-white" src="/fox-fur-white.webp" alt="" draggable={false}/>
+ </span>
+}
+
 function FurLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:string}){
  return <>
   <div className={"logo3d-shadow tone-"+tone} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
@@ -168,11 +176,11 @@ function FurLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:str
 }
 
 const orbs=[
- {x:47,y:20,size:26,speed:-.22,depth:.9,blur:0},
+ {x:45,y:22,size:26,speed:-.22,depth:.9,blur:0},
  {x:78,y:66,size:64,speed:-.34,depth:1.3,blur:0},
  {x:85,y:17,size:14,speed:.12,depth:.35,blur:1},
  {x:53,y:84,size:42,speed:-.5,depth:1.6,blur:2},
- {x:67,y:9,size:10,speed:.22,depth:.25,blur:0},
+ {x:74,y:10,size:10,speed:.22,depth:.25,blur:0},
  {x:93,y:86,size:120,speed:-.7,depth:2.2,blur:7},
 ];
 
@@ -184,7 +192,7 @@ function Hero(){
    <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
    <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
    <FurLogo tone="black" speed=".16" depth=".45"/>
-   {orbs.map((o,i)=><span key={i} className="orb" data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
+   {orbs.map((o,i)=><span key={i} className={"orb orb-"+i} data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
   <div className="hero-inner">
@@ -336,7 +344,7 @@ function Contact(){
 
 function Footer(){
  return <footer className="site-footer" data-theme="dark">
-  <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><FoxMark className="brand-mark"/><span>Volpe</span></a>
+  <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><BrandMark/><span>Volpe</span></a>
   <p>© {new Date().getFullYear()} Vitor Volpato · {contact.city}</p>
   <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
  </footer>
