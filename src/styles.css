@@ -112,3 +112,11 @@
  .plan-card-shell{height:500px!important;min-height:500px!important}
  .plan-face{padding:28px!important}
 }
+
+/* Safari/iOS-safe 3D flip: never apply hover/tilt transforms to the faces. */
+.plan-card-shell .plan-card{transition:none!important;transform-style:preserve-3d!important}
+.plan-card-shell .plan-card:hover{transform:none!important;background:inherit}
+.plan-card-shell .plan-front{transform:rotateY(0deg) translateZ(1px)!important}
+.plan-card-shell .plan-back{transform:rotateY(180deg) translateZ(1px)!important}
+.plan-card-shell.is-flipped .plan-card-inner{-webkit-transform:rotateY(180deg)!important;transform:rotateY(180deg)!important}
+@media (hover:none){.plan-card-shell .plan-card:hover{transform:none!important}}
