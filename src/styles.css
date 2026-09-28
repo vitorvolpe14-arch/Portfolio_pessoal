@@ -50,101 +50,20 @@
 @media(max-width:900px){.plan-card-shell,.plan-card-inner{min-height:460px}.plan-face{padding:28px}.plan-front h3{font-size:36px;margin-top:52px}.plan-back-intro{margin-top:28px}.plan-back-list{max-height:210px}.plan-back-scope{grid-template-columns:1fr 1fr}.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}}
 @media(prefers-reduced-motion:reduce){.plan-card-inner{transition:none}.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}}
 
-/* Premium 3D plan flip */
-.plans-grid{perspective:1800px;align-items:stretch}
-.plan-card-shell{position:relative;min-height:540px;height:540px;cursor:pointer;perspective:1800px;transform-style:preserve-3d;outline:none}
-.plan-card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.16,.76,.2,1);will-change:transform}
-.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)}
-.plan-face{position:absolute;inset:0;margin:0;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:34px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;text-align:left}
-.plan-front{display:flex;flex-direction:column;color:#fff;background:linear-gradient(145deg,#191919,#101010);box-shadow:0 25px 70px rgba(0,0,0,.25);cursor:pointer}
-.plan-card-shell.featured .plan-front{background:linear-gradient(145deg,#eee9df,#d9d1c5);color:#111;border-color:rgba(219,179,139,.9);box-shadow:0 25px 70px rgba(214,171,130,.18)}
-.plan-back{display:flex;flex-direction:column;color:#111;background:linear-gradient(145deg,#f2eee7,#dcd4c8);transform:rotateY(180deg);border-color:rgba(219,179,139,.85);box-shadow:0 30px 85px rgba(214,171,130,.18)}
-.plan-card-shell:not(.featured) .plan-back{color:#fff;background:linear-gradient(145deg,#24211e,#111)}
-.plan-front h3,.plan-front .price{transform:translateZ(40px)}
-.plan-front .plan-top{transform:translateZ(55px)}
-.plan-front .plan-intro,.plan-front .plan-tease,.plan-front .plan-link{transform:translateZ(26px)}
-.plan-back h3,.plan-back .price{margin:12px 0;transform:translateZ(30px)}
-.plan-back .price{font-size:30px;font-weight:700}
-.plan-back .price small{font-size:10px;font-weight:400;color:#777}
-.plan-back-close{position:absolute;top:20px;right:20px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(127,127,127,.3);background:transparent;color:inherit;cursor:pointer;z-index:4;font-size:18px}
-.plan-back .plan-top b{font:9px "DM Mono";padding:6px 8px;border:1px solid rgba(127,127,127,.25);border-radius:99px}
-.plan-details-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0;overflow:auto;padding-right:3px;flex:1;min-height:0}
-.plan-details-grid h4{font:10px "DM Mono";text-transform:uppercase;letter-spacing:.12em;color:#888;margin:0 0 14px}
-.plan-details-grid ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}.plan-details-grid li{font-size:11px;line-height:1.35;padding-bottom:8px;border-bottom:1px solid rgba(127,127,127,.2)}
-.plan-details-grid dl{margin:0}.plan-details-grid dl div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(127,127,127,.2);font-size:10px}.plan-details-grid dt{color:#888}.plan-details-grid dd{margin:0;text-align:right;max-width:150px}
-.plan-detail-cta{width:max-content;margin-top:auto}.plan-card-shell:focus-visible{outline:2px solid #d7b18d;outline-offset:5px;border-radius:28px}
-.plan-card-shell::after{content:"";position:absolute;inset:8px;border-radius:20px;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.13) 49%,transparent 60%);opacity:0;transition:opacity .5s;z-index:8}.plan-card-shell:hover::after{opacity:.5}.plan-card-shell.is-flipped::after{display:none}
-@media(max-width:900px){.plan-card-shell{min-height:470px;height:470px}.plan-face{padding:27px}.plan-details-grid{grid-template-columns:1fr;gap:16px}.plan-back .price{font-size:26px}.plan-front h3{font-size:36px;margin-top:52px}}
-@media(prefers-reduced-motion:reduce){.plan-card-inner{transition:none}}
 
-/* Fix: prevent plan text ghosting / mirroring during 3D flip */
-.plan-card-shell{isolation:isolate;overflow:visible}
-.plan-card-inner{position:relative;isolation:isolate;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
-.plan-face{position:absolute!important;inset:0!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;overflow:hidden;contain:paint}
-.plan-front{transform:rotateY(0deg) translateZ(1px);-webkit-transform:rotateY(0deg) translateZ(1px);opacity:1;visibility:visible;z-index:2}
-.plan-back{transform:rotateY(180deg) translateZ(1px);-webkit-transform:rotateY(180deg) translateZ(1px);opacity:0;visibility:hidden;z-index:1}
-.plan-card-shell.is-flipped .plan-front{opacity:0;visibility:hidden;z-index:1}
-.plan-card-shell.is-flipped .plan-back{opacity:1;visibility:visible;z-index:2}
-.plan-face *{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.plan-back-scroll,.plan-back-grid{min-width:0}
-.plan-back-grid{overflow-y:auto;overflow-x:hidden}
-.plan-back-grid h4,.plan-back-grid li,.plan-back-grid dt,.plan-back-grid dd{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.plan-card-shell button{font-family:inherit}
-@media(prefers-reduced-motion:reduce){
-  .plan-card-inner{transition:none}
-}
-
-
-/* Stable plan cards: flip the shell, never the text independently. */
-.plans-grid{perspective:none!important}
-.plan-card-shell{position:relative!important;height:540px!important;min-height:540px!important;perspective:1400px!important;transform-style:preserve-3d!important;overflow:visible!important}
-.plan-card-inner{position:relative!important;width:100%!important;height:100%!important;transform-style:preserve-3d!important;transition:transform .8s cubic-bezier(.2,.75,.2,1)!important}
-.plan-card-shell.is-flipped .plan-card-inner{transform:rotateY(180deg)!important}
-.plan-face{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;margin:0!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;transform-style:preserve-3d!important;opacity:1!important;visibility:visible!important}
-.plan-front{transform:rotateY(0deg)!important}
-.plan-back{transform:rotateY(180deg)!important}
-.plan-front *,.plan-back *{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.plan-card-shell.is-flipped .plan-front,.plan-card-shell.is-flipped .plan-back{opacity:1!important;visibility:visible!important}
-.plan-back{overflow-y:auto!important;overflow-x:hidden!important}
-.plan-back-grid{overflow:visible!important}
-.plan-back-close{z-index:20!important;pointer-events:auto!important}
-@media(max-width:900px){
- .plan-card-shell{height:500px!important;min-height:500px!important}
- .plan-face{padding:28px!important}
-}
-
-/* Safari/iOS-safe 3D flip: never apply hover/tilt transforms to the faces. */
-.plan-card-shell .plan-card{transition:none!important;transform-style:preserve-3d!important}
-.plan-card-shell .plan-card:hover{transform:none!important;background:inherit}
-.plan-card-shell .plan-front{transform:rotateY(0deg) translateZ(1px)!important}
-.plan-card-shell .plan-back{transform:rotateY(180deg) translateZ(1px)!important}
-.plan-card-shell.is-flipped .plan-card-inner{-webkit-transform:rotateY(180deg)!important;transform:rotateY(180deg)!important}
-@media (hover:none){.plan-card-shell .plan-card:hover{transform:none!important}}
-
-/* Final fix: animate the two faces independently to avoid iOS/Safari mirrored text. */
-.plan-card-shell{perspective:1400px!important}
-.plan-card-inner{transform:none!important;-webkit-transform:none!important;transition:none!important}
-.plan-card-shell .plan-face{
-  transition:transform .8s cubic-bezier(.2,.75,.2,1)!important;
-  backface-visibility:hidden!important;
-  -webkit-backface-visibility:hidden!important;
-}
-.plan-card-shell .plan-front{
-  transform:rotateY(0deg)!important;
-  -webkit-transform:rotateY(0deg)!important;
-}
-.plan-card-shell .plan-back{
-  transform:rotateY(-180deg)!important;
-  -webkit-transform:rotateY(-180deg)!important;
-}
-.plan-card-shell.is-flipped .plan-front{
-  transform:rotateY(180deg)!important;
-  -webkit-transform:rotateY(180deg)!important;
-}
-.plan-card-shell.is-flipped .plan-back{
-  transform:rotateY(0deg)!important;
-  -webkit-transform:rotateY(0deg)!important;
-}
-.plan-card-shell .plan-face *{
-  transform-style:preserve-3d;
-}
+/* Plan flip v3: no mirrored/backside text. Content swaps at 90deg while the card shell provides depth. */
+.plans-grid{perspective:1200px!important}
+.plan-card-shell{position:relative!important;height:540px!important;min-height:540px!important;perspective:1200px!important;overflow:visible!important}
+.plan-card-inner{position:relative!important;width:100%!important;height:100%!important;min-height:0!important;transform:none!important;-webkit-transform:none!important;transform-style:flat!important;-webkit-transform-style:flat!important;transition:none!important}
+.plan-face{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;margin:0!important;backface-visibility:visible!important;-webkit-backface-visibility:visible!important;transform:none!important;-webkit-transform:none!important;transition:opacity .38s ease,visibility .38s ease,filter .38s ease!important}
+.plan-front{opacity:1!important;visibility:visible!important;filter:none!important;z-index:2!important}
+.plan-back{opacity:0!important;visibility:hidden!important;filter:blur(2px)!important;z-index:1!important}
+.plan-card-shell.is-flipped .plan-front{opacity:0!important;visibility:hidden!important;filter:blur(2px)!important}
+.plan-card-shell.is-flipped .plan-back{opacity:1!important;visibility:visible!important;filter:none!important}
+.plan-card-shell::before{content:"";position:absolute;inset:0;border-radius:24px;background:inherit;border:1px solid rgba(255,255,255,.12);pointer-events:none;z-index:0;transition:transform .8s cubic-bezier(.2,.75,.2,1),box-shadow .8s ease}
+.plan-card-shell.is-flipped::before{transform:rotateY(180deg) scale(.985);box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.plan-card-shell .plan-card{position:absolute!important;inset:0!important;transform:none!important;-webkit-transform:none!important;transition:none!important}
+.plan-card-shell .plan-card:hover{transform:none!important}
+.plan-card-shell .plan-card h3,.plan-card-shell .plan-card .price,.plan-card-shell .plan-card .plan-tease,.plan-card-shell .plan-card .plan-link,.plan-card-shell .plan-card .plan-top{transform:none!important;-webkit-transform:none!important}
+.plan-back-grid{overflow:auto!important}
+@media(max-width:900px){.plan-card-shell{height:500px!important;min-height:500px!important}}
