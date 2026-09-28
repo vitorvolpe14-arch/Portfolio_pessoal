@@ -172,8 +172,8 @@ const layers=Array.from({length:20},(_,z)=>{const u=(19-z)/19;return{z,r:(1-.075
 /** Logo pequena do cabeçalho e rodapé: versão preta sobre fundos claros, branca sobre escuros. */
 function BrandMark(){
  return <span className="brand-mark" aria-hidden="true">
-  <img className="is-black" src="/fox-fur-black.webp" alt="" draggable={false}/>
-  <img className="is-white" src="/fox-fur-white.webp" alt="" draggable={false}/>
+  <img className="is-black" src="/fox-mark-black.webp" alt="" draggable={false}/>
+  <img className="is-white" src="/fox-mark-white.webp" alt="" draggable={false}/>
  </span>
 }
 
@@ -227,7 +227,7 @@ function Hero(){
    {disciplines.map((d,i)=><li key={d} className={i===current?"is-current":undefined}>{d}</li>)}
   </ul>
   <a className="hero-scroll" href="#projetos" aria-label="Rolar para projetos">Scroll<i/></a>
-  <p className="hero-signature" data-speed=".08">Sites sob medida<br/>para marcas que querem vender<i/></p>
+  <p className="hero-signature" data-speed=".08">Sites sob medida<i/></p>
  </section>
 }
 
@@ -304,6 +304,7 @@ function Plans(){
      <h3>{p.name}</h3>
      <p className="plan-intro">{p.intro}</p>
      <p className="plan-price">{p.price}</p>
+     <p className="plan-deadline">Prazo: {p.details.find(d=>d.label==="Prazo")?.value}</p>
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
      <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
     </article>
