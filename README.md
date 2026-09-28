@@ -8,7 +8,11 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
   - Projetos aparecem como a logo de cada marca (texto e fonte em `wordmark`/`font`) com link para o site (`url`). A fonte Lovelo da Montê fica em `public/fonts/`.
-- **Logo:** `public/fox-fur-black.webp` (topo) e `public/fox-fur-white.webp` (contato) são a raposa com pelos. As versões `fox-fur-*-<largura>.webp` são as mesmas imagens já reduzidas para cada tamanho de tela (o site escolhe a certa via `srcset`, o que mantém a logo nítida). `fox-fur-mask.webp` é a silhueta usada na espessura 3D, e `fox-mark-*-48/96.webp` é a logo pequena do cabeçalho e do rodapé. `public/fox-logo.svg` é a silhueta vetorial avulsa.
+- **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace e está em SVG, nítida em qualquer tamanho.
+  - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
+  - `public/fox-vector-mask.svg`: silhueta usada na espessura 3D e na sombra.
+  - `public/fox-vector-black-mark.svg` e `public/fox-vector-white-mark.svg`: versões sem margem para a logo pequena do cabeçalho e do rodapé.
+  - `public/fox-logo.svg` é a silhueta vetorial avulsa antiga.
 - **Ícones:** `src/art.tsx`.
 - **Estilos:** `src/styles.css`.
 
