@@ -7,9 +7,9 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
-  - Para ligar o botão "Acessar projeto" a um site, preencha `url` no projeto. Sem `url`, o botão leva para o contato.
-- **Logo (silhueta da raposa):** `src/foxPath.ts` (usado no site) e `public/fox-logo.svg` (arquivo avulso).
-- **Ilustrações (raposa do hero, pedras, bolsa, caixa):** `src/art.tsx`.
+  - Por enquanto os cards de projeto mostram só o nome; descrição, tags e `url` já ficam guardados no arquivo.
+- **Logo:** `public/fox-fur-black.webp` e `public/fox-fur-white.webp` (raposa com textura, usadas no topo, no contato, no cabeçalho e no rodapé). `public/fox-logo.svg` é a silhueta vetorial avulsa.
+- **Ícones:** `src/art.tsx`.
 - **Estilos:** `src/styles.css`.
 
 ## Desenvolvimento
