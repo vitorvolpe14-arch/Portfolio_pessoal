@@ -2,7 +2,7 @@ import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
-import{ArrowRight,Check,Play}from"./art";
+import{ArrowRight,ArrowUpRight,Check,Play}from"./art";
 
 document.documentElement.classList.add("js");
 
@@ -78,6 +78,33 @@ function useParallax(){
   if(pointer)window.addEventListener("pointermove",onPointer,{passive:true});
   document.fonts?.ready.then(measure);
   return()=>{cancelAnimationFrame(raf);ro.disconnect();window.removeEventListener("scroll",queue);window.removeEventListener("pointermove",onPointer)};
+ },[]);
+}
+
+/**
+ * Links internos (#secao): rolagem suave até a seção, fechando o menu do celular.
+ * Feito em JS para funcionar também quando o site é exibido dentro de um iframe.
+ */
+function useInPageLinks(){
+ useEffect(()=>{
+  const onClick=(e:MouseEvent)=>{
+   if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+   const link=(e.target as Element|null)?.closest?.("a[href^='#']");
+   if(!link)return;
+   const id=decodeURIComponent((link.getAttribute("href")||"").slice(1));
+   const target=id?document.getElementById(id):null;
+   if(!target)return;
+   e.preventDefault();
+   document.body.classList.remove("menu-open");
+   requestAnimationFrame(()=>{
+    target.scrollIntoView({behavior:reducedMotion()?"auto":"smooth",block:"start"});
+    if(!target.hasAttribute("tabindex"))target.setAttribute("tabindex","-1");
+    target.focus({preventScroll:true});
+    try{history.replaceState(null,"","#"+id)}catch{/* iframe sem URL própria */}
+   });
+  };
+  document.addEventListener("click",onClick);
+  return()=>document.removeEventListener("click",onClick);
  },[]);
 }
 
@@ -231,9 +258,12 @@ function Projects(){
   <div className="project-deck">
    {projects.map((p,i)=><div key={p.title} className="project-slot" data-speed={i%2?".05":"-.07"}>
     <article className="project-card" data-tilt data-reveal style={vars({"--i":i})}>
-     <div className="project-card-inner">
-      <h3>{p.title}</h3>
-     </div>
+     {p.url
+      ?<a className="project-card-inner" href={p.url} target="_blank" rel="noopener noreferrer" aria-label={p.title+" — abrir o site do projeto em nova aba"}>
+        <h3>{p.title}</h3>
+        <span className="project-open" aria-hidden="true"><ArrowUpRight/></span>
+       </a>
+      :<div className="project-card-inner"><h3>{p.title}</h3></div>}
     </article>
    </div>)}
   </div>
@@ -324,6 +354,16 @@ function About(){
  </section>
 }
 
+function CopyEmail(){
+ const[copied,setCopied]=useState(false);
+ const copy=()=>{
+  const done=()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400)};
+  const select=()=>{const el=document.querySelector(".contact-mail");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(contact.email).then(done,select);else select();
+ };
+ return <button type="button" className="copy-mail" onClick={copy} aria-live="polite">{copied?"E-mail copiado":"Copiar e-mail"}</button>
+}
+
 function Contact(){
  return <section id="contato" className="contact" data-theme="dark" data-scene>
   <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
@@ -336,6 +376,7 @@ function Contact(){
     <div className="contact-actions">
      <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
      <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
+     <CopyEmail/>
     </div>
    </div>
   </div>
@@ -346,12 +387,12 @@ function Footer(){
  return <footer className="site-footer" data-theme="dark">
   <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><BrandMark/><span>Volpe</span></a>
   <p>© {new Date().getFullYear()} Vitor Volpato · {contact.city}</p>
-  <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
+  <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
  </footer>
 }
 
 function App(){
- useReveal();useTilt();useParallax();
+ useReveal();useTilt();useParallax();useInPageLinks();
  return <>
   <a className="skip-link" href="#projetos">Pular para o conteúdo</a>
   <Header/>
