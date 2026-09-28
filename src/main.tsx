@@ -2,7 +2,7 @@ import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
-import{ArrowRight,ArrowUpRight,BagArt,BoxArt,Check,FoxMark,Play,StoneFace}from"./art";
+import{ArrowRight,Check,FoxMark,Play}from"./art";
 
 document.documentElement.classList.add("js");
 
@@ -31,10 +31,10 @@ type Layer={el:HTMLElement;center:number;top:number;bottom:number;speed:number;s
 function useParallax(){
  useEffect(()=>{
   if(reducedMotion())return;
-  const hero=document.querySelector<HTMLElement>(".hero");
+  let scenes:{el:HTMLElement;top:number;h:number}[]=[];
   const pointer=window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const mouse={x:0,y:0,tx:0,ty:0};
-  let layers:Layer[]=[],heroH=1,raf=0;
+  let layers:Layer[]=[],raf=0;
 
   const frame=()=>{
    raf=0;
@@ -47,10 +47,12 @@ function useParallax(){
     if(l.speedX)l.el.style.setProperty("--sx",(d*l.speedX*k).toFixed(1)+"px");
     if(l.depth&&pointer){l.el.style.setProperty("--mx",(mouse.x*l.depth*70).toFixed(1)+"px");l.el.style.setProperty("--my",(mouse.y*l.depth*50).toFixed(1)+"px")}
    }
-   if(hero){
-    hero.style.setProperty("--hero-p",Math.min(1,Math.max(0,y/heroH)).toFixed(3));
-    hero.style.setProperty("--mouse-x",mouse.x.toFixed(3));
-    hero.style.setProperty("--mouse-y",mouse.y.toFixed(3));
+   for(const sc of scenes){
+    if(sc.top+sc.h-y<-vh||sc.top-y>vh*2)continue;
+    const p=(y+vh/2-(sc.top+sc.h/2))/vh;
+    sc.el.style.setProperty("--s",Math.min(1,Math.max(-.6,p)).toFixed(3));
+    sc.el.style.setProperty("--mouse-x",mouse.x.toFixed(3));
+    sc.el.style.setProperty("--mouse-y",mouse.y.toFixed(3));
    }
    if(Math.abs(mouse.tx-mouse.x)>.0005||Math.abs(mouse.ty-mouse.y)>.0005)raf=requestAnimationFrame(frame);
   };
@@ -64,7 +66,7 @@ function useParallax(){
     const r=el.getBoundingClientRect();
     return{el,center:r.top+y+r.height/2,top:r.top+y,bottom:r.bottom+y,speed:Number(el.dataset.speed||0),speedX:Number(el.dataset.speedX||0),depth:Number(el.dataset.depth||0)};
    });
-   heroH=hero?.offsetHeight||1;
+   scenes=[...document.querySelectorAll<HTMLElement>("[data-scene]")].map(el=>({el,top:el.getBoundingClientRect().top+y,h:el.offsetHeight}));
    cancelAnimationFrame(raf);raf=0;frame();
   };
 
@@ -150,17 +152,19 @@ function Header(){
  </header>
 }
 
-/** Raposa branca em 3D: camadas empilhadas formam a espessura e a face tem textura de pedra. */
-function StoneLogo(){
- return <div className="logo3d" data-speed=".16" data-depth=".45">
-  <div className="logo3d-float">
-   <div className="logo3d-rig">
-    {Array.from({length:22},(_,i)=><span key={i} className="logo3d-layer" style={vars({"--z":i})}/>)}
-    <StoneFace/>
-    <span className="logo3d-sheen"/>
+/** Logo Volpe em 3D: camadas empilhadas formam a espessura e a face é a raposa com textura aveludada. */
+function FurLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:string}){
+ return <>
+  <div className={"logo3d-shadow tone-"+tone} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
+  <div className={"logo3d tone-"+tone} data-speed={speed} data-depth={depth} aria-hidden="true">
+   <div className="logo3d-float">
+    <div className="logo3d-rig">
+     {Array.from({length:20},(_,i)=><span key={i} className="logo3d-layer" style={vars({"--z":i})}/>)}
+     <img className="logo3d-face" src={tone==="black"?"/fox-fur-black.webp":"/fox-fur-white.webp"} alt="" draggable={false} decoding="async"/>
+    </div>
    </div>
   </div>
- </div>
+ </>
 }
 
 const orbs=[
@@ -174,13 +178,12 @@ const orbs=[
 
 function Hero(){
  const current=useCycle(disciplines.length);
- return <section id="top" className="hero" data-theme="light">
+ return <section id="top" className="hero" data-theme="light" data-scene>
   <div className="hero-scene" aria-hidden="true">
    <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
    <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
    <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
-   <div className="logo3d-shadow" data-speed=".22" data-depth="-.35"/>
-   <StoneLogo/>
+   <FurLogo tone="black" speed=".16" depth=".45"/>
    {orbs.map((o,i)=><span key={i} className="orb" data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
@@ -212,24 +215,16 @@ function Projects(){
   <div className="projects-copy" data-speed=".08">
    <div data-reveal>
     <p className="label"><i className="dot"/>Projetos</p>
-    <h2>Marcas reais.<br/>Resultados reais.</h2>
+    <h2>Marcas reais.<br/><em>Resultados reais.</em></h2>
     <p className="section-lede">Projetos que unem design, tecnologia e estratégia para criar experiências que geram valor.</p>
     <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
    </div>
   </div>
   <div className="project-deck">
    {projects.map((p,i)=><div key={p.title} className="project-slot" data-speed={i%2?".05":"-.07"}>
-    <article className={"project-card theme-"+p.theme} data-tilt data-reveal style={vars({"--i":i})}>
+    <article className="project-card" data-tilt data-reveal style={vars({"--i":i})}>
      <div className="project-card-inner">
-      <div className="project-media" data-speed={i%2?".12":".16"}>{p.theme==="leather"?<BagArt/>:<BoxArt/>}</div>
-      <div className="project-body">
-       <span className="project-number">{p.number}</span>
-       <h3>{p.title}</h3>
-       <p>{p.description}</p>
-       <ul className="tags">{p.tags.map(t=><li key={t}>{t}</li>)}</ul>
-       <a className="project-link" href={p.url||"#contato"} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}>Acessar projeto <ArrowRight className="btn-arrow"/></a>
-      </div>
-      <a className="round-link" href={p.url||"#contato"} aria-label={"Acessar projeto "+p.title} tabIndex={-1} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}><ArrowUpRight/></a>
+      <h3>{p.title}</h3>
      </div>
     </article>
    </div>)}
@@ -264,7 +259,7 @@ function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
     <ul>{plan.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
     <ul>{plan.extras.map(x=><li key={x}><Check/>{x}</li>)}</ul>
    </div>
-   <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
+   <a className="btn btn-fluo" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
   </div>}
  </dialog>
 }
@@ -276,7 +271,7 @@ function Plans(){
   <div className="plans-copy" data-speed=".1">
    <div data-reveal>
     <p className="label"><i className="dot"/>Planos</p>
-    <h2>Escolha o plano<br/>ideal para sua marca.</h2>
+    <h2>Escolha o plano<br/><em>ideal</em> para sua marca.</h2>
     <p className="section-lede">Soluções completas para diferentes momentos do seu negócio.</p>
     <ArrowRight className="long-arrow"/>
    </div>
@@ -290,7 +285,7 @@ function Plans(){
      <p className="plan-intro">{p.intro}</p>
      <p className="plan-price">{p.price}</p>
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
-     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
+     <button className={"btn "+(p.featured?"btn-fluo":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
     </article>
    </div>)}
   </div>
@@ -305,7 +300,7 @@ function About(){
   <div className="about-copy" data-speed=".12">
    <div data-reveal>
     <p className="label"><i className="dot"/>Sobre</p>
-    <h2>Design que<br/>encontra código.</h2>
+    <h2>Design que<br/>encontra <em>código.</em></h2>
     <p className="section-lede">Sou Vitor Volpato. Meu trabalho conecta direção visual e desenvolvimento para criar experiências com estética, lógica e função — uma presença digital que faz sentido para o negócio, não só um site no ar.</p>
     <ul className="stack">{stack.map(s=><li key={s}>{s}</li>)}</ul>
    </div>
@@ -322,9 +317,9 @@ function About(){
 }
 
 function Contact(){
- return <section id="contato" className="contact" data-theme="dark">
+ return <section id="contato" className="contact" data-theme="dark" data-scene>
   <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
-  <div className="contact-mark-wrap" data-speed=".28" data-depth=".3" aria-hidden="true"><FoxMark className="contact-mark"/></div>
+  <FurLogo tone="white" speed=".12" depth=".4"/>
   <div className="contact-inner" data-speed="-.05">
    <div data-reveal>
     <p className="label"><i className="dot"/>Contato</p>

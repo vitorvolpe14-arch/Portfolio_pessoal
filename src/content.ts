@@ -1,11 +1,11 @@
 // Todo o conteúdo editável do site fica aqui.
 
+/** Por enquanto os cards mostram só o nome; descrição, tags e link ficam guardados para depois. */
 export type Project={
  number:string;
  title:string;
  description:string;
  tags:string[];
- theme:"leather"|"blush";
  /** Link público do projeto. Sem link, o botão leva para o contato. */
  url?:string;
 };
@@ -43,8 +43,8 @@ export const stats=[
 ];
 
 export const projects:Project[]=[
- {number:"01",title:"Montê",description:"E-commerce de bolsas em couro com identidade visual e experiência premium.",tags:["E-commerce","Branding","UI/UX"],theme:"leather"},
- {number:"02",title:"Key",description:"Marca de moda com identidade minimalista e e-commerce integrado.",tags:["E-commerce","Branding","UI/UX"],theme:"blush"},
+ {number:"01",title:"Montê",description:"E-commerce de bolsas em couro com identidade visual e experiência premium.",tags:["E-commerce","Branding","UI/UX"]},
+ {number:"02",title:"Key",description:"Marca de moda com identidade minimalista e e-commerce integrado.",tags:["E-commerce","Branding","UI/UX"]},
 ];
 
 export const plans:Plan[]=[
