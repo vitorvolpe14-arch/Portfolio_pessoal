@@ -1,12 +1,13 @@
-import{StrictMode,useEffect,useRef,useState}from"react";
+import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
-import{ArrowRight,ArrowUpRight,BagArt,BoxArt,Check,Cliffs,FoxMark,FoxSculpture,Play,Rocks}from"./art";
+import{ArrowRight,ArrowUpRight,BagArt,BoxArt,Check,FoxMark,Play,StoneFace}from"./art";
 
 document.documentElement.classList.add("js");
 
 const reducedMotion=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const vars=(v:Record<string,string|number>)=>v as CSSProperties;
 
 function useReveal(){
  useEffect(()=>{
@@ -18,15 +19,80 @@ function useReveal(){
  },[]);
 }
 
-function useActiveSection(){
+type Layer={el:HTMLElement;center:number;top:number;bottom:number;speed:number;speedX:number;depth:number};
+
+/**
+ * Motor de parallax.
+ * - data-speed: deslocamento vertical relativo ao scroll (positivo = mais "ao fundo", negativo = mais "à frente").
+ * - data-speed-x: deslocamento horizontal conforme o scroll.
+ * - data-depth: deslocamento conforme o ponteiro (desktop).
+ * Os valores viram as variáveis --sx/--sy/--mx/--my, aplicadas via `translate` no CSS.
+ */
+function useParallax(){
+ useEffect(()=>{
+  if(reducedMotion())return;
+  const hero=document.querySelector<HTMLElement>(".hero");
+  const pointer=window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const mouse={x:0,y:0,tx:0,ty:0};
+  let layers:Layer[]=[],heroH=1,raf=0;
+
+  const frame=()=>{
+   raf=0;
+   const vh=window.innerHeight,y=window.scrollY,k=window.innerWidth<760?.55:1;
+   mouse.x+=(mouse.tx-mouse.x)*.07;mouse.y+=(mouse.ty-mouse.y)*.07;
+   for(const l of layers){
+    if(l.bottom-y<-vh||l.top-y>vh*2)continue;
+    const d=l.center-y-vh/2;
+    if(l.speed)l.el.style.setProperty("--sy",(-d*l.speed*k).toFixed(1)+"px");
+    if(l.speedX)l.el.style.setProperty("--sx",(d*l.speedX*k).toFixed(1)+"px");
+    if(l.depth&&pointer){l.el.style.setProperty("--mx",(mouse.x*l.depth*70).toFixed(1)+"px");l.el.style.setProperty("--my",(mouse.y*l.depth*50).toFixed(1)+"px")}
+   }
+   if(hero){
+    hero.style.setProperty("--hero-p",Math.min(1,Math.max(0,y/heroH)).toFixed(3));
+    hero.style.setProperty("--mouse-x",mouse.x.toFixed(3));
+    hero.style.setProperty("--mouse-y",mouse.y.toFixed(3));
+   }
+   if(Math.abs(mouse.tx-mouse.x)>.0005||Math.abs(mouse.ty-mouse.y)>.0005)raf=requestAnimationFrame(frame);
+  };
+  const queue=()=>{if(!raf)raf=requestAnimationFrame(frame)};
+
+  const measure=()=>{
+   const els=[...document.querySelectorAll<HTMLElement>("[data-speed],[data-speed-x],[data-depth]")];
+   els.forEach(el=>{el.style.removeProperty("--sy");el.style.removeProperty("--sx")});
+   const y=window.scrollY;
+   layers=els.map(el=>{
+    const r=el.getBoundingClientRect();
+    return{el,center:r.top+y+r.height/2,top:r.top+y,bottom:r.bottom+y,speed:Number(el.dataset.speed||0),speedX:Number(el.dataset.speedX||0),depth:Number(el.dataset.depth||0)};
+   });
+   heroH=hero?.offsetHeight||1;
+   cancelAnimationFrame(raf);raf=0;frame();
+  };
+
+  const onPointer=(e:PointerEvent)=>{mouse.tx=e.clientX/window.innerWidth-.5;mouse.ty=e.clientY/window.innerHeight-.5;queue()};
+  const ro=new ResizeObserver(()=>measure());
+  ro.observe(document.body);
+  measure();
+  window.addEventListener("scroll",queue,{passive:true});
+  if(pointer)window.addEventListener("pointermove",onPointer,{passive:true});
+  document.fonts?.ready.then(measure);
+  return()=>{cancelAnimationFrame(raf);ro.disconnect();window.removeEventListener("scroll",queue);window.removeEventListener("pointermove",onPointer)};
+ },[]);
+}
+
+/** Seção ativa no menu e tema (claro/escuro) do cabeçalho conforme a seção sob ele. */
+function useSectionState(){
  const[active,setActive]=useState("top");
+ const[theme,setTheme]=useState<"light"|"dark">("light");
  useEffect(()=>{
   const sections=nav.map(n=>document.getElementById(n.id)).filter((el):el is HTMLElement=>!!el);
   const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)}),{rootMargin:"-45% 0px -50% 0px"});
   sections.forEach(s=>io.observe(s));
-  return()=>io.disconnect();
+  const themed=[...document.querySelectorAll<HTMLElement>("[data-theme]")];
+  const tio=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setTheme((e.target as HTMLElement).dataset.theme==="dark"?"dark":"light")}),{rootMargin:"-3% 0px -93% 0px"});
+  themed.forEach(s=>tio.observe(s));
+  return()=>{io.disconnect();tio.disconnect()};
  },[]);
- return active;
+ return{active,theme};
 }
 
 function useScrolled(offset=24){
@@ -37,27 +103,6 @@ function useScrolled(offset=24){
   return()=>window.removeEventListener("scroll",onScroll);
  },[offset]);
  return scrolled;
-}
-
-/** Parallax do hero (scroll) e leve rotação da raposa (ponteiro). */
-function useHeroMotion(ref:React.RefObject<HTMLElement|null>){
- useEffect(()=>{
-  const el=ref.current;if(!el||reducedMotion())return;
-  let raf=0,px=0,py=0;
-  const paint=()=>{
-   raf=0;
-   const y=Math.min(window.scrollY,window.innerHeight);
-   el.style.setProperty("--hero-scroll",String(y));
-   el.style.setProperty("--pointer-x",px.toFixed(3));
-   el.style.setProperty("--pointer-y",py.toFixed(3));
-  };
-  const queue=()=>{if(!raf)raf=requestAnimationFrame(paint)};
-  const onPointer=(e:PointerEvent)=>{px=e.clientX/window.innerWidth-.5;py=e.clientY/window.innerHeight-.5;queue()};
-  paint();
-  window.addEventListener("scroll",queue,{passive:true});
-  window.addEventListener("pointermove",onPointer,{passive:true});
-  return()=>{cancelAnimationFrame(raf);window.removeEventListener("scroll",queue);window.removeEventListener("pointermove",onPointer)};
- },[ref]);
 }
 
 /** Inclinação 3D dos cards ao passar o ponteiro. */
@@ -86,12 +131,12 @@ function useCycle(length:number,ms=2400){
 }
 
 function Header(){
- const active=useActiveSection();
+ const{active,theme}=useSectionState();
  const scrolled=useScrolled();
  const[open,setOpen]=useState(false);
  useEffect(()=>{document.body.classList.toggle("menu-open",open)},[open]);
  useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false)};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
- return <header className={"site-header"+(scrolled?" is-scrolled":"")+(open?" is-open":"")}>
+ return <header className={"site-header theme-"+(open?"dark":theme)+(scrolled?" is-scrolled":"")+(open?" is-open":"")}>
   <a className="brand" href="#top" aria-label="Volpe — início"><FoxMark className="brand-mark"/></a>
   <nav id="menu" className="site-nav" aria-label="Principal">
    {nav.map(n=><a key={n.id} href={"#"+n.id} className={active===n.id?"is-active":undefined} aria-current={active===n.id?"true":undefined} onClick={()=>setOpen(false)}>{n.label}</a>)}
@@ -105,69 +150,99 @@ function Header(){
  </header>
 }
 
+/** Raposa branca em 3D: camadas empilhadas formam a espessura e a face tem textura de pedra. */
+function StoneLogo(){
+ return <div className="logo3d" data-speed=".16" data-depth=".45">
+  <div className="logo3d-float">
+   <div className="logo3d-rig">
+    {Array.from({length:22},(_,i)=><span key={i} className="logo3d-layer" style={vars({"--z":i})}/>)}
+    <StoneFace/>
+    <span className="logo3d-sheen"/>
+   </div>
+  </div>
+ </div>
+}
+
+const orbs=[
+ {x:47,y:20,size:26,speed:-.22,depth:.9,blur:0},
+ {x:78,y:66,size:64,speed:-.34,depth:1.3,blur:0},
+ {x:85,y:17,size:14,speed:.12,depth:.35,blur:1},
+ {x:53,y:84,size:42,speed:-.5,depth:1.6,blur:2},
+ {x:67,y:9,size:10,speed:.22,depth:.25,blur:0},
+ {x:93,y:86,size:120,speed:-.7,depth:2.2,blur:7},
+];
+
 function Hero(){
- const ref=useRef<HTMLElement>(null);
- useHeroMotion(ref);
  const current=useCycle(disciplines.length);
- return <section id="top" className="hero" ref={ref}>
+ return <section id="top" className="hero" data-theme="light">
   <div className="hero-scene" aria-hidden="true">
-   <div className="scene-haze"/>
-   <div className="scene-beam"><i/></div>
-   <span className="scene-line scene-line-a"/><span className="scene-line scene-line-b"/>
-   <Cliffs/>
-   <div className="scene-fox"><div className="scene-fox-inner"><FoxSculpture/></div></div>
-   <Rocks/>
-   <div className="scene-fog fog-a"/><div className="scene-fog fog-b"/>
-   <div className="scene-dust">{Array.from({length:14},(_,i)=><i key={i} style={{"--i":i} as React.CSSProperties}/>)}</div>
+   <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
+   <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
+   <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
+   <div className="logo3d-shadow" data-speed=".22" data-depth="-.35"/>
+   <StoneLogo/>
+   {orbs.map((o,i)=><span key={i} className="orb" data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
   <div className="hero-inner">
-   <div className="hero-copy">
+   <div className="hero-copy" data-speed=".1" data-depth="-.06">
     <p className="hero-kicker" data-reveal>Volpe / Desenvolvimento · Design · Estratégia</p>
     <h1 data-reveal><span>Ideias</span><span>que <em>ganham</em></span><span>forma</span></h1>
     <p className="hero-lede" data-reveal>Transformo marcas em experiências reais através de design, tecnologia e estratégia.</p>
     <div className="hero-actions" data-reveal>
-     <a className="btn btn-light" href="#projetos">Ver projetos <ArrowRight className="btn-arrow"/></a>
+     <a className="btn btn-dark" href="#projetos">Ver projetos <ArrowRight className="btn-arrow"/></a>
      <a className="play-link" href="#sobre"><span className="play-ring"><Play/></span>Como trabalho</a>
     </div>
    </div>
-   <dl className="hero-stats" data-reveal>
+   <dl className="hero-stats" data-reveal data-speed=".04">
     {stats.map(s=><div key={s.label}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
    </dl>
   </div>
 
-  <ul className="hero-disciplines" aria-label="Áreas de atuação">
+  <ul className="hero-disciplines" aria-label="Áreas de atuação" data-speed=".14" data-depth="-.15">
    {disciplines.map((d,i)=><li key={d} className={i===current?"is-current":undefined}>{d}</li>)}
   </ul>
   <a className="hero-scroll" href="#projetos" aria-label="Rolar para projetos">Scroll<i/></a>
-  <p className="hero-signature">Desenvolvimento<br/>que impulsiona marcas<i/></p>
+  <p className="hero-signature" data-speed=".08">Desenvolvimento<br/>que impulsiona marcas<i/></p>
  </section>
 }
 
 function Projects(){
- return <section id="projetos" className="projects">
-  <div className="projects-copy" data-reveal>
-   <p className="label"><i className="dot"/>Projetos</p>
-   <h2>Marcas reais.<br/>Resultados reais.</h2>
-   <p className="section-lede">Projetos que unem design, tecnologia e estratégia para criar experiências que geram valor.</p>
-   <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
+ return <section id="projetos" className="projects" data-theme="light">
+  <div className="projects-copy" data-speed=".08">
+   <div data-reveal>
+    <p className="label"><i className="dot"/>Projetos</p>
+    <h2>Marcas reais.<br/>Resultados reais.</h2>
+    <p className="section-lede">Projetos que unem design, tecnologia e estratégia para criar experiências que geram valor.</p>
+    <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
+   </div>
   </div>
   <div className="project-deck">
-   {projects.map((p,i)=><article key={p.title} className={"project-card theme-"+p.theme} data-tilt data-reveal style={{"--i":i} as React.CSSProperties}>
-    <div className="project-card-inner">
-     <div className="project-media">{p.theme==="leather"?<BagArt/>:<BoxArt/>}</div>
-     <div className="project-body">
-      <span className="project-number">{p.number}</span>
-      <h3>{p.title}</h3>
-      <p>{p.description}</p>
-      <ul className="tags">{p.tags.map(t=><li key={t}>{t}</li>)}</ul>
-      <a className="project-link" href={p.url||"#contato"} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}>Acessar projeto <ArrowRight className="btn-arrow"/></a>
+   {projects.map((p,i)=><div key={p.title} className="project-slot" data-speed={i%2?".05":"-.07"}>
+    <article className={"project-card theme-"+p.theme} data-tilt data-reveal style={vars({"--i":i})}>
+     <div className="project-card-inner">
+      <div className="project-media" data-speed={i%2?".12":".16"}>{p.theme==="leather"?<BagArt/>:<BoxArt/>}</div>
+      <div className="project-body">
+       <span className="project-number">{p.number}</span>
+       <h3>{p.title}</h3>
+       <p>{p.description}</p>
+       <ul className="tags">{p.tags.map(t=><li key={t}>{t}</li>)}</ul>
+       <a className="project-link" href={p.url||"#contato"} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}>Acessar projeto <ArrowRight className="btn-arrow"/></a>
+      </div>
+      <a className="round-link" href={p.url||"#contato"} aria-label={"Acessar projeto "+p.title} tabIndex={-1} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}><ArrowUpRight/></a>
      </div>
-     <a className="round-link" href={p.url||"#contato"} aria-label={"Acessar projeto "+p.title} tabIndex={-1} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}><ArrowUpRight/></a>
-    </div>
-   </article>)}
+    </article>
+   </div>)}
   </div>
  </section>
+}
+
+function Marquee(){
+ const words=[...disciplines,...disciplines,...disciplines];
+ return <div className="marquee" data-theme="dark" aria-hidden="true">
+  <div className="marquee-row" data-speed-x=".55">{words.map((w,i)=><span key={i}>{w}<i/></span>)}</div>
+  <div className="marquee-row is-outline" data-speed-x="-.55">{words.map((w,i)=><span key={i}>{w}<i/></span>)}</div>
+ </div>
 }
 
 function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
@@ -196,64 +271,76 @@ function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
 
 function Plans(){
  const[selected,setSelected]=useState<Plan|null>(null);
- return <section id="servicos" className="plans">
-  <div className="plans-copy" data-reveal>
-   <p className="label"><i className="dot"/>Planos</p>
-   <h2>Escolha o plano<br/>ideal para sua marca.</h2>
-   <p className="section-lede">Soluções completas para diferentes momentos do seu negócio.</p>
-   <ArrowRight className="long-arrow"/>
+ return <section id="servicos" className="plans" data-theme="dark">
+  <div className="bg-word plans-word" data-speed-x=".3" aria-hidden="true">Planos</div>
+  <div className="plans-copy" data-speed=".1">
+   <div data-reveal>
+    <p className="label"><i className="dot"/>Planos</p>
+    <h2>Escolha o plano<br/>ideal para sua marca.</h2>
+    <p className="section-lede">Soluções completas para diferentes momentos do seu negócio.</p>
+    <ArrowRight className="long-arrow"/>
+   </div>
   </div>
   <div className="plan-grid">
-   {plans.map(p=><article key={p.name} className={"plan-card"+(p.featured?" is-featured":"")} data-reveal>
-    {p.featured&&<span className="plan-badge">Mais escolhido</span>}
-    <span className="plan-number">{p.number}</span>
-    <h3>{p.name}</h3>
-    <p className="plan-intro">{p.intro}</p>
-    <p className="plan-price">{p.price}</p>
-    <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
-    <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
-   </article>)}
+   {plans.map((p,i)=><div key={p.name} className="plan-slot" data-speed={[".04","-.08",".1"][i]}>
+    <article className={"plan-card"+(p.featured?" is-featured":"")} data-reveal style={vars({"--i":i})}>
+     {p.featured&&<span className="plan-badge">Mais escolhido</span>}
+     <span className="plan-number">{p.number}</span>
+     <h3>{p.name}</h3>
+     <p className="plan-intro">{p.intro}</p>
+     <p className="plan-price">{p.price}</p>
+     <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
+     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
+    </article>
+   </div>)}
   </div>
-  <p className="plans-aside" aria-hidden="true">Tecnologia<br/>Criatividade<br/><span><i className="dot"/>Resultado</span></p>
+  <p className="plans-aside" aria-hidden="true" data-speed="-.12">Tecnologia<br/>Criatividade<br/><span><i className="dot"/>Resultado</span></p>
   <PlanDialog plan={selected} onClose={()=>setSelected(null)}/>
  </section>
 }
 
 function About(){
- return <section id="sobre" className="about">
-  <div className="about-copy" data-reveal>
-   <p className="label"><i className="dot"/>Sobre</p>
-   <h2>Design que<br/>encontra código.</h2>
-   <p className="section-lede">Sou Vitor Volpato. Meu trabalho conecta direção visual e desenvolvimento para criar experiências com estética, lógica e função — uma presença digital que faz sentido para o negócio, não só um site no ar.</p>
-   <ul className="stack">{stack.map(s=><li key={s}>{s}</li>)}</ul>
+ return <section id="sobre" className="about" data-theme="light">
+  <div className="bg-word about-word" data-speed-x="-.3" aria-hidden="true">Design + Código</div>
+  <div className="about-copy" data-speed=".12">
+   <div data-reveal>
+    <p className="label"><i className="dot"/>Sobre</p>
+    <h2>Design que<br/>encontra código.</h2>
+    <p className="section-lede">Sou Vitor Volpato. Meu trabalho conecta direção visual e desenvolvimento para criar experiências com estética, lógica e função — uma presença digital que faz sentido para o negócio, não só um site no ar.</p>
+    <ul className="stack">{stack.map(s=><li key={s}>{s}</li>)}</ul>
+   </div>
   </div>
   <ol className="process">
-   {steps.map((s,i)=><li key={s.title} data-reveal style={{"--i":i} as React.CSSProperties}>
-    <span className="process-number">0{i+1}</span>
-    <div><h3>{s.title}</h3><p>{s.text}</p></div>
+   {steps.map((s,i)=><li key={s.title} data-speed={(-.03-i*.025).toFixed(3)}>
+    <div className="process-row" data-reveal style={vars({"--i":i})}>
+     <span className="process-number">0{i+1}</span>
+     <div><h3>{s.title}</h3><p>{s.text}</p></div>
+    </div>
    </li>)}
   </ol>
  </section>
 }
 
 function Contact(){
- return <section id="contato" className="contact">
-  <div className="contact-glow" aria-hidden="true"/>
-  <FoxMark className="contact-mark"/>
-  <div className="contact-inner" data-reveal>
-   <p className="label"><i className="dot"/>Contato</p>
-   <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em> a ela.</h2>
-   <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
-   <div className="contact-actions">
-    <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
-    <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
+ return <section id="contato" className="contact" data-theme="dark">
+  <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
+  <div className="contact-mark-wrap" data-speed=".28" data-depth=".3" aria-hidden="true"><FoxMark className="contact-mark"/></div>
+  <div className="contact-inner" data-speed="-.05">
+   <div data-reveal>
+    <p className="label"><i className="dot"/>Contato</p>
+    <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em><br/>a ela.</h2>
+    <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
+    <div className="contact-actions">
+     <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
+     <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
+    </div>
    </div>
   </div>
  </section>
 }
 
 function Footer(){
- return <footer className="site-footer">
+ return <footer className="site-footer" data-theme="dark">
   <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><FoxMark className="brand-mark"/><span>Volpe</span></a>
   <p>© {new Date().getFullYear()} Vitor Volpato · {contact.city}</p>
   <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
@@ -261,13 +348,14 @@ function Footer(){
 }
 
 function App(){
- useReveal();useTilt();
+ useReveal();useTilt();useParallax();
  return <>
   <a className="skip-link" href="#projetos">Pular para o conteúdo</a>
   <Header/>
   <main>
    <Hero/>
    <Projects/>
+   <Marquee/>
    <Plans/>
    <About/>
    <Contact/>

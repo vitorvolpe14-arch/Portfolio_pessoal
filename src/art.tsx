@@ -1,69 +1,42 @@
 import{FOX_PATH,FOX_VIEWBOX}from"./foxPath";
-import{ROCKS}from"./rocks";
 
 export function FoxMark({className}:{className?:string}){
  return <svg className={className} viewBox={FOX_VIEWBOX} aria-hidden="true"><path d={FOX_PATH} fill="currentColor"/></svg>
 }
 
-/** Raposa escultural do hero: corpo escuro, relevo e luz de recorte vinda do feixe. */
-export function FoxSculpture(){
- return <svg className="fox-sculpture" viewBox="-30 -30 459 793" aria-hidden="true">
+/** Face frontal da logo 3D: raposa preta em mármore negro, com veios, textura e relevo iluminado. */
+export function StoneFace(){
+ return <svg className="logo3d-face" viewBox={FOX_VIEWBOX} aria-hidden="true">
   <defs>
-   <linearGradient id="fox-body" x1=".1" y1="0" x2=".9" y2="1">
-    <stop offset="0" stopColor="#1d1917"/><stop offset=".45" stopColor="#0b0a09"/><stop offset="1" stopColor="#040303"/>
-   </linearGradient>
-   <linearGradient id="fox-rim" x1="0" y1="0" x2="1" y2=".2">
-    <stop offset="0" stopColor="#f6d3b3" stopOpacity="0"/>
-    <stop offset=".55" stopColor="#f6d3b3" stopOpacity=".08"/>
-    <stop offset=".8" stopColor="#f3c7a1" stopOpacity=".55"/>
-    <stop offset="1" stopColor="#ffe6cf" stopOpacity="1"/>
-   </linearGradient>
-   <linearGradient id="fox-tail-glow" x1="0" y1="0" x2="0" y2="1">
-    <stop offset=".72" stopColor="#e2a77c" stopOpacity="0"/><stop offset="1" stopColor="#e2a77c" stopOpacity=".9"/>
-   </linearGradient>
-   <clipPath id="fox-clip"><path d={FOX_PATH}/></clipPath>
-   <filter id="fox-relief" x="-10%" y="-10%" width="120%" height="120%">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="blur"/>
-    <feSpecularLighting in="blur" surfaceScale="8" specularConstant="1" specularExponent="32" lightingColor="#f0c7a4" result="spec">
-     <fePointLight x="760" y="160" z="150"/>
+   <filter id="stone" x="-4%" y="-3%" width="108%" height="106%" colorInterpolationFilters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="grain"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="3" seed="7" result="bumps"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".01 .018" numOctaves="3" seed="11" result="cloud"/>
+    <feTurbulence type="turbulence" baseFrequency=".005 .013" numOctaves="4" seed="21" result="vein"/>
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .33 .33 .33 0 0" result="grainA"/>
+    <feColorMatrix in="bumps" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .33 .33 .33 0 0" result="bumpsA"/>
+    <feColorMatrix in="cloud" type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 0 1" result="cloudGrey"/>
+    <feColorMatrix in="vein" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .33 .33 .33 0 0" result="veinA"/>
+    <feComponentTransfer in="veinA" result="veinLines"><feFuncA type="table" tableValues="1 .7 .25 0 0 0 0 0 0 0 0 0 0 0"/></feComponentTransfer>
+    <feFlood floodColor="#d9cfc4" floodOpacity=".3" result="veinTint"/>
+    <feComposite in="veinTint" in2="veinLines" operator="in" result="veins"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="bevel"/>
+    <feComposite in="bevel" in2="bumpsA" operator="arithmetic" k2="1" k3=".52" result="relief"/>
+    <feComposite in="relief" in2="grainA" operator="arithmetic" k2="1" k3=".1" result="height"/>
+    <feDiffuseLighting in="height" surfaceScale="9" diffuseConstant="1" lightingColor="#fffaf3" result="diffuse">
+     <feDistantLight azimuth="225" elevation="55"/>
+    </feDiffuseLighting>
+    <feSpecularLighting in="height" surfaceScale="9" specularConstant="1.1" specularExponent="30" lightingColor="#fff1e4" result="spec">
+     <feDistantLight azimuth="225" elevation="28"/>
     </feSpecularLighting>
-    <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
-    <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3=".7" k4="0"/>
+    <feComposite in="SourceGraphic" in2="diffuse" operator="arithmetic" k1="1.2" result="lit"/>
+    <feComposite in="lit" in2="cloudGrey" operator="arithmetic" k2="1" k3=".05" result="toned"/>
+    <feMerge result="marble"><feMergeNode in="toned"/><feMergeNode in="veins"/></feMerge>
+    <feComposite in="marble" in2="spec" operator="arithmetic" k2="1" k3=".75" result="shine"/>
+    <feComposite in="shine" in2="SourceAlpha" operator="in"/>
    </filter>
   </defs>
-  <g filter="url(#fox-relief)"><path d={FOX_PATH} fill="url(#fox-body)"/></g>
-  <g clipPath="url(#fox-clip)">
-   <path d={FOX_PATH} fill="none" stroke="url(#fox-rim)" strokeWidth="9"/>
-   <path d={FOX_PATH} fill="none" stroke="url(#fox-tail-glow)" strokeWidth="12"/>
-  </g>
- </svg>
-}
-
-export function Rocks(){
- return <svg className="scene-rocks" viewBox="0 0 1000 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-  <defs>
-   <linearGradient id="rock-0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#261d17"/><stop offset="1" stopColor="#0e0b09"/></linearGradient>
-   <linearGradient id="rock-1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#18120f"/><stop offset="1" stopColor="#080706"/></linearGradient>
-   <linearGradient id="rock-2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0f0c0a"/><stop offset="1" stopColor="#070606"/></linearGradient>
-   <linearGradient id="rock-facet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#e2a77c" stopOpacity=".75"/><stop offset=".55" stopColor="#7a5038" stopOpacity=".35"/><stop offset="1" stopColor="#3a271c" stopOpacity="0"/></linearGradient>
-   <linearGradient id="rock-fade" x1="0" y1="0" x2="0" y2="1"><stop offset=".55" stopColor="#0b0a09" stopOpacity="0"/><stop offset="1" stopColor="#0b0a09"/></linearGradient>
-  </defs>
-  {ROCKS.map(([tone,body,facet,edge,lit],i)=><g key={i}>
-   <path d={body} fill={`url(#rock-${tone})`}/>
-   <path d={facet} fill="url(#rock-facet)" opacity={lit*[.55,.35,.18][tone]}/>
-   <path d={edge} fill="none" stroke="#f3caa6" strokeWidth="1.2" strokeLinejoin="round" opacity={lit*[.7,.45,.2][tone]}/>
-  </g>)}
-  <rect width="1000" height="260" fill="url(#rock-fade)"/>
- </svg>
-}
-
-export function Cliffs(){
- return <svg className="scene-cliffs" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-  <defs>
-   <linearGradient id="cliff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1b1714" stopOpacity="0"/><stop offset=".35" stopColor="#15110f" stopOpacity=".85"/><stop offset="1" stopColor="#0b0a09"/></linearGradient>
-  </defs>
-  <path fill="url(#cliff)" d="M0,900 L0,340 L40,330 L60,380 L95,360 L120,430 L160,450 L185,520 L230,560 L260,640 L300,700 L340,900 Z"/>
-  <path fill="url(#cliff)" d="M1440,900 L1440,300 L1400,320 L1380,290 L1350,330 L1320,320 L1300,390 L1260,420 L1240,480 L1200,520 L1180,600 L1140,680 L1100,760 L1080,900 Z"/>
+  <path d={FOX_PATH} fill="#1b1918" filter="url(#stone)"/>
  </svg>
 }
 
