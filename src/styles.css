@@ -305,3 +305,148 @@
 @media(prefers-reduced-motion:reduce){
  .hero-aurora,.hero-orbit,.hero-scanline,.hero-particles i{animation:none!important}
 }
+
+/* White editorial hero with black sculptural logo + complex scroll parallax */
+.hero-white{
+  background:#f5f4f0!important;
+  color:#101010!important;
+}
+.hero-white .hero-content{z-index:8}
+.hero-white .eyebrow{color:#777}
+.hero-white .hero-copy{color:#5f5f5f}
+.hero-white .text-link{color:#444}
+.hero-white .hero-meta{color:#777}
+.hero-white .hero-grid{
+  opacity:.42!important;
+  background-image:linear-gradient(rgba(0,0,0,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.055) 1px,transparent 1px)!important;
+  mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+.hero-white .hero-depth-image{
+  background-image:radial-gradient(circle at 72% 44%,rgba(0,0,0,.055),transparent 27%),radial-gradient(circle at 18% 72%,rgba(0,0,0,.035),transparent 25%);
+  opacity:1!important;
+  mix-blend-mode:normal!important;
+  filter:none!important;
+}
+.hero-white .hero-orb,.hero-white .hero-aurora{display:none!important}
+.hero-white .hero-particles i{background:#111!important;border-color:rgba(0,0,0,.25)!important}
+.hero-white .hero-side-label{color:#777}
+.hero-white .parallax-mark{color:rgba(0,0,0,.035)}
+.hero-logo-stage{
+  position:absolute;
+  right:5vw;
+  top:10vh;
+  width:min(46vw,680px);
+  height:min(78vh,760px);
+  display:grid;
+  place-items:center;
+  z-index:5;
+  transform-style:preserve-3d;
+  pointer-events:none;
+  transform:translate3d(calc(var(--logo-scroll-x,0px)),calc(var(--logo-scroll-y,0px)),0) rotateX(calc(var(--logo-scroll-rx,0deg))) rotateY(calc(var(--logo-scroll-ry,0deg))) scale(var(--logo-scroll-scale,1));
+  will-change:transform;
+  transition:transform .12s linear;
+}
+.hero-logo-stage .logo-3d-large{
+  position:relative;
+  z-index:4;
+  width:min(34vw,510px)!important;
+  height:min(56vh,620px)!important;
+  transform:translate3d(var(--logo-mouse-x,0px),var(--logo-mouse-y,0px),90px);
+  filter:drop-shadow(18px 35px 30px rgba(0,0,0,.16));
+}
+.hero-logo-stage .logo-3d-image{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:brightness(0)!important;
+  transform:translateZ(45px) rotateX(var(--logo-rx,0deg)) rotateY(var(--logo-ry,0deg));
+}
+.logo-halo{
+  position:absolute;
+  width:72%;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,0,0,.075),rgba(0,0,0,.025) 35%,transparent 70%);
+  filter:blur(18px);
+  transform:translateZ(-80px);
+}
+.logo-shadow{
+  position:absolute;
+  z-index:2;
+  width:42%;
+  height:8%;
+  bottom:14%;
+  border-radius:50%;
+  background:rgba(0,0,0,.14);
+  filter:blur(22px);
+  transform:translateZ(-30px) rotateX(62deg) scaleX(1.45);
+}
+.logo-orbit{
+  position:absolute;
+  z-index:3;
+  border:1px solid rgba(0,0,0,.13);
+  border-radius:50%;
+  transform-style:preserve-3d;
+}
+.logo-orbit-a{
+  width:78%;
+  height:31%;
+  transform:rotate(-18deg) rotateX(58deg) translateZ(15px);
+  animation:logoOrbitA 12s ease-in-out infinite;
+}
+.logo-orbit-b{
+  width:46%;
+  height:76%;
+  transform:rotate(25deg) rotateY(58deg);
+  border-color:rgba(0,0,0,.08);
+  animation:logoOrbitB 16s ease-in-out infinite;
+}
+.logo-orbit:after{
+  content:"";
+  position:absolute;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#111;
+  box-shadow:0 0 16px rgba(0,0,0,.28);
+  left:10%;
+  top:18%;
+}
+.logo-orbit-b:after{left:auto;top:auto;right:8%;bottom:20%}
+@keyframes logoOrbitA{0%,100%{rotate:-18deg;scale:.96}50%{rotate:-7deg;scale:1.04}}
+@keyframes logoOrbitB{0%,100%{rotate:25deg}50%{rotate:39deg}}
+.hero-white .hero-content h1{
+  color:#0b0b0b;
+  text-shadow:none;
+}
+.hero-white .button-light{background:#0b0b0b;color:#fff}
+.hero-white .hero-side-label{z-index:8}
+@media(max-width:900px){
+  .hero-white{min-height:100svh;padding-top:140px;align-items:flex-start}
+  .hero-logo-stage{
+    right:-7vw;
+    top:18vh;
+    width:92vw;
+    height:60vh;
+  }
+  .hero-logo-stage .logo-3d-large{
+    width:64vw!important;
+    height:70vw!important;
+  }
+  .hero-white .hero-content{
+    max-width:88vw;
+    padding-top:8vh;
+  }
+  .hero-white .hero-content h1{
+    font-size:clamp(48px,13vw,82px);
+    max-width:95%;
+  }
+  .hero-white .hero-copy{max-width:78vw}
+  .hero-meta{color:#888}
+  .logo-orbit-a{width:92%;height:28%}
+  .logo-orbit-b{width:48%;height:70%}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-logo-stage{transform:none!important;transition:none!important}
+  .logo-orbit-a,.logo-orbit-b{animation:none!important}
+}
