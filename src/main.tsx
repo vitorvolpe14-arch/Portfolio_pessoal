@@ -336,11 +336,13 @@ function About(){
  </section>
 }
 
+const whatsappUrl=`https://wa.me/${contact.whatsapp.number}?text=${encodeURIComponent(contact.whatsapp.message)}`;
+
 function CopyEmail(){
  const[copied,setCopied]=useState(false);
  const copy=()=>{
   const done=()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400)};
-  const select=()=>{const el=document.querySelector(".contact-mail");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
+  const select=()=>{const el=document.querySelector("a.contact-mail[href^='mailto:']");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(contact.email).then(done,select);else select();
  };
  return <button type="button" className="copy-mail" onClick={copy} aria-live="polite">{copied?"E-mail copiado":"Copiar e-mail"}</button>
@@ -356,10 +358,13 @@ function Contact(){
     <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em><br/>a ela.</h2>
     <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
     <div className="contact-actions">
-     <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
-     <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
-     <CopyEmail/>
+     <a className="btn btn-light" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Chamar no WhatsApp <ArrowRight className="btn-arrow"/></a>
+     <a className="btn btn-outline" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Enviar e-mail <ArrowRight className="btn-arrow"/></a>
     </div>
+    <dl className="contact-list">
+     <div><dt>WhatsApp</dt><dd><a className="contact-mail" href={whatsappUrl} target="_blank" rel="noopener noreferrer">{contact.whatsapp.display}</a></dd></div>
+     <div><dt>E-mail</dt><dd><a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a><CopyEmail/></dd></div>
+    </dl>
    </div>
   </div>
  </section>

@@ -23,6 +23,7 @@ export type Plan={
 
 export const contact={
  email:"vitorvolpe14@gmail.com",
+ whatsapp:{display:"(85) 99715-6891",number:"5585997156891",message:"Olá, Vitor! Vim pelo seu portfólio e quero conversar sobre um projeto."},
  city:"Fortaleza, BR",
 };
 
