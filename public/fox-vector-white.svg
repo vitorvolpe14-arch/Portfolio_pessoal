@@ -5,7 +5,7 @@
 <feGaussianBlur stdDeviation="2.2" result="b"/>
 <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="7" result="n"/>
 <feColorMatrix in="n" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="g"/>
-<feComposite in="g" in2="b" operator="arithmetic" k2="0.0900" k3="1" k4="-0.0450" result="t"/>
+<feComposite in="g" in2="b" operator="arithmetic" k2="0.1200" k3="1" k4="-0.0600" result="t"/>
 <feComposite in="t" in2="SourceAlpha" operator="in"/>
 </filter>
 </defs>
