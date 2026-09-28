@@ -1,117 +1,279 @@
-import React,{useEffect,useState}from"react";
+import{StrictMode,useEffect,useRef,useState}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
+import{contact,disciplines,nav,plans,projects,stack,stats,steps,type Plan}from"./content";
+import{ArrowRight,ArrowUpRight,BagArt,BoxArt,Check,Cliffs,FoxMark,FoxSculpture,Play,Rocks}from"./art";
 
-const projects:Project[]=[
-{number:"01",title:"MONTÊ",type:"E-commerce",description:"Experiência digital premium para uma marca de moda, com catálogo, checkout e uma interface pensada para conversão.",stack:["React","TypeScript","Render"],},
-{number:"02",title:"KEY",type:"Brand / Commerce",description:"Direção digital para uma marca de moda com identidade visual minimalista e experiência de compra editorial.",stack:["UI/UX","Frontend","Deploy"],},
-{number:"03",title:"Portfolio Lab",type:"Digital Product",description:"Sistemas de portfólio e apresentação comercial criados para transformar projetos em novas oportunidades.",stack:["React","Motion","SEO"],}
-];
+document.documentElement.classList.add("js");
 
-const plans:Plan[]=[
-{name:"Essencial",price:"R$ 1.500",intro:"Uma presença digital enxuta e profissional.",pages:"Até 4 páginas/telas",timeline:"7–10 dias úteis",revisions:"2 rodadas de ajustes",support:"7 dias após publicação",integrations:"Formulário/WhatsApp, analytics e domínio",items:["Design visual responsivo","Desenvolvimento frontend","SEO básico","Publicação no Render","Otimização para celular","Configuração de domínio"]},
-{name:"Profissional",price:"R$ 3.000",intro:"Uma experiência completa para apresentar e vender.",featured:true,pages:"Até 8 páginas/telas",timeline:"12–18 dias úteis",revisions:"3 rodadas de ajustes",support:"15 dias após publicação",integrations:"Formulários, WhatsApp, analytics e integrações externas",items:["Tudo do Essencial","Arquitetura de navegação personalizada","Animações e microinterações","Parallax e transições avançadas","SEO técnico e Open Graph","Integrações personalizadas","Deploy e configuração de produção"]},
-{name:"Premium",price:"R$ 5.000",intro:"Uma experiência digital sob medida, do conceito ao lançamento.",pages:"Projeto sob medida",timeline:"20–30 dias úteis",revisions:"4 rodadas de ajustes",support:"30 dias após publicação",integrations:"Integrações sob escopo e APIs quando aplicável",items:["Tudo do Profissional","Direção visual exclusiva","Arquitetura completa de experiência","Motion design e interações avançadas","Estrutura preparada para evolução","Integrações sob medida","Acompanhamento pós-lançamento"]},
-];
+const reducedMotion=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-
-function ThreeDLogo({large=false}:{large?:boolean}){
- return <div className={"logo-3d "+(large?"logo-3d-large":"")} aria-hidden="true"><img className="logo-3d-image" src="/fox-logo.svg" alt="" /></div>
-}
-function Logo(){
- return <a className="logo" href="#top" aria-label="Vitor Volpato início"><span className="logo-wordmark">VOLPE</span></a>
-}
-function useScrollParallax(){
+function useReveal(){
  useEffect(()=>{
-  const els=[...document.querySelectorAll<HTMLElement>("[data-parallax]")];let raf=0;
-  const update=()=>{const y=window.scrollY;els.forEach(el=>{const speed=Number(el.dataset.speed||.12);const rect=el.getBoundingClientRect();const center=window.innerHeight/2;const offset=(rect.top+rect.height/2-center)*speed;el.style.setProperty("--parallax-y",offset+"px")});raf=0};
-  const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  update();window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);
-  return()=>{cancelAnimationFrame(raf);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",onScroll)}
- },[])
-}
-function useSceneInteractions(){
- useEffect(()=>{
-  const cleanups:(()=>void)[]=[];
-  document.querySelectorAll<HTMLElement>(".logo-3d").forEach(el=>{
-   const move=(e:PointerEvent)=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;el.style.setProperty("--logo-rx",(-y*12)+"deg");el.style.setProperty("--logo-ry",(x*16)+"deg")};
-   const leave=()=>{el.style.setProperty("--logo-rx","0deg");el.style.setProperty("--logo-ry","0deg")};
-   el.addEventListener("pointermove",move);el.addEventListener("pointerleave",leave);cleanups.push(()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerleave",leave)})
-  });
-  document.querySelectorAll<HTMLElement>("[data-tilt]").forEach(el=>{
-   const move=(e:PointerEvent)=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;el.style.setProperty("--tilt-x",(y*-5)+"deg");el.style.setProperty("--tilt-y",(x*7)+"deg");el.style.setProperty("--tilt-xp",(x*12)+"px");el.style.setProperty("--tilt-yp",(y*12)+"px")};
-   const leave=()=>{el.style.setProperty("--tilt-x","0deg");el.style.setProperty("--tilt-y","0deg");el.style.setProperty("--tilt-xp","0px");el.style.setProperty("--tilt-yp","0px")};
-   el.addEventListener("pointermove",move);el.addEventListener("pointerleave",leave);cleanups.push(()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerleave",leave)})
-  });
-  return()=>cleanups.forEach(fn=>fn())
- },[])
-}
-function App(){
- const[active,setActive]=useState<Plan|null>(null);
- useScrollParallax();useSceneInteractions();
- useEffect(()=>{const els=[...document.querySelectorAll<HTMLElement>("[data-reveal]")];const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("is-visible")}),{threshold:.12});els.forEach(e=>io.observe(e));return()=>io.disconnect()},[]);
- useEffect(()=>{const list=document.querySelector<HTMLElement>(".project-list");if(!list)return;const cards=Array.from(list.querySelectorAll<HTMLElement>(".project"));let raf=0;
-  const update=()=>{const vh=window.innerHeight;cards.forEach((card,i)=>{const r=card.getBoundingClientRect();const center=(r.top+r.height/2-vh/2)/vh;const y=Math.max(-34,Math.min(34,-center*24));const z=Math.max(-18,Math.min(12,-Math.abs(center)*12));const rot=Math.max(-1.4,Math.min(1.4,-center*.9));card.style.setProperty("--project-stack-y",y+"px");card.style.setProperty("--project-stack-z",z+"px");card.style.setProperty("--project-stack-r",rot+"deg");card.style.zIndex=String(20-i)});raf=0};
-  const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};update();window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);
-  return()=>{cancelAnimationFrame(raf);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",onScroll)}
+  const els=[...document.querySelectorAll<HTMLElement>("[data-reveal]")];
+  if(!("IntersectionObserver" in window)||reducedMotion()){els.forEach(el=>el.classList.add("is-visible"));return}
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("is-visible");io.unobserve(e.target)}}),{threshold:.14,rootMargin:"0px 0px -6% 0px"});
+  els.forEach(el=>io.observe(el));
+  return()=>io.disconnect();
  },[]);
- return <div id="top">
-  <header className="nav nav-rebuilt">
-   <Logo/>
-   <nav><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#processo">Processo</a><a href="#contato">Contato</a></nav>
-   <a className="nav-cta" href="#contato">Iniciar projeto <span>↗</span></a>
-  </header>
-
-  <main>
-   <section className="hero section-light hero-white rebuilt-hero">
-    <div className="hero-content" data-reveal>
-     <p className="eyebrow dark">VITOR VOLPATO / DIGITAL BUILDER</p>
-     <h1>Sites que transformam<br/><em>ideias</em> em presença.</h1>
-     <p className="hero-copy">Desenvolvimento web e experiências digitais para marcas e negócios que precisam parecer tão bons quanto aquilo que entregam.</p>
-     <div className="hero-actions"><a className="button button-light" href="#projetos">Explorar projetos <span>↓</span></a><a className="text-link" href="#contato">Falar sobre seu projeto <span>↗</span></a></div>
-    </div>
-    <div className="hero-logo-stage rebuilt-logo-stage"><ThreeDLogo large/><div className="logo-shadow"></div></div>
-    <div className="hero-meta"><span>FORTALEZA, BRASIL</span><span>WEB / UI / DIGITAL</span></div>
-    <div className="hero-index">01</div>
-   </section>
-
-   <section className="intro-strip section-dark" data-reveal>
-    <div className="intro-label">01 / CAPABILITIES</div>
-    <p>Uma abordagem que une <strong>design, tecnologia e estratégia</strong> em uma única experiência digital.</p>
-    <span className="intro-arrow">↓</span>
-   </section>
-
-   <section id="projetos" className="section-light projects rebuilt-projects">
-    <div className="section-head" data-reveal>
-     <div><p className="eyebrow dark">SELECTED WORK / 02</p><h2>Projetos que<br/><em>ganham vida.</em></h2></div>
-     <p className="section-intro">Produtos, marcas e experiências digitais construídos para comunicar melhor, gerar confiança e criar oportunidades.</p>
-    </div>
-    <div className="project-list">
-     {projects.map((p,i)=><article className="project tilt-card" data-tilt data-reveal key={p.title}><div className={"project-visual visual-"+i} data-parallax data-speed={i%2===0?".055":"-.045"}><div className="project-shine"></div><div className="project-depth-label" data-parallax data-speed="-.12">{p.type}</div><span data-parallax data-speed=".16">{p.number}</span><div className="visual-word" data-parallax data-speed={i%2===0?".12":"-.1"}>{p.title}</div><div className="visual-orbit" data-parallax data-speed="-.18"></div><div className="visual-cross" data-parallax data-speed=".22">＋</div></div><div className="project-info"><p className="project-type">{p.type}</p><h3>{p.title}</h3><p>{p.description}</p><div className="chips">{p.stack.map(s=><span key={s}>{s}</span>)}</div><button className="arrow-btn" aria-label={"Ver projeto "+p.title}>↗</button></div></article>)}
-    </div>
-   </section>
-
-   <section id="servicos" className="section-dark plans rebuilt-services">
-    <div className="plans-bg-word">SERVICES</div>
-    <div className="section-head" data-reveal><div><p className="eyebrow">SERVICES / 03</p><h2>Uma solução<br/>para cada <em>fase.</em></h2></div><p className="section-intro">Do site essencial ao projeto completo. Escopo claro, tecnologia atual e uma experiência pensada para funcionar.</p></div>
-    <div className="plans-grid">{plans.map((p,i)=><div className={"plan-card-shell "+(p.featured?"featured ":"")+(active?.name===p.name?" is-flipped":"")} key={p.name} data-reveal tabIndex={0} role="button" aria-label={"Ver detalhes do plano "+p.name} onClick={()=>setActive(active?.name===p.name?null:p)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setActive(active?.name===p.name?null:p)}}}><div className="plan-card-inner"><div className="plan-face plan-front"><div className="plan-top"><span>0{i+1}</span>{p.featured&&<b>MAIS PROCURADO</b>}</div><h3>{p.name}</h3><p className="plan-intro">{p.intro}</p><div className="price">{p.price}<small> / projeto</small></div><div className="plan-tease">{p.items.slice(0,3).map(x=><span key={x}>+ {x}</span>)}</div><span className="plan-link">Clique para ver detalhes ↻</span></div><div className="plan-face plan-back"><div className="plan-top"><span>0{i+1}</span><b>DETALHES</b></div><h3>{p.name}</h3><div className="price">{p.price}<small> / projeto</small></div><div className="plan-details-grid"><div><h4>Incluído</h4><ul>{p.items.map(x=><li key={x}>{x}</li>)}</ul></div><div><h4>Escopo</h4><dl><div><dt>Páginas/telas</dt><dd>{p.pages}</dd></div><div><dt>Prazo</dt><dd>{p.timeline}</dd></div><div><dt>Revisões</dt><dd>{p.revisions}</dd></div><div><dt>Suporte</dt><dd>{p.support}</dd></div><div><dt>Integrações</dt><dd>{p.integrations}</dd></div></dl></div></div><a className="button button-light plan-detail-cta" href={"mailto:vitorvolpe14@gmail.com?subject=Interesse no plano "+p.name}>Quero este plano ↗</a></div></div></div>)}</div>
-   </section>
-
-   <section id="processo" className="section-light process rebuilt-process">
-    <div className="section-head" data-reveal><div><p className="eyebrow dark">PROCESS / 04</p><h2>Clareza do<br/>briefing ao <em>launch.</em></h2></div><p className="section-intro">Menos ruído. Mais direção. Cada etapa tem um objetivo claro para que o projeto avance sem perder a intenção.</p></div>
-    <div className="process-grid">{["Briefing & direção","Design & estrutura","Desenvolvimento","Launch & evolução"].map((x,i)=><div className="step" data-reveal key={x}><span>0{i+1}</span><h3>{x}</h3><p>{["Entendo objetivo, público, conteúdo e o que precisa acontecer para o projeto funcionar.","Transformo estratégia em hierarquia visual, navegação e componentes consistentes.","Construo interface, responsividade, interações e integrações com foco em performance.","Publico, testo, acompanho e deixo a base pronta para a próxima evolução."][i]}</p></div>)}</div>
-   </section>
-
-   <section className="section-dark about rebuilt-about">
-    <div className="about-bg">VV</div>
-    <div className="about-inner" data-reveal><p className="eyebrow">ABOUT / 05</p><h2>Design encontra<br/><em>código.</em></h2><p className="about-copy">Meu trabalho conecta direção visual e desenvolvimento para criar experiências que têm estética, lógica e função. O objetivo não é só lançar um site — é construir uma presença digital que faça sentido para o negócio.</p><div className="stack-row">{["React","TypeScript","JavaScript","CSS","GitHub","Render","Supabase"].map(x=><span key={x}>{x}</span>)}</div></div>
-   </section>
-
-   <section id="contato" className="contact section-light rebuilt-contact">
-    <div data-reveal><p className="eyebrow dark">CONTACT / 06</p><h2>Tem uma ideia?<br/><em>Vamos construir.</em></h2><p>Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p><div className="contact-actions"><a className="contact-mail" href="mailto:vitorvolpe14@gmail.com">vitorvolpe14@gmail.com <span>↗</span></a><a className="button button-dark" href="mailto:vitorvolpe14@gmail.com?subject=Novo projeto">Começar conversa <span>↗</span></a></div></div>
-   </section>
-  </main>
-  <footer className="footer section-dark rebuilt-footer"><Logo/><p>© {new Date().getFullYear()} Vitor Volpato</p><div><a href="#projetos">Projetos</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></div></footer>
- </div>
 }
-createRoot(document.getElementById("root")!).render(<App/>);
+
+function useActiveSection(){
+ const[active,setActive]=useState("top");
+ useEffect(()=>{
+  const sections=nav.map(n=>document.getElementById(n.id)).filter((el):el is HTMLElement=>!!el);
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)}),{rootMargin:"-45% 0px -50% 0px"});
+  sections.forEach(s=>io.observe(s));
+  return()=>io.disconnect();
+ },[]);
+ return active;
+}
+
+function useScrolled(offset=24){
+ const[scrolled,setScrolled]=useState(false);
+ useEffect(()=>{
+  const onScroll=()=>setScrolled(window.scrollY>offset);
+  onScroll();window.addEventListener("scroll",onScroll,{passive:true});
+  return()=>window.removeEventListener("scroll",onScroll);
+ },[offset]);
+ return scrolled;
+}
+
+/** Parallax do hero (scroll) e leve rotação da raposa (ponteiro). */
+function useHeroMotion(ref:React.RefObject<HTMLElement|null>){
+ useEffect(()=>{
+  const el=ref.current;if(!el||reducedMotion())return;
+  let raf=0,px=0,py=0;
+  const paint=()=>{
+   raf=0;
+   const y=Math.min(window.scrollY,window.innerHeight);
+   el.style.setProperty("--hero-scroll",String(y));
+   el.style.setProperty("--pointer-x",px.toFixed(3));
+   el.style.setProperty("--pointer-y",py.toFixed(3));
+  };
+  const queue=()=>{if(!raf)raf=requestAnimationFrame(paint)};
+  const onPointer=(e:PointerEvent)=>{px=e.clientX/window.innerWidth-.5;py=e.clientY/window.innerHeight-.5;queue()};
+  paint();
+  window.addEventListener("scroll",queue,{passive:true});
+  window.addEventListener("pointermove",onPointer,{passive:true});
+  return()=>{cancelAnimationFrame(raf);window.removeEventListener("scroll",queue);window.removeEventListener("pointermove",onPointer)};
+ },[ref]);
+}
+
+/** Inclinação 3D dos cards ao passar o ponteiro. */
+function useTilt(){
+ useEffect(()=>{
+  if(reducedMotion()||!window.matchMedia("(hover: hover)").matches)return;
+  const cleanups=[...document.querySelectorAll<HTMLElement>("[data-tilt]")].map(el=>{
+   const move=(e:PointerEvent)=>{const r=el.getBoundingClientRect();el.style.setProperty("--tx",((e.clientX-r.left)/r.width-.5).toFixed(3));el.style.setProperty("--ty",((e.clientY-r.top)/r.height-.5).toFixed(3))};
+   const leave=()=>{el.style.setProperty("--tx","0");el.style.setProperty("--ty","0")};
+   el.addEventListener("pointermove",move);el.addEventListener("pointerleave",leave);
+   return()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerleave",leave)};
+  });
+  return()=>cleanups.forEach(fn=>fn());
+ },[]);
+}
+
+/** Destaca uma disciplina por vez na lateral do hero. */
+function useCycle(length:number,ms=2400){
+ const[index,setIndex]=useState(0);
+ useEffect(()=>{
+  if(reducedMotion())return;
+  const id=window.setInterval(()=>setIndex(i=>(i+1)%length),ms);
+  return()=>window.clearInterval(id);
+ },[length,ms]);
+ return index;
+}
+
+function Header(){
+ const active=useActiveSection();
+ const scrolled=useScrolled();
+ const[open,setOpen]=useState(false);
+ useEffect(()=>{document.body.classList.toggle("menu-open",open)},[open]);
+ useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false)};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
+ return <header className={"site-header"+(scrolled?" is-scrolled":"")+(open?" is-open":"")}>
+  <a className="brand" href="#top" aria-label="Volpe — início"><FoxMark className="brand-mark"/></a>
+  <nav id="menu" className="site-nav" aria-label="Principal">
+   {nav.map(n=><a key={n.id} href={"#"+n.id} className={active===n.id?"is-active":undefined} aria-current={active===n.id?"true":undefined} onClick={()=>setOpen(false)}>{n.label}</a>)}
+   <a className="btn btn-outline nav-cta-mobile" href="#contato" onClick={()=>setOpen(false)}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
+  </nav>
+  <div className="header-side">
+   <span className="location"><i className="dot"/>{contact.city}</span>
+   <a className="btn btn-outline" href="#contato">Vamos conversar <ArrowRight className="btn-arrow"/></a>
+  </div>
+  <button className="menu-toggle" aria-expanded={open} aria-controls="menu" aria-label={open?"Fechar menu":"Abrir menu"} onClick={()=>setOpen(o=>!o)}><span/><span/></button>
+ </header>
+}
+
+function Hero(){
+ const ref=useRef<HTMLElement>(null);
+ useHeroMotion(ref);
+ const current=useCycle(disciplines.length);
+ return <section id="top" className="hero" ref={ref}>
+  <div className="hero-scene" aria-hidden="true">
+   <div className="scene-haze"/>
+   <div className="scene-beam"><i/></div>
+   <span className="scene-line scene-line-a"/><span className="scene-line scene-line-b"/>
+   <Cliffs/>
+   <div className="scene-fox"><div className="scene-fox-inner"><FoxSculpture/></div></div>
+   <Rocks/>
+   <div className="scene-fog fog-a"/><div className="scene-fog fog-b"/>
+   <div className="scene-dust">{Array.from({length:14},(_,i)=><i key={i} style={{"--i":i} as React.CSSProperties}/>)}</div>
+  </div>
+
+  <div className="hero-inner">
+   <div className="hero-copy">
+    <p className="hero-kicker" data-reveal>Volpe / Desenvolvimento · Design · Estratégia</p>
+    <h1 data-reveal><span>Ideias</span><span>que <em>ganham</em></span><span>forma</span></h1>
+    <p className="hero-lede" data-reveal>Transformo marcas em experiências reais através de design, tecnologia e estratégia.</p>
+    <div className="hero-actions" data-reveal>
+     <a className="btn btn-light" href="#projetos">Ver projetos <ArrowRight className="btn-arrow"/></a>
+     <a className="play-link" href="#sobre"><span className="play-ring"><Play/></span>Como trabalho</a>
+    </div>
+   </div>
+   <dl className="hero-stats" data-reveal>
+    {stats.map(s=><div key={s.label}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
+   </dl>
+  </div>
+
+  <ul className="hero-disciplines" aria-label="Áreas de atuação">
+   {disciplines.map((d,i)=><li key={d} className={i===current?"is-current":undefined}>{d}</li>)}
+  </ul>
+  <a className="hero-scroll" href="#projetos" aria-label="Rolar para projetos">Scroll<i/></a>
+  <p className="hero-signature">Desenvolvimento<br/>que impulsiona marcas<i/></p>
+ </section>
+}
+
+function Projects(){
+ return <section id="projetos" className="projects">
+  <div className="projects-copy" data-reveal>
+   <p className="label"><i className="dot"/>Projetos</p>
+   <h2>Marcas reais.<br/>Resultados reais.</h2>
+   <p className="section-lede">Projetos que unem design, tecnologia e estratégia para criar experiências que geram valor.</p>
+   <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
+  </div>
+  <div className="project-deck">
+   {projects.map((p,i)=><article key={p.title} className={"project-card theme-"+p.theme} data-tilt data-reveal style={{"--i":i} as React.CSSProperties}>
+    <div className="project-card-inner">
+     <div className="project-media">{p.theme==="leather"?<BagArt/>:<BoxArt/>}</div>
+     <div className="project-body">
+      <span className="project-number">{p.number}</span>
+      <h3>{p.title}</h3>
+      <p>{p.description}</p>
+      <ul className="tags">{p.tags.map(t=><li key={t}>{t}</li>)}</ul>
+      <a className="project-link" href={p.url||"#contato"} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}>Acessar projeto <ArrowRight className="btn-arrow"/></a>
+     </div>
+     <a className="round-link" href={p.url||"#contato"} aria-label={"Acessar projeto "+p.title} tabIndex={-1} {...(p.url?{target:"_blank",rel:"noreferrer"}:{})}><ArrowUpRight/></a>
+    </div>
+   </article>)}
+  </div>
+ </section>
+}
+
+function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
+ const ref=useRef<HTMLDialogElement>(null);
+ useEffect(()=>{
+  const d=ref.current;if(!d)return;
+  if(plan&&!d.open)d.showModal();
+  if(!plan&&d.open)d.close();
+ },[plan]);
+ return <dialog ref={ref} className="plan-dialog" onClose={onClose} onClick={e=>{if(e.target===ref.current)onClose()}} aria-labelledby="plan-dialog-title">
+  {plan&&<div className="plan-dialog-body">
+   <button className="dialog-close" onClick={onClose} aria-label="Fechar detalhes">×</button>
+   <p className="label"><i className="dot"/>Plano {plan.number}</p>
+   <h3 id="plan-dialog-title">{plan.name}</h3>
+   <p className="plan-intro">{plan.intro}</p>
+   <p className="plan-price">{plan.price}<small> / projeto</small></p>
+   <dl className="plan-facts">{plan.details.map(d=><div key={d.label}><dt>{d.label}</dt><dd>{d.value}</dd></div>)}</dl>
+   <div className="plan-lists">
+    <ul>{plan.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
+    <ul>{plan.extras.map(x=><li key={x}><Check/>{x}</li>)}</ul>
+   </div>
+   <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
+  </div>}
+ </dialog>
+}
+
+function Plans(){
+ const[selected,setSelected]=useState<Plan|null>(null);
+ return <section id="servicos" className="plans">
+  <div className="plans-copy" data-reveal>
+   <p className="label"><i className="dot"/>Planos</p>
+   <h2>Escolha o plano<br/>ideal para sua marca.</h2>
+   <p className="section-lede">Soluções completas para diferentes momentos do seu negócio.</p>
+   <ArrowRight className="long-arrow"/>
+  </div>
+  <div className="plan-grid">
+   {plans.map(p=><article key={p.name} className={"plan-card"+(p.featured?" is-featured":"")} data-reveal>
+    {p.featured&&<span className="plan-badge">Mais escolhido</span>}
+    <span className="plan-number">{p.number}</span>
+    <h3>{p.name}</h3>
+    <p className="plan-intro">{p.intro}</p>
+    <p className="plan-price">{p.price}</p>
+    <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
+    <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
+   </article>)}
+  </div>
+  <p className="plans-aside" aria-hidden="true">Tecnologia<br/>Criatividade<br/><span><i className="dot"/>Resultado</span></p>
+  <PlanDialog plan={selected} onClose={()=>setSelected(null)}/>
+ </section>
+}
+
+function About(){
+ return <section id="sobre" className="about">
+  <div className="about-copy" data-reveal>
+   <p className="label"><i className="dot"/>Sobre</p>
+   <h2>Design que<br/>encontra código.</h2>
+   <p className="section-lede">Sou Vitor Volpato. Meu trabalho conecta direção visual e desenvolvimento para criar experiências com estética, lógica e função — uma presença digital que faz sentido para o negócio, não só um site no ar.</p>
+   <ul className="stack">{stack.map(s=><li key={s}>{s}</li>)}</ul>
+  </div>
+  <ol className="process">
+   {steps.map((s,i)=><li key={s.title} data-reveal style={{"--i":i} as React.CSSProperties}>
+    <span className="process-number">0{i+1}</span>
+    <div><h3>{s.title}</h3><p>{s.text}</p></div>
+   </li>)}
+  </ol>
+ </section>
+}
+
+function Contact(){
+ return <section id="contato" className="contact">
+  <div className="contact-glow" aria-hidden="true"/>
+  <FoxMark className="contact-mark"/>
+  <div className="contact-inner" data-reveal>
+   <p className="label"><i className="dot"/>Contato</p>
+   <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em> a ela.</h2>
+   <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
+   <div className="contact-actions">
+    <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
+    <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
+   </div>
+  </div>
+ </section>
+}
+
+function Footer(){
+ return <footer className="site-footer">
+  <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><FoxMark className="brand-mark"/><span>Volpe</span></a>
+  <p>© {new Date().getFullYear()} Vitor Volpato · {contact.city}</p>
+  <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
+ </footer>
+}
+
+function App(){
+ useReveal();useTilt();
+ return <>
+  <a className="skip-link" href="#projetos">Pular para o conteúdo</a>
+  <Header/>
+  <main>
+   <Hero/>
+   <Projects/>
+   <Plans/>
+   <About/>
+   <Contact/>
+  </main>
+  <Footer/>
+ </>
+}
+
+createRoot(document.getElementById("root")!).render(<StrictMode><App/></StrictMode>);
