@@ -105,3 +105,8 @@
 .plan-card-shell.is-flipped .plan-back{opacity:1!important;visibility:visible!important}
 .logo-3d-image{filter:brightness(0) invert(1) drop-shadow(0 20px 35px rgba(0,0,0,.5))!important}
 .logo-3d-large .logo-3d-image{filter:brightness(0) invert(1) drop-shadow(0 35px 55px rgba(0,0,0,.65)) drop-shadow(0 0 35px rgba(213,167,125,.16))!important}
+
+/* Header identity: remove the fox mark entirely. */
+.nav .logo{width:auto!important;height:auto!important;display:flex;align-items:center;text-decoration:none}
+.nav .logo-wordmark{display:block!important;font-family:"DM Mono",monospace!important;font-size:13px!important;letter-spacing:.22em!important;font-weight:600!important;color:#fff!important;line-height:1!important}
+.nav .logo-3d,.nav .logo img{display:none!important}
