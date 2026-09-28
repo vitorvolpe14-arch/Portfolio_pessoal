@@ -2,7 +2,7 @@ import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,disciplines,nav,plans,projects,stack,steps,type Plan}from"./content";
-import{ArrowRight,ArrowUpRight,Check,Play}from"./art";
+import{ArrowRight,ArrowUpRight,Check}from"./art";
 
 document.documentElement.classList.add("js");
 
@@ -213,12 +213,12 @@ function Hero(){
 
   <div className="hero-inner">
    <div className="hero-copy" data-speed=".1" data-depth="-.06">
-    <p className="hero-kicker" data-reveal>Volpe / Desenvolvimento · Design · Estratégia</p>
-    <h1 data-reveal><span>Ideias</span><span>que <em>ganham</em></span><span>forma</span></h1>
-    <p className="hero-lede" data-reveal>Transformo marcas em experiências reais através de design, tecnologia e estratégia.</p>
+    <p className="hero-kicker" data-reveal>Vitor Volpato / Desenvolvedor de sites</p>
+    <h1 data-reveal><span>Desenvolvo</span><span>sites que</span><span><em>vendem.</em></span></h1>
+    <p className="hero-lede" data-reveal>Crio sites institucionais e lojas virtuais sob medida para a sua marca, do design à publicação no ar.</p>
     <div className="hero-actions" data-reveal>
-     <a className="btn btn-dark" href="#projetos">Ver projetos <ArrowRight className="btn-arrow"/></a>
-     <a className="play-link" href="#sobre"><span className="play-ring"><Play/></span>Como trabalho</a>
+     <a className="btn btn-dark" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Pedir orçamento <ArrowRight className="btn-arrow"/></a>
+     <a className="play-link" href="#servicos"><span className="play-ring"><ArrowRight className="play-arrow"/></span>Ver planos e preços</a>
     </div>
    </div>
   </div>
@@ -227,7 +227,7 @@ function Hero(){
    {disciplines.map((d,i)=><li key={d} className={i===current?"is-current":undefined}>{d}</li>)}
   </ul>
   <a className="hero-scroll" href="#projetos" aria-label="Rolar para projetos">Scroll<i/></a>
-  <p className="hero-signature" data-speed=".08">Desenvolvimento<br/>que impulsiona marcas<i/></p>
+  <p className="hero-signature" data-speed=".08">Sites sob medida<br/>para marcas que querem vender<i/></p>
  </section>
 }
 
@@ -237,7 +237,7 @@ function Projects(){
    <div data-reveal>
     <p className="label"><i className="dot"/>Projetos</p>
     <h2>Marcas reais.<br/><em>Resultados reais.</em></h2>
-    <p className="section-lede">Projetos que unem design, tecnologia e estratégia para criar experiências que geram valor.</p>
+    <p className="section-lede">Sites e lojas virtuais que desenvolvi para marcas reais. Clique na logo para visitar.</p>
     <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
    </div>
   </div>
@@ -336,11 +336,13 @@ function About(){
  </section>
 }
 
+const whatsappUrl=`https://wa.me/${contact.whatsapp.number}?text=${encodeURIComponent(contact.whatsapp.message)}`;
+
 function CopyEmail(){
  const[copied,setCopied]=useState(false);
  const copy=()=>{
   const done=()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400)};
-  const select=()=>{const el=document.querySelector(".contact-mail");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
+  const select=()=>{const el=document.querySelector("a.contact-mail[href^='mailto:']");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(contact.email).then(done,select);else select();
  };
  return <button type="button" className="copy-mail" onClick={copy} aria-live="polite">{copied?"E-mail copiado":"Copiar e-mail"}</button>
@@ -356,10 +358,13 @@ function Contact(){
     <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em><br/>a ela.</h2>
     <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
     <div className="contact-actions">
-     <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
-     <a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a>
-     <CopyEmail/>
+     <a className="btn btn-light" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Chamar no WhatsApp <ArrowRight className="btn-arrow"/></a>
+     <a className="btn btn-outline" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Enviar e-mail <ArrowRight className="btn-arrow"/></a>
     </div>
+    <dl className="contact-list">
+     <div><dt>WhatsApp</dt><dd><a className="contact-mail" href={whatsappUrl} target="_blank" rel="noopener noreferrer">{contact.whatsapp.display}</a></dd></div>
+     <div><dt>E-mail</dt><dd><a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a><CopyEmail/></dd></div>
+    </dl>
    </div>
   </div>
  </section>

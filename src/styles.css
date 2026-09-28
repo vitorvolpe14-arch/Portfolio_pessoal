@@ -124,6 +124,7 @@ h2 em{font-style:italic}
 .play-link{display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .play-ring{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid rgba(20,17,16,.5);transition:background .35s var(--ease),border-color .35s,color .35s}
 .play-ring svg{width:11px;height:11px;margin-left:2px}
+.play-ring .play-arrow{width:16px;height:11px;margin:0;transform:rotate(90deg)}
 .play-link:hover .play-ring{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .hero-disciplines{position:absolute;right:max(var(--gutter),13vw);top:36%;display:flex;flex-direction:column;gap:22px}
 .hero-disciplines li{display:flex;align-items:center;gap:12px;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(20,17,16,.48);transition:color .6s}
@@ -145,11 +146,11 @@ h2 em{font-style:italic}
 .text-cta .dot{background:var(--ink)}
 .project-logos{align-self:center;border-top:1px solid rgba(20,17,16,.18)}
 .project-logos li{border-bottom:1px solid rgba(20,17,16,.18)}
-.project-logo{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(26px,3vw,44px) 4px;color:var(--ink)}
+.project-logo{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(20px,2.2vw,32px) 4px;color:var(--ink)}
 .project-logo-mark{line-height:1;white-space:nowrap;transition:transform .6s var(--ease),letter-spacing .6s var(--ease)}
-.font-lovelo .project-logo-mark{font-family:"Lovelo",var(--sans);font-weight:900;font-size:clamp(46px,6.2vw,104px);letter-spacing:.09em;font-synthesis:none}
-.font-playfair .project-logo-mark{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:clamp(52px,7vw,116px);letter-spacing:.18em}
-.project-logo-go{display:grid;place-items:center;flex:none;width:clamp(48px,4.4vw,64px);height:clamp(48px,4.4vw,64px);border-radius:50%;border:1px solid rgba(20,17,16,.45);transition:background .4s var(--ease),color .4s var(--ease),border-color .4s,transform .5s var(--ease)}
+.font-lovelo .project-logo-mark{font-family:"Lovelo",var(--sans);font-weight:900;font-size:clamp(28px,3.2vw,52px);letter-spacing:.09em;font-synthesis:none}
+.font-playfair .project-logo-mark{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:clamp(32px,3.6vw,58px);letter-spacing:.18em}
+.project-logo-go{display:grid;place-items:center;flex:none;width:clamp(42px,3.4vw,52px);height:clamp(42px,3.4vw,52px);border-radius:50%;border:1px solid rgba(20,17,16,.45);transition:background .4s var(--ease),color .4s var(--ease),border-color .4s,transform .5s var(--ease)}
 .project-logo-go svg{width:18px;height:18px}
 .project-logo:hover .project-logo-mark,.project-logo:focus-visible .project-logo-mark{transform:translateX(14px)}
 .project-logo:hover .project-logo-go,.project-logo:focus-visible .project-logo-go{background:var(--ink);border-color:var(--ink);color:var(--paper);transform:rotate(45deg)}
@@ -239,6 +240,10 @@ h2 em{font-style:italic}
 .contact h2{margin-top:22px;font-size:clamp(52px,6.2vw,108px);line-height:.92}
 .contact .section-lede{max-width:44ch;margin-top:28px;color:var(--muted)}
 .contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:20px 34px;margin-top:40px}
+.contact-list{display:grid;gap:14px;margin-top:34px}
+.contact-list div{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:16px}
+.contact-list dt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.contact-list dd{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
 .contact-mail{font-size:clamp(16px,1.4vw,20px);border-bottom:1px solid rgba(244,241,236,.35);padding-bottom:4px;transition:border-color .3s}
 .contact-mail:hover{border-color:var(--text)}
 .copy-mail{height:36px;padding:0 16px;border-radius:999px;border:1px solid rgba(244,241,236,.35);background:none;color:var(--text);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:border-color .3s,background .3s}
@@ -249,7 +254,7 @@ h2 em{font-style:italic}
 .site-footer .brand{color:var(--text)}
 .site-footer .brand-mark{height:38px}
 .site-footer .brand span{font-size:12px;font-weight:800;letter-spacing:.32em;text-transform:uppercase}
-.site-footer nav{display:flex;gap:26px}
+.site-footer nav{display:flex;flex-wrap:wrap;gap:12px 26px}
 .site-footer nav a{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;transition:color .3s}
 .site-footer nav a:hover{color:var(--text)}
 

@@ -23,6 +23,7 @@ export type Plan={
 
 export const contact={
  email:"vitorvolpe14@gmail.com",
+ whatsapp:{display:"(85) 99715-6891",number:"5585997156891",message:"Olá, Vitor! Vim pelo seu portfólio e quero conversar sobre um projeto."},
  city:"Fortaleza, BR",
 };
 
@@ -34,7 +35,7 @@ export const nav=[
  {id:"contato",label:"Contato"},
 ];
 
-export const disciplines=["Design","Web","Branding","E-commerce","Estratégia"];
+export const disciplines=["Sites","E-commerce","Design","Branding"];
 
 export const projects:Project[]=[
  {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://monte-site-itjk.onrender.com/"},
