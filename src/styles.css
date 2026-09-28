@@ -549,3 +549,36 @@
   .project-info{padding:26px 24px 32px}
   .project-info h3{font-size:34px!important}
 }
+
+/* Hero cleanup: static white background, no animated atmosphere */
+.hero-white{
+  background:#f5f4f0!important;
+  color:#0b0b0b!important;
+}
+.hero-white .hero-depth-image,
+.hero-white .hero-aurora,
+.hero-white .hero-orb,
+.hero-white .hero-particles,
+.hero-white .hero-scanline,
+.hero-white .hero-grid{
+  display:none!important;
+  animation:none!important;
+}
+.hero-white .hero-logo-stage{
+  background:none!important;
+}
+.hero-white .logo-halo{
+  background:none!important;
+  filter:none!important;
+}
+.hero-white .logo-orbit{
+  display:none!important;
+  animation:none!important;
+}
+.hero-white .logo-shadow{
+  opacity:.18;
+  filter:blur(18px);
+}
+.hero-white .hero-content h1{
+  color:#0b0b0b!important;
+}
