@@ -931,3 +931,26 @@ body{background:var(--black);overflow-x:hidden}
     height:43vw!important;
   }
 }
+
+/* Exact reference logo: preserve original texture/detail, add only presentation depth */
+.hero-white .rebuilt-logo-stage .logo-3d-large{
+  transform-style:preserve-3d!important;
+  transform:rotateX(var(--logo-rx,0deg)) rotateY(var(--logo-ry,0deg)) translateZ(18px)!important;
+  filter:
+    drop-shadow(1px 2px 1px rgba(255,255,255,.75))
+    drop-shadow(3px 5px 2px rgba(0,0,0,.22))
+    drop-shadow(8px 14px 18px rgba(0,0,0,.18))!important;
+}
+.hero-white .rebuilt-logo-stage .logo-3d-image{
+  filter:none!important;
+  mix-blend-mode:normal!important;
+  transform:translateZ(26px)!important;
+  image-rendering:auto!important;
+}
+.hero-white .rebuilt-logo-stage .logo-shadow{
+  width:38%!important;
+  height:6%!important;
+  bottom:14%!important;
+  opacity:.20!important;
+  filter:blur(16px)!important;
+}
