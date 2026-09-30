@@ -1,7 +1,7 @@
 import{StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
-import{contact,disciplines,nav,plans,projects,stack,steps,type Plan}from"./content";
+import{contact,disciplines,nav,plans,projects,stack,steps,type Plan,type Project}from"./content";
 import{ArrowRight,ArrowUpRight,Check}from"./art";
 
 document.documentElement.classList.add("js");
@@ -232,20 +232,27 @@ function Hero(){
  </section>
 }
 
+function ProjectMark({logo}:{logo:Project["logo"]}){
+ if("image" in logo)return <img className="project-logo-img" src={logo.image} alt="" draggable={false}/>;
+ if(!logo.script)return <>{logo.text}</>;
+ const [before,after]=logo.text.split(" "+logo.script+" ");
+ return <>{before} <i>{logo.script}</i> {after}</>;
+}
+
 function Projects(){
  return <section id="projetos" className="projects" data-theme="light">
   <div className="projects-copy" data-speed=".08">
    <div data-reveal>
     <p className="label"><i className="dot"/>Projetos</p>
     <h2>Marcas reais.<br/><em>Resultados reais.</em></h2>
-    <p className="section-lede">Sites e lojas virtuais que desenvolvi para marcas reais. Clique na logo para visitar.</p>
+    <p className="section-lede">Lojas virtuais e sites que desenvolvi para marcas e pessoas reais. Clique na logo para visitar.</p>
     <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
    </div>
   </div>
   <ul className="project-logos">
-   {projects.map((p,i)=><li key={p.title} data-speed={i%2?".04":"-.04"}>
-    <a className={"project-logo font-"+p.font} href={p.url} target="_blank" rel="noopener noreferrer" data-reveal style={vars({"--i":i})} aria-label={p.title+" — abrir o site em nova aba"}>
-     <span className="project-logo-mark">{p.wordmark}</span>
+   {projects.filter(p=>!p.hidden).map((p,i)=><li key={p.title} data-speed={i%2?".04":"-.04"}>
+    <a className={"project-logo"+("font" in p.logo?" font-"+p.logo.font:" has-image")} href={p.url} target="_blank" rel="noopener noreferrer" data-reveal style={vars({"--i":i})} aria-label={p.title+" — abrir o site em nova aba"}>
+     <span className="project-logo-mark"><ProjectMark logo={p.logo}/></span>
      <span className="project-logo-go" aria-hidden="true"><ArrowUpRight/></span>
     </a>
    </li>)}

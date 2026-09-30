@@ -1,13 +1,22 @@
 // Todo o conteúdo editável do site fica aqui.
 
+/** Logo escrita em texto, na fonte que a própria marca usa. */
+export type TextLogo={
+ text:string;
+ /** Lovelo Black (Montê), Playfair Display (Key) ou Italiana + Mrs Saint Delafield (casamento). */
+ font:"lovelo"|"playfair"|"wedding";
+ /** Palavra do texto escrita em letra cursiva (ex.: o "e" de "Caroline e Leandro"). */
+ script?:string;
+};
+
 /** Cada projeto aparece como a logo da marca, com link para o site publicado. */
 export type Project={
  title:string;
- /** Texto da logo, escrito como a marca usa. */
- wordmark:string;
- /** Fonte da logo: Lovelo Black (Montê) ou Playfair Display (Key). */
- font:"lovelo"|"playfair";
  url:string;
+ /** Imagem da logo (SVG em public/projects) ou logo em texto. */
+ logo:{image:string}|TextLogo;
+ /** Fora do site por enquanto; os dados ficam guardados para voltar depois. */
+ hidden?:boolean;
 };
 
 export type Plan={
@@ -38,8 +47,10 @@ export const nav=[
 export const disciplines=["Sites","E-commerce","Design","Branding"];
 
 export const projects:Project[]=[
- {title:"Montê",wordmark:"MONTÊ",font:"lovelo",url:"https://oficialmontee.com.br/"},
- {title:"Key",wordmark:"KEY",font:"playfair",url:"https://key-site-jaut.onrender.com/"},
+ {title:"FØRN.LY",url:"https://fornly-loja.onrender.com/",logo:{image:"/projects/fornly-logo.svg"}},
+ {title:"Key",url:"https://key-site-jaut.onrender.com/",logo:{text:"KEY",font:"playfair"}},
+ {title:"Caroline e Leandro",url:"https://casamento-carol-e-leandro.onrender.com/",logo:{text:"Caroline e Leandro",font:"wedding",script:"e"}},
+ {title:"Montê",url:"https://oficialmontee.com.br/",logo:{text:"MONTÊ",font:"lovelo"},hidden:true},
 ];
 
 export const plans:Plan[]=[
