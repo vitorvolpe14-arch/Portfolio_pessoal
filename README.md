@@ -7,7 +7,7 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
-  - Projetos aparecem como a logo de cada marca (texto e fonte em `wordmark`/`font`) com link para o site (`url`). A fonte Lovelo da Montê fica em `public/fonts/`.
+  - Projetos aparecem como a logo de cada marca com link para o site (`url`). A logo é uma imagem em `public/projects/` (`logo.image`) ou texto na fonte da marca (`logo.text`/`logo.font`). `hidden: true` tira um projeto do site sem apagar os dados (a Montê está assim por enquanto; a fonte Lovelo dela fica em `public/fonts/`).
 - **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace, incluindo o sombreamento da escultura em faixas de tom (volume e vincos), e está em SVG, nítida em qualquer tamanho.
   - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
   - `public/fox-vector-mask.svg`: silhueta usada na espessura 3D e na sombra.
