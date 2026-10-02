@@ -282,6 +282,7 @@ function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
    <h3 id="plan-dialog-title">{plan.name}</h3>
    <p className="plan-intro">{plan.intro}</p>
    <p className="plan-price">{plan.price}<small> / projeto</small></p>
+   {plan.note&&<p className="plan-note">{plan.note}</p>}
    <dl className="plan-facts">{[...plan.details,{label:"Pagamento",value:payment.full}].map(d=><div key={d.label}><dt>{d.label}</dt><dd>{d.value}</dd></div>)}</dl>
    <div className="plan-lists">
     <ul>{plan.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
@@ -314,6 +315,7 @@ function Plans(){
      <p className="plan-price">{p.price}</p>
      <p className="plan-deadline">Prazo: {p.details.find(d=>d.label==="Prazo")?.value}</p>
      <p className="plan-payment">{payment.parts.map((x,i)=><Fragment key={x}>{i>0&&" · "}<span>{x}</span></Fragment>)}</p>
+     {p.note&&<p className="plan-note">{p.note}</p>}
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
      <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
     </article>

@@ -27,6 +27,8 @@ export type Plan={
  items:string[];
  featured?:boolean;
  details:{label:string;value:string}[];
+ /** Observação curta abaixo do preço (ex.: o que é cobrado à parte). */
+ note?:string;
  extras:string[];
 };
 
@@ -59,16 +61,16 @@ export const payment={parts:["50% ao contratar","50% na entrega"],full:"50% ao c
 /** Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior. */
 export const plans:Plan[]=[
  {
-  number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",
+  number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",note:"Domínio e hospedagem cobrados à parte",
   items:["Site institucional (até 5 páginas)","Design personalizado","Site 100% responsivo","Catálogo de produtos com pedido pelo WhatsApp","Integração com redes sociais","Suporte por 30 dias"],
   details:[{label:"Prazo",value:"12–18 dias"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
   extras:["SEO básico e indexação no Google","Política de privacidade","Publicação e configuração de domínio"],
  },
  {
-  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem vender online.",featured:true,
+  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem vender online.",featured:true,note:"Domínio e hospedagem cobrados à parte",
   items:["Tudo do plano Start","Loja virtual com gateway de pagamento","Cadastro e catálogo de produtos","Página própria para cada produto","Login de admin da loja","Gerenciador de pedidos e ganhos","Suporte por 90 dias"],
   details:[{label:"Prazo",value:"10–12 dias"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
-  extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações","1º mês de hospedagem grátis"],
+  extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações"],
  },
  {
   number:"03",name:"Signature",price:"R$ 2.000",intro:"Loja completa, pronta para crescer.",
