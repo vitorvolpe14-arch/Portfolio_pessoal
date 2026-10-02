@@ -32,5 +32,3 @@ Endereço: https://portfolio-pessoal.vitorvolpe14.workers.dev
 Cloudflare → Workers & Pages → `portfolio-pessoal`, ligado a este repositório pelo Workers Builds (branch `main`, build `npm run build`, deploy `npx wrangler deploy`). Cada push na `main` publica sozinho. O CI do GitHub (`.github/workflows/ci.yml`) roda typecheck e build em cada PR.
 
 Para testar localmente como no Cloudflare: `npm run build && npx wrangler dev`.
-
-O Render (`render.yaml`, portfolio-pessoal-ekqa.onrender.com) continua no ar até a migração para o Cloudflare terminar.
