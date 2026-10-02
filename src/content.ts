@@ -61,22 +61,22 @@ export const payment={parts:["50% ao contratar","50% na entrega"],full:"50% ao c
 /** Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior. */
 export const plans:Plan[]=[
  {
-  number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",note:"Domínio e hospedagem cobrados à parte",
+  number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",note:"+ R$ 49/mês de hospedagem e domínio",
   items:["Site institucional (até 5 páginas)","Design personalizado","Site 100% responsivo","Catálogo de produtos com pedido pelo WhatsApp","Integração com redes sociais","Suporte por 30 dias"],
   details:[{label:"Prazo",value:"12–18 dias"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
-  extras:["SEO básico e indexação no Google","Política de privacidade","Publicação e configuração de domínio"],
+  extras:["SEO básico e indexação no Google","Política de privacidade","Publicação e configuração de domínio","Mensalidade: hospedagem na Cloudflare, domínio, HTTPS e pequenos ajustes"],
  },
  {
-  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem vender online.",featured:true,note:"Domínio e hospedagem cobrados à parte",
+  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem vender online.",featured:true,note:"+ R$ 89/mês de hospedagem e domínio",
   items:["Tudo do plano Start","Loja virtual com gateway de pagamento","Cadastro e catálogo de produtos","Página própria para cada produto","Login de admin da loja","Gerenciador de pedidos e ganhos","Suporte por 90 dias"],
   details:[{label:"Prazo",value:"10–12 dias"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
-  extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações"],
+  extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações","Mensalidade: hospedagem na Cloudflare, domínio, HTTPS e pequenos ajustes"],
  },
  {
   number:"03",name:"Signature",price:"R$ 2.000",intro:"Loja completa, pronta para crescer.",note:"Domínio e hospedagem inclusos",
   items:["Tudo do plano Studio","Login de clientes","Pop-ups de promoções","SEO e copy prontos para tráfego pago","Métricas e indexação nos buscadores","Integração com IA (site reconhecido pelas IAs)","Acompanhamento contínuo"],
   details:[{label:"Prazo",value:"15–20 dias"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
-  extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir"],
+  extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir","Hospedagem na Cloudflare, domínio e HTTPS sem mensalidade"],
  },
 ];
 
