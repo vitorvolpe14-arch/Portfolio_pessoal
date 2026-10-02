@@ -73,8 +73,8 @@ export const plans:Plan[]=[
   extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações"],
  },
  {
-  number:"03",name:"Signature",price:"R$ 2.000",intro:"Loja completa, pronta para crescer.",
-  items:["Tudo do plano Studio","Login de clientes","Pop-ups de promoções","SEO e copy prontos para tráfego pago","Métricas e indexação nos buscadores","Integração com IA (site reconhecido pelas IAs)","1º ano de domínio e 1º mês de hospedagem grátis","Acompanhamento contínuo"],
+  number:"03",name:"Signature",price:"R$ 2.000",intro:"Loja completa, pronta para crescer.",note:"Domínio e hospedagem inclusos",
+  items:["Tudo do plano Studio","Login de clientes","Pop-ups de promoções","SEO e copy prontos para tráfego pago","Métricas e indexação nos buscadores","Integração com IA (site reconhecido pelas IAs)","Acompanhamento contínuo"],
   details:[{label:"Prazo",value:"15–20 dias"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
   extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir"],
  },

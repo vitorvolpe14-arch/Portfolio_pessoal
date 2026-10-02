@@ -7,7 +7,7 @@ Hero → Projetos → Planos → Sobre/Processo → Contato.
 
 ## Editar conteúdo
 - **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
-  - Planos: cada um inclui tudo do anterior (quanto mais caro, mais serviços). `items` aparece no cartão; `extras` e `details` só em "Ver detalhes". A forma de pagamento (`payment`, 50% ao contratar e 50% na entrega) vale para todos. `note` aparece no cartão e nos detalhes (Start e Studio: domínio e hospedagem cobrados à parte; o Signature inclui o 1º ano de domínio e o 1º mês de hospedagem).
+  - Planos: cada um inclui tudo do anterior (quanto mais caro, mais serviços). `items` aparece no cartão; `extras` e `details` só em "Ver detalhes". A forma de pagamento (`payment`, 50% ao contratar e 50% na entrega) vale para todos. `note` aparece no cartão e nos detalhes (Start e Studio: domínio e hospedagem cobrados à parte; Signature: inclusos).
   - Projetos aparecem como a logo de cada marca com link para o site (`url`). A logo é uma imagem em `public/projects/` (`logo.image`) ou texto na fonte da marca (`logo.text`/`logo.font`). `hidden: true` tira um projeto do site sem apagar os dados (a Montê está assim por enquanto; a fonte Lovelo dela fica em `public/fonts/`).
 - **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace, incluindo o sombreamento da escultura em faixas de tom (volume e vincos), e está em SVG, nítida em qualquer tamanho.
   - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
