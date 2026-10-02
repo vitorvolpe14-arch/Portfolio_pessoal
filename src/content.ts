@@ -53,22 +53,26 @@ export const projects:Project[]=[
  {title:"Montê",url:"https://oficialmontee.com.br/",logo:{text:"MONTÊ",font:"lovelo"},hidden:true},
 ];
 
+/** Forma de pagamento, igual para todos os planos (aparece no cartão e nos detalhes). */
+export const payment={parts:["50% ao contratar","50% na entrega"],full:"50% ao contratar e 50% na entrega"};
+
+/** Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior. */
 export const plans:Plan[]=[
  {
   number:"01",name:"Start",price:"R$ 799",intro:"Ideal para marcas que estão começando.",
-  items:["Site institucional (até 5 páginas)","Design personalizado","Responsivo (mobile e desktop)","Integração com redes sociais","Suporte por 30 dias"],
+  items:["Site institucional (até 5 páginas)","Design personalizado","Site 100% responsivo","Catálogo de produtos com pedido pelo WhatsApp","Integração com redes sociais","Suporte por 30 dias"],
   details:[{label:"Prazo",value:"12–18 dias"},{label:"Ajustes",value:"2 rodadas"},{label:"Suporte",value:"30 dias após a publicação"}],
-  extras:["SEO básico","Formulário / WhatsApp","Publicação e configuração de domínio"],
+  extras:["SEO básico e indexação no Google","Política de privacidade","Publicação e configuração de domínio"],
  },
  {
-  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem crescer.",featured:true,
-  items:["E-commerce completo","Design exclusivo e estratégico","Integração com pagamentos e envio","Área administrativa","Suporte por 90 dias"],
+  number:"02",name:"Studio",price:"R$ 1.300",intro:"Para marcas que querem vender online.",featured:true,
+  items:["Tudo do plano Start","Loja virtual com gateway de pagamento","Cadastro e catálogo de produtos","Página própria para cada produto","Login de admin da loja","Gerenciador de pedidos e ganhos","Suporte por 90 dias"],
   details:[{label:"Prazo",value:"10–12 dias"},{label:"Ajustes",value:"3 rodadas"},{label:"Suporte",value:"90 dias após a publicação"}],
-  extras:["Animações e microinterações","SEO técnico e Open Graph","Deploy e configuração de produção"],
+  extras:["Banco de dados integrado","Termos de uso e política de privacidade","Animações e microinterações","1º mês de hospedagem grátis"],
  },
  {
-  number:"03",name:"Signature",price:"R$ 2.000",intro:"Solução completa e personalizada.",
-  items:["Tudo do plano Studio","Identidade visual da marca","Estratégia de conteúdo","Integrações avançadas (ERP, CRM, etc)","Acompanhamento contínuo"],
+  number:"03",name:"Signature",price:"R$ 2.000",intro:"Loja completa, pronta para crescer.",
+  items:["Tudo do plano Studio","Login de clientes","Pop-ups de promoções","SEO e copy prontos para tráfego pago","Métricas e indexação nos buscadores","Integração com IA (site reconhecido pelas IAs)","1º ano de domínio e 1º mês de hospedagem grátis","Acompanhamento contínuo"],
   details:[{label:"Prazo",value:"15–20 dias"},{label:"Ajustes",value:"4 rodadas"},{label:"Suporte",value:"Acompanhamento contínuo"}],
   extras:["Direção visual exclusiva","Motion design e interações avançadas","Estrutura preparada para evoluir"],
  },
