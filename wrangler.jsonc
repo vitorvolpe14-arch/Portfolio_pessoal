@@ -1,0 +1,10 @@
+{
+  // Portfólio da Volpe no Cloudflare Workers: só arquivos estáticos (o build do Vite em ./dist).
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "portfolio-pessoal",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  },
+  "observability": { "enabled": true }
+}
