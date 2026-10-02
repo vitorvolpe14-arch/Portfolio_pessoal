@@ -25,4 +25,10 @@ npm run build
 ```
 
 ## Deploy
-O projeto inclui `render.yaml` e workflow de CI em `.github/workflows/ci.yml`. O Render deve apontar para este repositório e para a branch `main`.
+Cloudflare Workers, só com arquivos estáticos: o build do Vite (`dist/`) é publicado como assets do Worker `portfolio-pessoal` (configuração em `wrangler.jsonc`).
+
+Endereço: https://portfolio-pessoal.vitorvolpe14.workers.dev
+
+Cloudflare → Workers & Pages → `portfolio-pessoal`, ligado a este repositório pelo Workers Builds (branch `main`, build `npm run build`, deploy `npx wrangler deploy`). Cada push na `main` publica sozinho. O CI do GitHub (`.github/workflows/ci.yml`) roda typecheck e build em cada PR.
+
+Para testar localmente como no Cloudflare: `npm run build && npx wrangler dev`.

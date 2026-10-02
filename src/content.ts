@@ -49,7 +49,7 @@ export const disciplines=["Sites","E-commerce","Design","Branding"];
 export const projects:Project[]=[
  {title:"FØRN.LY",url:"https://fornly-loja.onrender.com/",logo:{image:"/projects/fornly-logo.svg"}},
  {title:"Key",url:"https://key-site-jaut.onrender.com/",logo:{text:"KEY",font:"playfair"}},
- {title:"Caroline e Leandro",url:"https://casamento-carol-e-leandro.onrender.com/",logo:{text:"Caroline e Leandro",font:"wedding",script:"e"}},
+ {title:"Caroline e Leandro",url:"https://casamento-carol-e-leandro.vitorvolpe14.workers.dev/",logo:{text:"Caroline e Leandro",font:"wedding",script:"e"}},
  {title:"Montê",url:"https://oficialmontee.com.br/",logo:{text:"MONTÊ",font:"lovelo"},hidden:true},
 ];
 
