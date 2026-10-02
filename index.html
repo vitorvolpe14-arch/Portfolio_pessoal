@@ -2,12 +2,18 @@
 <html lang="pt-BR">
  <head>
   <meta charset="UTF-8"/>
+  <script>
+   // Endereço principal: volpedev.com.br. O www e o endereço antigo (workers.dev) levam para ele, mantendo a seção.
+   if(/^www\.volpedev\.com\.br$|\.workers\.dev$/.test(location.hostname))location.replace("https://volpedev.com.br"+location.pathname+location.search+location.hash);
+  </script>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <meta name="theme-color" content="#0b0a09"/>
   <meta name="description" content="Vitor Volpato, desenvolvedor de sites em Fortaleza. Sites institucionais e lojas virtuais sob medida, do design à publicação."/>
   <meta property="og:title" content="Volpe — Desenvolvedor de sites"/>
   <meta property="og:description" content="Sites institucionais e lojas virtuais sob medida, do design à publicação."/>
   <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://volpedev.com.br/"/>
+  <link rel="canonical" href="https://volpedev.com.br/"/>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>

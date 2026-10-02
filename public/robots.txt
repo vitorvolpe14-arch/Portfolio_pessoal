@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://volpedev.com.br/sitemap.xml
