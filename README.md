@@ -28,7 +28,7 @@ npm run build
 ## Deploy
 Cloudflare Workers, só com arquivos estáticos: o build do Vite (`dist/`) é publicado como assets do Worker `portfolio-pessoal` (configuração em `wrangler.jsonc`).
 
-Endereço: https://portfolio-pessoal.vitorvolpe14.workers.dev
+Endereço: https://volpedev.com.br (domínio no Registro.br, DNS no Cloudflare, ligado ao Worker em Settings → Domains & Routes). `www.volpedev.com.br` e o endereço antigo `portfolio-pessoal.vitorvolpe14.workers.dev` redirecionam para ele (script no topo do `index.html`). `public/robots.txt` e `public/sitemap.xml` apontam para o domínio.
 
 Cloudflare → Workers & Pages → `portfolio-pessoal`, ligado a este repositório pelo Workers Builds (branch `main`, build `npm run build`, deploy `npx wrangler deploy`). Cada push na `main` publica sozinho. O CI do GitHub (`.github/workflows/ci.yml`) roda typecheck e build em cada PR.
 
