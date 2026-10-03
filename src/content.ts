@@ -58,11 +58,14 @@ export const projects:Project[]=[
  {title:"Montê",url:"https://oficialmontee.com.br/",logo:{text:"MONTÊ",font:"lovelo"},hidden:true},
 ];
 
-/** Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior. Preço em reais. */
-export const planBase:{number:string;name:string;price:number;featured?:boolean}[]=[
- {number:"01",name:"Start",price:799},
- {number:"02",name:"Studio",price:1300,featured:true},
- {number:"03",name:"Signature",price:2000},
+/**
+ * Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior.
+ * Preço em reais (`brl`, versões em português e inglês) e em euros (`eur`, versão em italiano).
+ */
+export const planBase:{number:string;name:string;brl:number;eur:number;featured?:boolean}[]=[
+ {number:"01",name:"Start",brl:799,eur:380},
+ {number:"02",name:"Studio",brl:1300,eur:700,featured:true},
+ {number:"03",name:"Signature",brl:2000,eur:1000},
 ];
 
 export const stack=["React","TypeScript","JavaScript","CSS","GitHub","Cloudflare"];
@@ -290,13 +293,13 @@ export const copy:Record<Lang,Copy>={
   payment:{parts:["50% alla firma","50% alla consegna"],full:"50% alla firma e 50% alla consegna"},
   plans:[
    {
-    intro:"Ideale per i brand che stanno iniziando.",note:"+ R$ 49/mese per hosting e dominio",
+    intro:"Ideale per i brand che stanno iniziando.",note:"+ € 19/mese per hosting e dominio",
     items:["Sito istituzionale (fino a 5 pagine)","Design personalizzato","Sito 100% responsive","Catalogo prodotti con ordini via WhatsApp","Integrazione con i social network","Assistenza per 30 giorni"],
     details:{deadline:"12–18 giorni",revisions:"2 revisioni",support:"30 giorni dopo la pubblicazione"},
     extras:["SEO di base e indicizzazione su Google","Informativa sulla privacy","Pubblicazione e configurazione del dominio","Canone mensile: hosting su Cloudflare, dominio, HTTPS e piccole modifiche"],
    },
    {
-    intro:"Per i brand che vogliono vendere online.",note:"+ R$ 89/mese per hosting e dominio",
+    intro:"Per i brand che vogliono vendere online.",note:"+ € 29/mese per hosting e dominio",
     items:["Tutto il piano Start","Negozio online con gateway di pagamento","Gestione e catalogo prodotti","Una pagina dedicata per ogni prodotto","Accesso admin al negozio","Gestione di ordini e incassi","Assistenza per 90 giorni"],
     details:{deadline:"10–12 giorni",revisions:"3 revisioni",support:"90 giorni dopo la pubblicazione"},
     extras:["Database integrato","Termini d'uso e informativa sulla privacy","Animazioni e microinterazioni","Canone mensile: hosting su Cloudflare, dominio, HTTPS e piccole modifiche"],
@@ -330,11 +333,12 @@ export const copy:Record<Lang,Copy>={
  },
 };
 
-/** Preço do plano no formato do idioma (R$ 1.300 / R$ 1,300). */
-export const formatPrice=(price:number,lang:Lang)=>"R$ "+price.toLocaleString(lang==="en"?"en-US":"pt-BR");
+/** Preço do plano na moeda e no formato do idioma: R$ 1.300 (pt), R$ 1,300 (en), € 1.000 (it). */
+export const formatPrice=(plan:{brl:number;eur:number},lang:Lang)=>
+ lang==="it"?"€ "+plan.eur.toLocaleString("it-IT"):"R$ "+plan.brl.toLocaleString(lang==="en"?"en-US":"pt-BR");
 
 /** Planos completos (dados fixos + textos) no idioma pedido. */
-export const plansFor=(lang:Lang):Plan[]=>planBase.map((b,i)=>({...copy[lang].plans[i],number:b.number,name:b.name,price:formatPrice(b.price,lang),featured:b.featured}));
+export const plansFor=(lang:Lang):Plan[]=>planBase.map((b,i)=>({...copy[lang].plans[i],number:b.number,name:b.name,price:formatPrice(b,lang),featured:b.featured}));
 
 /** Idioma pelo endereço: /en/ e /it/; o resto é português. */
 export const langFromPath=(path:string):Lang=>{const m=/^\/(en|it)(\/|$)/.exec(path);return m?m[1] as Lang:"pt"};
