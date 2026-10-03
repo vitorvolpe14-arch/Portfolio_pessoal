@@ -5,9 +5,15 @@ Portfólio da Volpe — Vitor Volpato. Site em React + Vite com visual escuro/ci
 ## Estrutura
 Hero → Projetos → Planos → Sobre/Processo → Contato.
 
+## Idiomas
+Português em `/`, inglês em `/en/` e italiano em `/it/`. O seletor PT · EN · IT no topo troca o idioma sem recarregar a página e atualiza o endereço.
+
+No build, `vite.config.ts` gera `dist/en/index.html` e `dist/it/index.html`. Cada versão sai com idioma, título, descrição, endereço canônico e links `hreflang` próprios, para o Google indexar as três. `public/sitemap.xml` lista as três versões.
+
 ## Editar conteúdo
-- **Textos, projetos, planos, preços, números do hero e stack:** `src/content.ts`.
-  - Planos: cada um inclui tudo do anterior (quanto mais caro, mais serviços). `items` aparece no cartão; `extras` e `details` só em "Ver detalhes". A forma de pagamento (`payment`, 50% ao contratar e 50% na entrega) vale para todos. `note` aparece no cartão e nos detalhes (Start: + R$ 49/mês e Studio: + R$ 89/mês de hospedagem na Cloudflare e domínio; Signature: inclusos).
+- **Textos, projetos, planos, preços e stack:** `src/content.ts`.
+  - Os textos ficam em `copy.pt`, `copy.en` e `copy.it`, com a mesma estrutura. Ao mudar um texto, mude nos três. Nos títulos, `\n` quebra a linha e `*palavra*` fica em itálico.
+  - Planos: número, nome e preço (em reais) ficam em `planBase`; os textos de cada plano ficam em `plans`, dentro de cada idioma e na mesma ordem. Cada plano inclui tudo do anterior (quanto mais caro, mais serviços). `items` aparece no cartão; `extras` e `details` só em "Ver detalhes". A forma de pagamento (`payment`, 50% ao contratar e 50% na entrega) vale para todos. `note` aparece no cartão e nos detalhes (Start: + R$ 49/mês e Studio: + R$ 89/mês de hospedagem na Cloudflare e domínio; Signature: inclusos).
   - Projetos aparecem como a logo de cada marca com link para o site (`url`). A logo é uma imagem em `public/projects/` (`logo.image`) ou texto na fonte da marca (`logo.text`/`logo.font`). `hidden: true` tira um projeto do site sem apagar os dados (a Montê está assim por enquanto; a fonte Lovelo dela fica em `public/fonts/`).
 - **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace, incluindo o sombreamento da escultura em faixas de tom (volume e vincos), e está em SVG, nítida em qualquer tamanho.
   - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
