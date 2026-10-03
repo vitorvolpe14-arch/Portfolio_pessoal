@@ -60,12 +60,12 @@ export const projects:Project[]=[
 
 /**
  * Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior.
- * Preço em reais (`brl`, versões em português e inglês) e em euros (`eur`, versão em italiano).
+ * Preço em reais (`brl`, versão em português), dólares (`usd`, inglês) e euros (`eur`, italiano).
  */
-export const planBase:{number:string;name:string;brl:number;eur:number;featured?:boolean}[]=[
- {number:"01",name:"Start",brl:799,eur:380},
- {number:"02",name:"Studio",brl:1300,eur:700,featured:true},
- {number:"03",name:"Signature",brl:2000,eur:1000},
+export const planBase:{number:string;name:string;brl:number;usd:number;eur:number;featured?:boolean}[]=[
+ {number:"01",name:"Start",brl:799,usd:400,eur:380},
+ {number:"02",name:"Studio",brl:1300,usd:850,eur:700,featured:true},
+ {number:"03",name:"Signature",brl:2000,usd:1400,eur:1000},
 ];
 
 export const stack=["React","TypeScript","JavaScript","CSS","GitHub","Cloudflare"];
@@ -214,13 +214,13 @@ export const copy:Record<Lang,Copy>={
   payment:{parts:["50% upfront","50% on delivery"],full:"50% upfront and 50% on delivery"},
   plans:[
    {
-    intro:"Ideal for brands that are just starting out.",note:"+ R$ 49/month for hosting and domain",
+    intro:"Ideal for brands that are just starting out.",note:"+ $19/month for hosting and domain",
     items:["Business website (up to 5 pages)","Custom design","Fully responsive website","Product catalog with WhatsApp ordering","Social media integration","30 days of support"],
     details:{deadline:"12–18 days",revisions:"2 rounds",support:"30 days after launch"},
     extras:["Basic SEO and Google indexing","Privacy policy","Launch and domain setup","Monthly fee: Cloudflare hosting, domain, HTTPS and small tweaks"],
    },
    {
-    intro:"For brands that want to sell online.",note:"+ R$ 89/month for hosting and domain",
+    intro:"For brands that want to sell online.",note:"+ $29/month for hosting and domain",
     items:["Everything in Start","Online store with payment gateway","Product management and catalog","A dedicated page for each product","Store admin login","Order and revenue manager","90 days of support"],
     details:{deadline:"10–12 days",revisions:"3 rounds",support:"90 days after launch"},
     extras:["Integrated database","Terms of use and privacy policy","Animations and micro-interactions","Monthly fee: Cloudflare hosting, domain, HTTPS and small tweaks"],
@@ -333,9 +333,9 @@ export const copy:Record<Lang,Copy>={
  },
 };
 
-/** Preço do plano na moeda e no formato do idioma: R$ 1.300 (pt), R$ 1,300 (en), € 1.000 (it). */
-export const formatPrice=(plan:{brl:number;eur:number},lang:Lang)=>
- lang==="it"?"€ "+plan.eur.toLocaleString("it-IT"):"R$ "+plan.brl.toLocaleString(lang==="en"?"en-US":"pt-BR");
+/** Preço do plano na moeda e no formato do idioma: R$ 1.300 (pt), $1,400 (en), € 1.000 (it). */
+export const formatPrice=(plan:{brl:number;usd:number;eur:number},lang:Lang)=>
+ lang==="en"?"$"+plan.usd.toLocaleString("en-US"):lang==="it"?"€ "+plan.eur.toLocaleString("it-IT"):"R$ "+plan.brl.toLocaleString("pt-BR");
 
 /** Planos completos (dados fixos + textos) no idioma pedido. */
 export const plansFor=(lang:Lang):Plan[]=>planBase.map((b,i)=>({...copy[lang].plans[i],number:b.number,name:b.name,price:formatPrice(b,lang),featured:b.featured}));
