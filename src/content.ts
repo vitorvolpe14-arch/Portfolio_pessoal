@@ -61,14 +61,13 @@ export const projects:Project[]=[
 /**
  * Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior.
  * Preço em reais (`brl`, versão em português), dólares (`usd`, inglês) e euros (`eur`, italiano).
- * Dólar e euro partem do mercado de freelancers de cada lugar (pesquisa de outubro de 2026), sem
- * conversão do real. São preços de lançamento, cerca de 25–30% abaixo do piso dos freelancers locais
- * enquanto ainda não há clientes lá fora, mas bem acima dos valores de marketplace.
+ * Dólar e euro não são conversão do real: são preços de lançamento, abaixo do que freelancers
+ * cobram nos EUA e na Itália enquanto ainda não há clientes lá fora, com o plano maior abaixo de 1.500.
  */
 export const planBase:{number:string;name:string;brl:number;usd:number;eur:number;featured?:boolean}[]=[
- {number:"01",name:"Start",brl:799,usd:1000,eur:650},
- {number:"02",name:"Studio",brl:1300,usd:2200,eur:1800,featured:true},
- {number:"03",name:"Signature",brl:2000,usd:3500,eur:2600},
+ {number:"01",name:"Start",brl:799,usd:550,eur:490},
+ {number:"02",name:"Studio",brl:1300,usd:1050,eur:950,featured:true},
+ {number:"03",name:"Signature",brl:2000,usd:1450,eur:1390},
 ];
 
 export const stack=["React","TypeScript","JavaScript","CSS","GitHub","Cloudflare"];
