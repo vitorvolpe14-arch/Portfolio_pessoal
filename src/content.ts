@@ -61,11 +61,13 @@ export const projects:Project[]=[
 /**
  * Quanto mais caro o plano, mais serviços: cada um inclui tudo do anterior.
  * Preço em reais (`brl`, versão em português), dólares (`usd`, inglês) e euros (`eur`, italiano).
+ * Dólar e euro seguem o mercado de freelancers de cada lugar (pesquisa de outubro de 2026), sem
+ * conversão do real: ficam na faixa de entrada do que freelancers cobram nos EUA e na Itália.
  */
 export const planBase:{number:string;name:string;brl:number;usd:number;eur:number;featured?:boolean}[]=[
- {number:"01",name:"Start",brl:799,usd:400,eur:380},
- {number:"02",name:"Studio",brl:1300,usd:850,eur:700,featured:true},
- {number:"03",name:"Signature",brl:2000,usd:1400,eur:1000},
+ {number:"01",name:"Start",brl:799,usd:1500,eur:900},
+ {number:"02",name:"Studio",brl:1300,usd:3500,eur:2200,featured:true},
+ {number:"03",name:"Signature",brl:2000,usd:5500,eur:3500},
 ];
 
 export const stack=["React","TypeScript","JavaScript","CSS","GitHub","Cloudflare"];
@@ -214,13 +216,13 @@ export const copy:Record<Lang,Copy>={
   payment:{parts:["50% upfront","50% on delivery"],full:"50% upfront and 50% on delivery"},
   plans:[
    {
-    intro:"Ideal for brands that are just starting out.",note:"+ $19/month for hosting and domain",
+    intro:"Ideal for brands that are just starting out.",note:"+ $39/month for hosting and domain",
     items:["Business website (up to 5 pages)","Custom design","Fully responsive website","Product catalog with WhatsApp ordering","Social media integration","30 days of support"],
     details:{deadline:"12–18 days",revisions:"2 rounds",support:"30 days after launch"},
     extras:["Basic SEO and Google indexing","Privacy policy","Launch and domain setup","Monthly fee: Cloudflare hosting, domain, HTTPS and small tweaks"],
    },
    {
-    intro:"For brands that want to sell online.",note:"+ $29/month for hosting and domain",
+    intro:"For brands that want to sell online.",note:"+ $69/month for hosting and domain",
     items:["Everything in Start","Online store with payment gateway","Product management and catalog","A dedicated page for each product","Store admin login","Order and revenue manager","90 days of support"],
     details:{deadline:"10–12 days",revisions:"3 rounds",support:"90 days after launch"},
     extras:["Integrated database","Terms of use and privacy policy","Animations and micro-interactions","Monthly fee: Cloudflare hosting, domain, HTTPS and small tweaks"],
@@ -293,13 +295,13 @@ export const copy:Record<Lang,Copy>={
   payment:{parts:["50% alla firma","50% alla consegna"],full:"50% alla firma e 50% alla consegna"},
   plans:[
    {
-    intro:"Ideale per i brand che stanno iniziando.",note:"+ € 19/mese per hosting e dominio",
+    intro:"Ideale per i brand che stanno iniziando.",note:"+ € 29/mese per hosting e dominio",
     items:["Sito istituzionale (fino a 5 pagine)","Design personalizzato","Sito 100% responsive","Catalogo prodotti con ordini via WhatsApp","Integrazione con i social network","Assistenza per 30 giorni"],
     details:{deadline:"12–18 giorni",revisions:"2 revisioni",support:"30 giorni dopo la pubblicazione"},
     extras:["SEO di base e indicizzazione su Google","Informativa sulla privacy","Pubblicazione e configurazione del dominio","Canone mensile: hosting su Cloudflare, dominio, HTTPS e piccole modifiche"],
    },
    {
-    intro:"Per i brand che vogliono vendere online.",note:"+ € 29/mese per hosting e dominio",
+    intro:"Per i brand che vogliono vendere online.",note:"+ € 49/mese per hosting e dominio",
     items:["Tutto il piano Start","Negozio online con gateway di pagamento","Gestione e catalogo prodotti","Una pagina dedicata per ogni prodotto","Accesso admin al negozio","Gestione di ordini e incassi","Assistenza per 90 giorni"],
     details:{deadline:"10–12 giorni",revisions:"3 revisioni",support:"90 giorni dopo la pubblicazione"},
     extras:["Database integrato","Termini d'uso e informativa sulla privacy","Animazioni e microinterazioni","Canone mensile: hosting su Cloudflare, dominio, HTTPS e piccole modifiche"],
