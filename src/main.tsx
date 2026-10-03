@@ -1,13 +1,25 @@
-import{Fragment,StrictMode,useEffect,useRef,useState,type CSSProperties}from"react";
+import{Fragment,StrictMode,createContext,useContext,useEffect,useRef,useState,type CSSProperties,type ReactNode}from"react";
 import{createRoot}from"react-dom/client";
 import"./styles.css";
-import{contact,disciplines,nav,payment,plans,projects,stack,steps,type Plan,type Project}from"./content";
+import{contact,copy,langFromPath,languages,plansFor,projects,site,stack,type Copy,type Lang,type Project}from"./content";
 import{ArrowRight,ArrowUpRight,Check}from"./art";
 
 document.documentElement.classList.add("js");
 
 const reducedMotion=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const vars=(v:Record<string,string|number>)=>v as CSSProperties;
+
+/** Idioma atual (pelo endereço: /, /en/ ou /it/) e os textos dele. */
+const LangContext=createContext<{lang:Lang;t:Copy;setLang:(l:Lang)=>void}>({lang:"pt",t:copy.pt,setLang:()=>{}});
+const useLang=()=>useContext(LangContext);
+
+/** *palavra* em itálico. */
+const emphasis=(line:string)=>line.split(/\*(.+?)\*/).map((part,i)=>i%2?<em key={i}>{part}</em>:part);
+/** Título com quebras de linha ("\n") e itálico (*palavra*). */
+function Rich({text}:{text:string}):ReactNode{
+ return text.split("\n").map((line,i)=><Fragment key={i}>{i>0&&<br/>}{emphasis(line)}</Fragment>);
+}
+const whatsappUrl=(t:Copy)=>`https://wa.me/${contact.whatsapp.number}?text=${encodeURIComponent(t.contact.message)}`;
 
 function useReveal(){
  useEffect(()=>{
@@ -113,7 +125,7 @@ function useSectionState(){
  const[active,setActive]=useState("top");
  const[theme,setTheme]=useState<"light"|"dark">("light");
  useEffect(()=>{
-  const sections=nav.map(n=>document.getElementById(n.id)).filter((el):el is HTMLElement=>!!el);
+  const sections=copy.pt.nav.map(n=>document.getElementById(n.id)).filter((el):el is HTMLElement=>!!el);
   const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)}),{rootMargin:"-45% 0px -50% 0px"});
   sections.forEach(s=>io.observe(s));
   const themed=[...document.querySelectorAll<HTMLElement>("[data-theme]")];
@@ -145,23 +157,34 @@ function useCycle(length:number,ms=2400){
  return index;
 }
 
+/** PT · EN · IT: troca o idioma sem recarregar; os links também servem para o Google achar cada versão. */
+function LangSwitch(){
+ const{lang,t,setLang}=useLang();
+ return <nav className="lang-switch" aria-label={t.header.language}>
+  {languages.map(l=><a key={l.id} href={l.path} hrefLang={l.htmlLang} lang={l.htmlLang} title={l.name} aria-current={l.id===lang?"true":undefined}
+   onClick={e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();setLang(l.id)}}>{l.label}</a>)}
+ </nav>
+}
+
 function Header(){
+ const{t}=useLang();
  const{active,theme}=useSectionState();
  const scrolled=useScrolled();
  const[open,setOpen]=useState(false);
  useEffect(()=>{document.body.classList.toggle("menu-open",open)},[open]);
  useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false)};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
  return <header className={"site-header theme-"+(open?"dark":theme)+(scrolled?" is-scrolled":"")+(open?" is-open":"")}>
-  <a className="brand" href="#top" aria-label="Volpe — início"><BrandMark/></a>
-  <nav id="menu" className="site-nav" aria-label="Principal">
-   {nav.map(n=><a key={n.id} href={"#"+n.id} className={active===n.id?"is-active":undefined} aria-current={active===n.id?"true":undefined} onClick={()=>setOpen(false)}>{n.label}</a>)}
-   <a className="btn btn-outline nav-cta-mobile" href="#contato" onClick={()=>setOpen(false)}>Vamos conversar <ArrowRight className="btn-arrow"/></a>
+  <a className="brand" href="#top" aria-label={t.header.home}><BrandMark/></a>
+  <nav id="menu" className="site-nav" aria-label={t.header.mainNav}>
+   {t.nav.map(n=><a key={n.id} href={"#"+n.id} className={active===n.id?"is-active":undefined} aria-current={active===n.id?"true":undefined} onClick={()=>setOpen(false)}>{n.label}</a>)}
+   <a className="btn btn-outline nav-cta-mobile" href="#contato" onClick={()=>setOpen(false)}>{t.header.cta} <ArrowRight className="btn-arrow"/></a>
   </nav>
   <div className="header-side">
    <span className="location"><i className="dot"/>{contact.city}</span>
-   <a className="btn btn-outline" href="#contato">Vamos conversar <ArrowRight className="btn-arrow"/></a>
+   <LangSwitch/>
+   <a className="btn btn-outline" href="#contato">{t.header.cta} <ArrowRight className="btn-arrow"/></a>
   </div>
-  <button className="menu-toggle" aria-expanded={open} aria-controls="menu" aria-label={open?"Fechar menu":"Abrir menu"} onClick={()=>setOpen(o=>!o)}><span/><span/></button>
+  <button className="menu-toggle" aria-expanded={open} aria-controls="menu" aria-label={open?t.header.closeMenu:t.header.openMenu} onClick={()=>setOpen(o=>!o)}><span/><span/></button>
  </header>
 }
 
@@ -202,7 +225,8 @@ const orbs=[
 ];
 
 function Hero(){
- const current=useCycle(disciplines.length);
+ const{t}=useLang();
+ const current=useCycle(t.disciplines.length);
  return <section id="top" className="hero" data-theme="light" data-scene>
   <div className="hero-scene" aria-hidden="true">
    <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
@@ -214,21 +238,21 @@ function Hero(){
 
   <div className="hero-inner">
    <div className="hero-copy" data-speed=".1" data-depth="-.06">
-    <p className="hero-kicker" data-reveal>Vitor Volpato / Desenvolvedor de sites</p>
-    <h1 data-reveal><span>Eu crio</span><span>seu <em>site.</em></span></h1>
-    <p className="hero-lede" data-reveal>Crio sites institucionais e lojas virtuais sob medida para a sua marca, do design à publicação no ar.</p>
+    <p className="hero-kicker" data-reveal>{t.hero.kicker}</p>
+    <h1 data-reveal>{t.hero.title.split("\n").map((line,i)=><span key={i}>{emphasis(line)}</span>)}</h1>
+    <p className="hero-lede" data-reveal>{t.hero.lede}</p>
     <div className="hero-actions" data-reveal>
-     <a className="btn btn-dark" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Pedir orçamento <ArrowRight className="btn-arrow"/></a>
-     <a className="play-link" href="#servicos"><span className="play-ring"><ArrowRight className="play-arrow"/></span>Ver planos e preços</a>
+     <a className="btn btn-dark" href={whatsappUrl(t)} target="_blank" rel="noopener noreferrer">{t.hero.quote} <ArrowRight className="btn-arrow"/></a>
+     <a className="play-link" href="#servicos"><span className="play-ring"><ArrowRight className="play-arrow"/></span>{t.hero.plans}</a>
     </div>
    </div>
   </div>
 
-  <ul className="hero-disciplines" aria-label="Áreas de atuação" data-speed=".14" data-depth="-.15">
-   {disciplines.map((d,i)=><li key={d} className={i===current?"is-current":undefined}>{d}</li>)}
+  <ul className="hero-disciplines" aria-label={t.hero.areas} data-speed=".14" data-depth="-.15">
+   {t.disciplines.map((d,i)=><li key={i} className={i===current?"is-current":undefined}>{d}</li>)}
   </ul>
-  <a className="hero-scroll" href="#projetos" aria-label="Rolar para projetos">Scroll<i/></a>
-  <p className="hero-signature" data-speed=".08">Sites sob medida<i/></p>
+  <a className="hero-scroll" href="#projetos" aria-label={t.hero.scroll}>Scroll<i/></a>
+  <p className="hero-signature" data-speed=".08">{t.hero.signature}<i/></p>
  </section>
 }
 
@@ -240,18 +264,19 @@ function ProjectMark({logo}:{logo:Project["logo"]}){
 }
 
 function Projects(){
+ const{t}=useLang();
  return <section id="projetos" className="projects" data-theme="light">
   <div className="projects-copy" data-speed=".08">
    <div data-reveal>
-    <p className="label"><i className="dot"/>Projetos</p>
-    <h2>Marcas reais.<br/><em>Resultados reais.</em></h2>
-    <p className="section-lede">Lojas virtuais e sites que desenvolvi para marcas e pessoas reais. Clique na logo para visitar.</p>
-    <a className="text-cta" href="#contato"><i className="dot"/>Quero um projeto assim <ArrowRight className="btn-arrow"/></a>
+    <p className="label"><i className="dot"/>{t.projects.label}</p>
+    <h2><Rich text={t.projects.title}/></h2>
+    <p className="section-lede">{t.projects.lede}</p>
+    <a className="text-cta" href="#contato"><i className="dot"/>{t.projects.cta} <ArrowRight className="btn-arrow"/></a>
    </div>
   </div>
   <ul className="project-logos">
    {projects.filter(p=>!p.hidden).map((p,i)=><li key={p.title} data-speed={i%2?".04":"-.04"}>
-    <a className={"project-logo"+("font" in p.logo?" font-"+p.logo.font:" has-image")} href={p.url} target="_blank" rel="noopener noreferrer" data-reveal style={vars({"--i":i})} aria-label={p.title+" — abrir o site em nova aba"}>
+    <a className={"project-logo"+("font" in p.logo?" font-"+p.logo.font:" has-image")} href={p.url} target="_blank" rel="noopener noreferrer" data-reveal style={vars({"--i":i})} aria-label={p.title+" — "+t.projects.open}>
      <span className="project-logo-mark"><ProjectMark logo={p.logo}/></span>
      <span className="project-logo-go" aria-hidden="true"><ArrowUpRight/></span>
     </a>
@@ -261,14 +286,17 @@ function Projects(){
 }
 
 function Marquee(){
- const words=[...disciplines,...disciplines,...disciplines];
+ const{t}=useLang();
+ const words=[...t.disciplines,...t.disciplines,...t.disciplines];
  return <div className="marquee" data-theme="dark" aria-hidden="true">
   <div className="marquee-row" data-speed-x=".55">{words.map((w,i)=><span key={i}>{w}<i/></span>)}</div>
   <div className="marquee-row is-outline" data-speed-x="-.55">{words.map((w,i)=><span key={i}>{w}<i/></span>)}</div>
  </div>
 }
 
-function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
+function PlanDialog({index,onClose}:{index:number|null;onClose:()=>void}){
+ const{lang,t}=useLang();
+ const plan=index===null?null:plansFor(lang)[index];
  const ref=useRef<HTMLDialogElement>(null);
  useEffect(()=>{
   const d=ref.current;if(!d)return;
@@ -277,68 +305,72 @@ function PlanDialog({plan,onClose}:{plan:Plan|null;onClose:()=>void}){
  },[plan]);
  return <dialog ref={ref} className="plan-dialog" onClose={onClose} onClick={e=>{if(e.target===ref.current)onClose()}} aria-labelledby="plan-dialog-title">
   {plan&&<div className="plan-dialog-body">
-   <button className="dialog-close" onClick={onClose} aria-label="Fechar detalhes">×</button>
-   <p className="label"><i className="dot"/>Plano {plan.number}</p>
+   <button className="dialog-close" onClick={onClose} aria-label={t.plansSection.closeDetails}>×</button>
+   <p className="label"><i className="dot"/>{t.plansSection.plan} {plan.number}</p>
    <h3 id="plan-dialog-title">{plan.name}</h3>
    <p className="plan-intro">{plan.intro}</p>
-   <p className="plan-price">{plan.price}<small> / projeto</small></p>
+   <p className="plan-price">{plan.price}<small> {t.plansSection.perProject}</small></p>
    {plan.note&&<p className="plan-note">{plan.note}</p>}
-   <dl className="plan-facts">{[...plan.details,{label:"Pagamento",value:payment.full}].map(d=><div key={d.label}><dt>{d.label}</dt><dd>{d.value}</dd></div>)}</dl>
+   <dl className="plan-facts">{[
+    [t.labels.deadline,plan.details.deadline],[t.labels.revisions,plan.details.revisions],[t.labels.support,plan.details.support],[t.labels.payment,t.payment.full],
+   ].map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
    <div className="plan-lists">
     <ul>{plan.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
     <ul>{plan.extras.map(x=><li key={x}><Check/>{x}</li>)}</ul>
    </div>
-   <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent("Interesse no plano "+plan.name)}`}>Quero este plano <ArrowRight className="btn-arrow"/></a>
+   <a className="btn btn-light" href={`mailto:${contact.email}?subject=${encodeURIComponent(t.plansSection.subject.replace("{plan}",plan.name))}`}>{t.plansSection.choose} <ArrowRight className="btn-arrow"/></a>
   </div>}
  </dialog>
 }
 
 function Plans(){
- const[selected,setSelected]=useState<Plan|null>(null);
+ const{lang,t}=useLang();
+ const[selected,setSelected]=useState<number|null>(null);
  return <section id="servicos" className="plans" data-theme="dark">
-  <div className="bg-word plans-word" data-speed-x=".3" aria-hidden="true">Planos</div>
+  <div className="bg-word plans-word" data-speed-x=".3" aria-hidden="true">{t.plansSection.word}</div>
   <div className="plans-copy" data-speed=".1">
    <div data-reveal>
-    <p className="label"><i className="dot"/>Planos</p>
-    <h2>Escolha o plano<br/><em>ideal</em> para sua marca.</h2>
-    <p className="section-lede">Soluções completas para diferentes momentos do seu negócio.</p>
+    <p className="label"><i className="dot"/>{t.plansSection.label}</p>
+    <h2><Rich text={t.plansSection.title}/></h2>
+    <p className="section-lede">{t.plansSection.lede}</p>
     <ArrowRight className="long-arrow"/>
    </div>
   </div>
   <div className="plan-grid">
-   {plans.map((p,i)=><div key={p.name} className="plan-slot" data-speed={[".04","-.08",".1"][i]}>
+   {plansFor(lang).map((p,i)=><div key={p.name} className="plan-slot" data-speed={[".04","-.08",".1"][i]}>
     <article className={"plan-card"+(p.featured?" is-featured":"")} data-reveal style={vars({"--i":i})}>
-     {p.featured&&<span className="plan-badge">Mais escolhido</span>}
+     {p.featured&&<span className="plan-badge">{t.plansSection.featured}</span>}
      <span className="plan-number">{p.number}</span>
      <h3>{p.name}</h3>
      <p className="plan-intro">{p.intro}</p>
      <p className="plan-price">{p.price}</p>
-     <p className="plan-deadline">Prazo: {p.details.find(d=>d.label==="Prazo")?.value}</p>
-     <p className="plan-payment">{payment.parts.map((x,i)=><Fragment key={x}>{i>0&&" · "}<span>{x}</span></Fragment>)}</p>
+     <p className="plan-deadline">{t.labels.deadline}: {p.details.deadline}</p>
+     <p className="plan-payment">{t.payment.parts.map((x,i)=><Fragment key={i}>{i>0&&" · "}<span>{x}</span></Fragment>)}</p>
      {p.note&&<p className="plan-note">{p.note}</p>}
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
-     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(p)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>Ver detalhes<ArrowRight className="btn-arrow"/></button>
+     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(i)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>{t.plansSection.seeDetails}<ArrowRight className="btn-arrow"/></button>
     </article>
    </div>)}
   </div>
-  <p className="plans-aside" aria-hidden="true" data-speed="-.12">Tecnologia<br/>Criatividade<br/><span><i className="dot"/>Resultado</span></p>
-  <PlanDialog plan={selected} onClose={()=>setSelected(null)}/>
+  <p className="plans-aside" aria-hidden="true" data-speed="-.12">{t.plansSection.aside[0]}<br/>{t.plansSection.aside[1]}<br/><span><i className="dot"/>{t.plansSection.aside[2]}</span></p>
+  <PlanDialog index={selected} onClose={()=>setSelected(null)}/>
  </section>
 }
 
 function About(){
+ const{t}=useLang();
  return <section id="sobre" className="about" data-theme="light">
-  <div className="bg-word about-word" data-speed-x="-.3" aria-hidden="true">Design + Código</div>
+  <div className="bg-word about-word" data-speed-x="-.3" aria-hidden="true">{t.about.word}</div>
   <div className="about-copy" data-speed=".12">
    <div data-reveal>
-    <p className="label"><i className="dot"/>Sobre</p>
-    <h2>Design que<br/>encontra <em>código.</em></h2>
-    <p className="section-lede">Sou Vitor Volpato. Meu trabalho conecta direção visual e desenvolvimento para criar experiências com estética, lógica e função — uma presença digital que faz sentido para o negócio, não só um site no ar.</p>
+    <p className="label"><i className="dot"/>{t.about.label}</p>
+    <h2><Rich text={t.about.title}/></h2>
+    <p className="section-lede">{t.about.lede}</p>
     <ul className="stack">{stack.map(s=><li key={s}>{s}</li>)}</ul>
    </div>
   </div>
   <ol className="process">
-   {steps.map((s,i)=><li key={s.title} data-speed={(-.03-i*.025).toFixed(3)}>
+   {t.steps.map((s,i)=><li key={i} data-speed={(-.03-i*.025).toFixed(3)}>
     <div className="process-row" data-reveal style={vars({"--i":i})}>
      <span className="process-number">0{i+1}</span>
      <div><h3>{s.title}</h3><p>{s.text}</p></div>
@@ -348,34 +380,34 @@ function About(){
  </section>
 }
 
-const whatsappUrl=`https://wa.me/${contact.whatsapp.number}?text=${encodeURIComponent(contact.whatsapp.message)}`;
-
 function CopyEmail(){
+ const{t}=useLang();
  const[copied,setCopied]=useState(false);
  const copy=()=>{
   const done=()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400)};
   const select=()=>{const el=document.querySelector("a.contact-mail[href^='mailto:']");const sel=window.getSelection();if(el&&sel){const r=document.createRange();r.selectNodeContents(el);sel.removeAllRanges();sel.addRange(r)}};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(contact.email).then(done,select);else select();
  };
- return <button type="button" className="copy-mail" onClick={copy} aria-live="polite">{copied?"E-mail copiado":"Copiar e-mail"}</button>
+ return <button type="button" className="copy-mail" onClick={copy} aria-live="polite">{copied?t.contact.copied:t.contact.copy}</button>
 }
 
 function Contact(){
+ const{t}=useLang();
  return <section id="contato" className="contact" data-theme="dark" data-scene>
   <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
   <FoxLogo tone="white" speed=".12" depth=".4"/>
   <div className="contact-inner" data-speed="-.05">
    <div data-reveal>
-    <p className="label"><i className="dot"/>Contato</p>
-    <h2>Tem uma ideia?<br/>Vamos dar <em>forma</em><br/>a ela.</h2>
-    <p className="section-lede">Me conte o que você quer criar, onde está hoje e o que precisa acontecer. A próxima etapa começa por uma conversa.</p>
+    <p className="label"><i className="dot"/>{t.contact.label}</p>
+    <h2><Rich text={t.contact.title}/></h2>
+    <p className="section-lede">{t.contact.lede}</p>
     <div className="contact-actions">
-     <a className="btn btn-light" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Chamar no WhatsApp <ArrowRight className="btn-arrow"/></a>
-     <a className="btn btn-outline" href={`mailto:${contact.email}?subject=${encodeURIComponent("Novo projeto")}`}>Enviar e-mail <ArrowRight className="btn-arrow"/></a>
+     <a className="btn btn-light" href={whatsappUrl(t)} target="_blank" rel="noopener noreferrer">{t.contact.whatsappButton} <ArrowRight className="btn-arrow"/></a>
+     <a className="btn btn-outline" href={`mailto:${contact.email}?subject=${encodeURIComponent(t.contact.subject)}`}>{t.contact.emailButton} <ArrowRight className="btn-arrow"/></a>
     </div>
     <dl className="contact-list">
-     <div><dt>WhatsApp</dt><dd><a className="contact-mail" href={whatsappUrl} target="_blank" rel="noopener noreferrer">{contact.whatsapp.display}</a></dd></div>
-     <div><dt>E-mail</dt><dd><a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a><CopyEmail/></dd></div>
+     <div><dt>WhatsApp</dt><dd><a className="contact-mail" href={whatsappUrl(t)} target="_blank" rel="noopener noreferrer">{contact.whatsapp.display}</a></dd></div>
+     <div><dt>{t.contact.email}</dt><dd><a className="contact-mail" href={"mailto:"+contact.email}>{contact.email}</a><CopyEmail/></dd></div>
     </dl>
    </div>
   </div>
@@ -383,17 +415,38 @@ function Contact(){
 }
 
 function Footer(){
+ const{t}=useLang();
  return <footer className="site-footer" data-theme="dark">
-  <a className="brand" href="#top" aria-label="Volpe — voltar ao topo"><BrandMark/><span>Volpe</span></a>
+  <a className="brand" href="#top" aria-label={t.footer.backToTop}><BrandMark/><span>Volpe</span></a>
   <p>© {new Date().getFullYear()} Vitor Volpato · {contact.city}</p>
-  <nav aria-label="Rodapé"><a href="#projetos">Projetos</a><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a><a href="#top">Topo ↑</a></nav>
+  <nav aria-label={t.footer.nav}>{t.nav.slice(1).map(n=><a key={n.id} href={"#"+n.id}>{n.label}</a>)}<a href="#top">{t.footer.top}</a></nav>
  </footer>
 }
 
+/** Título, descrição, idioma e endereço canônico da página acompanham o idioma escolhido. */
+function useDocumentLang(lang:Lang){
+ useEffect(()=>{
+  const l=languages.find(x=>x.id===lang)!,m=copy[lang].meta;
+  document.documentElement.lang=l.htmlLang;
+  document.title=m.title;
+  document.querySelector('meta[name="description"]')?.setAttribute("content",m.description);
+  document.querySelector('link[rel="canonical"]')?.setAttribute("href",site+l.path);
+ },[lang]);
+}
+
 function App(){
+ const[lang,setLangState]=useState<Lang>(()=>langFromPath(location.pathname));
+ const setLang=(l:Lang)=>{
+  if(l===lang)return;
+  try{history.pushState(null,"",languages.find(x=>x.id===l)!.path+location.hash)}catch{/* iframe sem URL própria */}
+  setLangState(l);
+ };
+ useEffect(()=>{const onPop=()=>setLangState(langFromPath(location.pathname));window.addEventListener("popstate",onPop);return()=>window.removeEventListener("popstate",onPop)},[]);
+ useDocumentLang(lang);
  useReveal();useParallax();useInPageLinks();
- return <>
-  <a className="skip-link" href="#projetos">Pular para o conteúdo</a>
+ const t=copy[lang];
+ return <LangContext.Provider value={{lang,t,setLang}}>
+  <a className="skip-link" href="#projetos">{t.skip}</a>
   <Header/>
   <main>
    <Hero/>
@@ -404,7 +457,7 @@ function App(){
    <Contact/>
   </main>
   <Footer/>
- </>
+ </LangContext.Provider>
 }
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App/></StrictMode>);
