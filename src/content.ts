@@ -52,10 +52,10 @@ export const contact={
 };
 
 export const projects:Project[]=[
- {title:"FØRN.LY",url:"https://fornly.com.br/",logo:{image:"/projects/fornly-logo.svg"}},
- {title:"Key",url:"https://key-site-jaut.onrender.com/",logo:{text:"KEY",font:"playfair"}},
- {title:"Caroline e Leandro",url:"https://casamento-carol-e-leandro.vitorvolpe14.workers.dev/",logo:{text:"Caroline e Leandro",font:"wedding",script:"e"}},
  {title:"Montê",url:"https://oficialmontee.com.br/",logo:{text:"MONTÊ",font:"lovelo"}},
+ {title:"FØRN.LY",url:"https://fornly.com.br/",logo:{image:"/projects/fornly-logo.svg"}},
+ {title:"Caroline e Leandro",url:"https://casamento-carol-e-leandro.vitorvolpe14.workers.dev/",logo:{text:"Caroline e Leandro",font:"wedding",script:"e"}},
+ {title:"Key",url:"https://key-site-jaut.onrender.com/",logo:{text:"KEY",font:"playfair"}},
 ];
 
 /**
