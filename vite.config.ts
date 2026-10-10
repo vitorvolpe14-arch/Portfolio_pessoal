@@ -8,7 +8,7 @@ const attr=(s:string)=>s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/<
 
 /**
  * Uma página por idioma: dist/index.html (português), dist/en/index.html e dist/it/index.html.
- * Cada uma sai com idioma, título, descrição e endereço próprios (Google e prévias de link)
+ * Cada uma sai com idioma, título, descrição, endereço e imagem de prévia (public/og/<idioma>.jpg) próprios
  * e com os links hreflang que ligam as três versões. O conteúdo vem de src/content.ts.
  */
 function languagePages():Plugin{
@@ -22,7 +22,7 @@ function languagePages():Plugin{
    const alternates=languages.map(l=>`<link rel="alternate" hreflang="${l.htmlLang}" href="${site}${l.path}"/>`).join("")
     +`<link rel="alternate" hreflang="x-default" href="${site}/"/>`;
    for(const l of languages){
-    const m=copy[l.id].meta,url=site+l.path;
+    const m=copy[l.id].meta,url=site+l.path,image=`${site}/og/${l.id}.jpg`;
     const html=base
      .replace(/<html lang="[^"]*"/,()=>`<html lang="${l.htmlLang}"`)
      .replace(/<title>[\s\S]*?<\/title>/,()=>`<title>${attr(m.title)}</title>`)
@@ -30,6 +30,9 @@ function languagePages():Plugin{
      .replace(/(<meta property="og:title" content=")[^"]*/,(_,a)=>a+attr(m.ogTitle))
      .replace(/(<meta property="og:description" content=")[^"]*/,(_,a)=>a+attr(m.ogDescription))
      .replace(/(<meta property="og:url" content=")[^"]*/,(_,a)=>a+url)
+     .replace(/(<meta property="og:image" content=")[^"]*/,(_,a)=>a+image)
+     .replace(/(<meta property="og:image:alt" content=")[^"]*/,(_,a)=>a+attr(m.ogImageAlt))
+     .replace(/(<meta name="twitter:image" content=")[^"]*/,(_,a)=>a+image)
      .replace(/(<link rel="canonical" href=")[^"]*/,(_,a)=>a+url)
      .replace("</head>",()=>`<meta property="og:locale" content="${l.locale}"/>${alternates}</head>`);
     const file=join(outDir,l.path,"index.html");

@@ -73,7 +73,8 @@ export const planBase:{number:string;name:string;brl:number;usd:number;eur:numbe
 export const stack=["React","TypeScript","JavaScript","CSS","GitHub","Cloudflare"];
 
 export type Copy={
- meta:{title:string;description:string;ogTitle:string;ogDescription:string};
+ /** ogImageAlt descreve a imagem de prévia de link (public/og/<idioma>.jpg). */
+ meta:{title:string;description:string;ogTitle:string;ogDescription:string;ogImageAlt:string};
  nav:{id:string;label:string}[];
  disciplines:string[];
  header:{home:string;cta:string;mainNav:string;openMenu:string;closeMenu:string;language:string};
@@ -103,6 +104,7 @@ export const copy:Record<Lang,Copy>={
    description:"Vitor Volpato, desenvolvedor de sites em Fortaleza. Sites institucionais e lojas virtuais sob medida, do design à publicação.",
    ogTitle:"Volpe — Desenvolvedor de sites",
    ogDescription:"Sites institucionais e lojas virtuais sob medida, do design à publicação.",
+   ogImageAlt:"Volpe — Eu crio seu site. Sites e lojas virtuais sob medida.",
   },
   nav:[
    {id:"top",label:"Início"},
@@ -182,6 +184,7 @@ export const copy:Record<Lang,Copy>={
    description:"Vitor Volpato, web developer based in Fortaleza, Brazil. Custom websites and online stores, from design to launch.",
    ogTitle:"Volpe — Web Developer",
    ogDescription:"Custom websites and online stores, from design to launch.",
+   ogImageAlt:"Volpe — I build your site. Custom websites and online stores.",
   },
   nav:[
    {id:"top",label:"Home"},
@@ -261,6 +264,7 @@ export const copy:Record<Lang,Copy>={
    description:"Vitor Volpato, sviluppatore web a Fortaleza, in Brasile. Siti istituzionali e negozi online su misura, dal design alla pubblicazione.",
    ogTitle:"Volpe — Sviluppatore web",
    ogDescription:"Siti istituzionali e negozi online su misura, dal design alla pubblicazione.",
+   ogImageAlt:"Volpe — Creo il tuo sito. Siti e negozi online su misura.",
   },
   nav:[
    {id:"top",label:"Home"},
