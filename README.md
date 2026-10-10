@@ -10,6 +10,8 @@ Português em `/`, inglês em `/en/` e italiano em `/it/`. O seletor PT · EN ·
 
 No build, `vite.config.ts` gera `dist/en/index.html` e `dist/it/index.html`. Cada versão sai com idioma, título, descrição, endereço canônico e links `hreflang` próprios, para o Google indexar as três. `public/sitemap.xml` lista as três versões.
 
+Prévia de link (WhatsApp, Instagram, Facebook): `public/og/pt.jpg`, `en.jpg` e `it.jpg`, imagens de 1200×630 com o visual do topo do site, uma por idioma (`og:image`). Ao trocar a imagem, mantenha o tamanho e use o [Depurador de compartilhamento do Facebook](https://developers.facebook.com/tools/debug/) ("Extrair novamente") para atualizar a prévia no Instagram e no Facebook.
+
 ## Editar conteúdo
 - **Textos, projetos, planos, preços e stack:** `src/content.ts`.
   - Os textos ficam em `copy.pt`, `copy.en` e `copy.it`, com a mesma estrutura. Ao mudar um texto, mude nos três. Nos títulos, `\n` quebra a linha e `*palavra*` fica em itálico.
