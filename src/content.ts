@@ -284,8 +284,8 @@ export const copy:Record<Lang,Copy>={
   },
   projects:{
    label:"Progetti",
-   title:"Marche reali.\n*Risultati reali.*",
-   lede:"Negozi online e siti che ho sviluppato per marche e persone reali. Clicca su un logo per visitarli.",
+   title:"Brand reali.\n*Risultati reali.*",
+   lede:"Negozi online e siti che ho sviluppato per brand e persone fisiche. Clicca su un logo per visitarli.",
    cta:"Voglio un progetto così",open:"apri il sito in una nuova scheda",
   },
   plansSection:{
