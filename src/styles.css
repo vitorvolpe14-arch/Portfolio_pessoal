@@ -309,6 +309,8 @@ h2 em{font-style:italic}
  .menu-toggle{display:block;z-index:2}
  .site-nav{position:fixed;inset:0;flex-direction:column;align-items:flex-start;justify-content:center;gap:22px;padding:100px var(--gutter) 40px;background:rgba(5,5,5,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
  .is-open .site-nav{opacity:1;visibility:visible}
+ /* backdrop-filter no cabeçalho prende o menu fixed a ele (menu ficava com a altura do cabeçalho ao abrir com a página rolada) */
+ .site-header.is-open{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-color:transparent}
  .site-nav a{font-family:var(--serif);font-size:44px;font-weight:400;letter-spacing:0;text-transform:none;line-height:1}
  .site-nav a::before{margin-left:0;width:8px;height:8px}
  .site-nav a.is-active{font-weight:400;font-style:italic}
