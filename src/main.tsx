@@ -3,6 +3,7 @@ import{createRoot}from"react-dom/client";
 import"./styles.css";
 import{contact,copy,langFromPath,languages,plansFor,projects,site,stack,type Copy,type Lang,type Project}from"./content";
 import{ArrowRight,ArrowUpRight,Check}from"./art";
+import{foxTurn,type FoxTone}from"./fox3d";
 
 document.documentElement.classList.add("js");
 
@@ -188,9 +189,6 @@ function Header(){
  </header>
 }
 
-/** Camadas da espessura: afinam em perfil circular para trás, deixando a borda da logo arredondada. */
-const layers=Array.from({length:20},(_,z)=>{const u=(19-z)/19;return{z,r:(1-.075*(1-Math.sqrt(1-u*u))).toFixed(4)}});
-
 /** Logo pequena do cabeçalho e rodapé: versão preta sobre fundos claros, branca sobre escuros. */
 function BrandMark(){
  return <span className="brand-mark" aria-hidden="true">
@@ -199,16 +197,18 @@ function BrandMark(){
  </span>
 }
 
-/** Logo em 3D (preta no topo, branca no contato): SVG vetorizado, nítido em qualquer tamanho. */
-function FoxLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:string}){
+/** Logo em 3D (preta no topo, branca no contato): renders do Blender que giram com o mouse e a rolagem (src/fox3d.ts). */
+function FoxLogo({tone,speed,depth,turn,intro}:{tone:FoxTone;speed:string;depth:string;turn:number;intro?:number}){
  const kind=" tone-"+tone;
+ const canvas=useRef<HTMLCanvasElement>(null);
+ const[ready,setReady]=useState(false);
+ useEffect(()=>canvas.current?foxTurn(canvas.current,tone,{turn,intro,onReady:()=>setReady(true)}):undefined,[tone,turn,intro]);
  return <>
-  <div className={"logo3d-shadow"+kind} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
-  <div className={"logo3d"+kind} data-speed={speed} data-depth={depth} aria-hidden="true">
+  <div className={"logo3d-shadow"+kind+(ready?" is-ready":"")} data-speed={speed} data-depth={(-Number(depth)*.8).toFixed(2)} aria-hidden="true"/>
+  <div className={"logo3d"+kind+(ready?" is-ready":"")} data-speed={speed} data-depth={depth} aria-hidden="true">
    <div className="logo3d-float">
     <div className="logo3d-rig">
-     {layers.map(l=><span key={l.z} className="logo3d-layer" style={vars({"--z":l.z,"--r":l.r})}/>)}
-     <img className="logo3d-face" src={`/fox-vector-${tone}.svg`} alt="" draggable={false} decoding="async"/>
+     <canvas ref={canvas} className="logo3d-face"/>
     </div>
    </div>
   </div>
@@ -232,7 +232,7 @@ function Hero(){
    <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
    <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
    <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
-   <FoxLogo tone="black" speed=".16" depth=".45"/>
+   <FoxLogo tone="black" speed=".16" depth=".45" turn={64} intro={-70}/>
    {orbs.map((o,i)=><span key={i} className={"orb orb-"+i} data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
@@ -395,7 +395,7 @@ function Contact(){
  const{t}=useLang();
  return <section id="contato" className="contact" data-theme="dark" data-scene>
   <div className="contact-glow" data-speed=".2" aria-hidden="true"/>
-  <FoxLogo tone="white" speed=".12" depth=".4"/>
+  <FoxLogo tone="white" speed=".12" depth=".4" turn={34}/>
   <div className="contact-inner" data-speed="-.05">
    <div data-reveal>
     <p className="label"><i className="dot"/>{t.contact.label}</p>

@@ -17,9 +17,13 @@ Prévia de link (WhatsApp, Instagram, Facebook): `public/og/pt.jpg`, `en.jpg` e 
   - Os textos ficam em `copy.pt`, `copy.en` e `copy.it`, com a mesma estrutura. Ao mudar um texto, mude nos três. Nos títulos, `\n` quebra a linha e `*palavra*` fica em itálico.
   - Planos: número, nome e preço ficam em `planBase`. Cada versão tem a sua moeda: reais em português (`brl`: R$ 799, R$ 1.300 e R$ 2.000), dólares em inglês (`usd`: $550, $1,050 e $1,450) e euros em italiano (`eur`: € 490, € 950 e € 1.390). Dólar e euro são preços de lançamento, abaixo do que freelancers cobram nos EUA e na Itália enquanto não há clientes lá fora (o plano maior fica abaixo de 1.500), sem conversão do real. Os textos de cada plano ficam em `plans`, dentro de cada idioma e na mesma ordem. Cada plano inclui tudo do anterior (quanto mais caro, mais serviços). `items` aparece no cartão; `extras` e `details` só em "Ver detalhes". A forma de pagamento (`payment`, 50% ao contratar e 50% na entrega) vale para todos. `note` aparece no cartão e nos detalhes: Start + R$ 49/mês e Studio + R$ 89/mês de hospedagem na Cloudflare e domínio (em inglês, + $25 e + $45; em italiano, + € 19 e + € 35); no Signature, inclusos.
   - Projetos aparecem como a logo de cada marca com link para o site (`url`). A logo é uma imagem em `public/projects/` (`logo.image`) ou texto na fonte da marca (`logo.text`/`logo.font`). `hidden: true` tira um projeto do site sem apagar os dados. A fonte Lovelo da logo da Montê fica em `public/fonts/`.
+- **Logo 3D (Blender):** a raposa do topo (preta) e do contato (branca) é uma escultura 3D renderizada no Blender, com as mesmas cores da logo vetorizada.
+  - `public/fox3d/black/` e `public/fox3d/white/`: um quadro WebP a cada 3° de giro (preta de -72° a +81°, branca de -39° a +51°; o quadro de frente é o `24.webp` na preta e o `13.webp` na branca).
+  - `src/fox3d.ts` desenha num `<canvas>` o quadro do ângulo atual, que segue o mouse e a rolagem (com transição suave entre quadros). No topo, a logo entra girando de -70° até ficar de frente. Os quadros de frente e da entrada carregam primeiro; os do contato só quando a seção se aproxima.
+  - `tools/fox3d/`: scripts que geram a escultura e os quadros (relevo a partir da arte vetorizada, malha, cena do Blender, calibração de cor). Ver o README de lá.
 - **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace, incluindo o sombreamento da escultura em faixas de tom (volume e vincos), e está em SVG, nítida em qualquer tamanho.
-  - `public/fox-vector-black.svg` (topo) e `public/fox-vector-white.svg` (contato), usadas na logo 3D.
-  - `public/fox-vector-mask.svg`: silhueta usada na espessura 3D e na sombra.
+  - `public/fox-vector-black.svg` e `public/fox-vector-white.svg`: arte vetorizada, usada como base da escultura 3D e da calibração de cor.
+  - `public/fox-vector-mask.svg`: silhueta usada na sombra da logo 3D.
   - `public/fox-vector-black-mark.svg` e `public/fox-vector-white-mark.svg`: versões sem margem para a logo pequena do cabeçalho e do rodapé.
   - `public/fox-logo.svg` é a silhueta vetorial avulsa antiga.
 - **Ícones:** `src/art.tsx`.
