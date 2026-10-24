@@ -171,7 +171,7 @@ h2 em{font-style:italic}
 .marquee-row i{width:.11em;height:.11em;border-radius:50%;background:var(--text)}
 
 .bg-word{position:absolute;z-index:0;pointer-events:none;white-space:nowrap;font-size:clamp(120px,17vw,300px);font-weight:800;line-height:.8;letter-spacing:-.05em;text-transform:uppercase}
-.plans-word{left:-2vw;bottom:-.1em;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.18)}
+.plans-word{left:6vw;bottom:clamp(40px,7vw,110px);color:transparent;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.85));-webkit-background-clip:text;background-clip:text}
 .about-word{left:10vw;top:clamp(16px,3vw,48px);color:rgba(20,17,16,.026);-webkit-text-stroke:1px rgba(20,17,16,.07)}
 
 /* ---------- Plans (preto e branco) ---------- */
@@ -185,7 +185,7 @@ h2 em{font-style:italic}
 .plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);align-items:stretch}
 .plan-slot{display:flex}
 .plan-slot>.plan-card{flex:1}
-.plan-card{position:relative;display:flex;flex-direction:column;padding:clamp(26px,2.2vw,34px) clamp(22px,2.2vw,34px) clamp(22px,2vw,28px);border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015) 40%,rgba(0,0,0,.3)),rgba(12,12,12,.42);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9);transition:transform .6s var(--ease),border-color .6s,box-shadow .6s}
+.plan-card{position:relative;display:flex;flex-direction:column;padding:clamp(26px,2.2vw,34px) clamp(22px,2.2vw,34px) clamp(22px,2vw,28px);border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 40%,rgba(0,0,0,.18)),rgba(10,10,10,.28);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9);transition:transform .6s var(--ease),border-color .6s,box-shadow .6s}
 .plan-grid{position:relative}
 /* luz atrás dos cards: é ela que o vidro desfoca e reflete */
 .plan-grid::before{content:"";position:absolute;inset:-14% -8%;z-index:-1;pointer-events:none;background:radial-gradient(34% 40% at 16% 14%,rgba(255,255,255,.34),transparent 70%),radial-gradient(30% 38% at 52% 4%,rgba(255,255,255,.3),transparent 70%),radial-gradient(32% 40% at 90% 62%,rgba(255,255,255,.24),transparent 70%),radial-gradient(28% 34% at 40% 92%,rgba(255,255,255,.16),transparent 70%);filter:blur(34px)}
