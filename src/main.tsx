@@ -294,18 +294,58 @@ function Marquee(){
  </div>
 }
 
-function PlanDialog({index,onClose}:{index:number|null;onClose:()=>void}){
+/**
+ * Giro 3D dos detalhes: o card vira até ficar de lado (0° → 90°) e os detalhes completam o giro
+ * (-90° → 0°) saindo da posição dele até o centro. Ao fechar, o caminho inverso.
+ */
+const flipEaseIn="cubic-bezier(.55,0,.75,.2)",flipEaseOut="cubic-bezier(.2,.8,.2,1)";
+const flipRest="translate(0px,0px) perspective(1400px) rotateY(0deg) scale(1,1)";
+function turnCard(card:HTMLElement){
+ const base=getComputedStyle(card).transform,b=base==="none"?"":base;
+ return card.animate([{transform:`perspective(1400px) ${b} rotateY(0deg)`,opacity:1},{opacity:1,offset:.85},{transform:`perspective(1400px) ${b} rotateY(90deg)`,opacity:0}],{duration:300,easing:flipEaseIn,fill:"forwards"});
+}
+/** Transform que põe os detalhes no lugar e no tamanho do card (o tamanho vem do layout, já que o card girado fica estreito). */
+function atCard(d:HTMLElement,card:HTMLElement,angle:number){
+ const c=card.getBoundingClientRect(),r=d.getBoundingClientRect();
+ return `translate(${c.left+c.width/2-(r.left+r.width/2)}px,${c.top+c.height/2-(r.top+r.height/2)}px) perspective(1400px) rotateY(${angle}deg) scale(${card.offsetWidth/r.width},${card.offsetHeight/r.height})`;
+}
+
+function PlanDialog({selected,onClose}:{selected:{index:number;card:HTMLElement}|null;onClose:()=>void}){
  const{lang,t}=useLang();
- const plan=index===null?null:plansFor(lang)[index];
+ const plan=selected?plansFor(lang)[selected.index]:null;
  const ref=useRef<HTMLDialogElement>(null);
+ const turn=useRef<Animation|null>(null);
+ const closing=useRef(false);
  useEffect(()=>{
   const d=ref.current;if(!d)return;
-  if(plan&&!d.open)d.showModal();
-  if(!plan&&d.open)d.close();
- },[plan]);
- return <dialog ref={ref} className="plan-dialog" onClose={onClose} onClick={e=>{if(e.target===ref.current)onClose()}} aria-labelledby="plan-dialog-title">
+  if(selected&&!d.open){
+   d.showModal();
+   if(reducedMotion())return;
+   turn.current=turnCard(selected.card);
+   d.animate([{transform:atCard(d,selected.card,-90),opacity:0},{opacity:1,offset:.15},{transform:flipRest,opacity:1}],{duration:560,delay:280,easing:flipEaseOut,fill:"backwards"});
+  }
+  if(!selected&&d.open)d.close();
+ },[selected]);
+ const requestClose=()=>{
+  const d=ref.current;
+  if(!d||closing.current)return;
+  if(!selected||!turn.current){d.close();return}
+  closing.current=true;
+  d.getAnimations().forEach(a=>a.cancel());
+  d.classList.add("is-closing");
+  d.animate([{transform:flipRest,opacity:1},{opacity:1,offset:.85},{transform:atCard(d,selected.card,-90),opacity:0}],{duration:340,easing:flipEaseIn,fill:"forwards"})
+   .finished.then(a=>{d.close();a.cancel()},()=>{});
+ };
+ const onClosed=()=>{
+  closing.current=false;
+  ref.current?.classList.remove("is-closing");
+  const a=turn.current;turn.current=null;
+  if(a){a.reverse();a.finished.then(()=>a.cancel(),()=>{})}
+  onClose();
+ };
+ return <dialog ref={ref} className="plan-dialog" onClose={onClosed} onCancel={e=>{e.preventDefault();requestClose()}} onClick={e=>{if(e.target===ref.current)requestClose()}} aria-labelledby="plan-dialog-title">
   {plan&&<div className="plan-dialog-body">
-   <button className="dialog-close" onClick={onClose} aria-label={t.plansSection.closeDetails}>×</button>
+   <button className="dialog-close" onClick={requestClose} aria-label={t.plansSection.closeDetails}>×</button>
    <p className="label"><i className="dot"/>{t.plansSection.plan} {plan.number}</p>
    <h3 id="plan-dialog-title">{plan.name}</h3>
    <p className="plan-intro">{plan.intro}</p>
@@ -325,7 +365,7 @@ function PlanDialog({index,onClose}:{index:number|null;onClose:()=>void}){
 
 function Plans(){
  const{lang,t}=useLang();
- const[selected,setSelected]=useState<number|null>(null);
+ const[selected,setSelected]=useState<{index:number;card:HTMLElement}|null>(null);
  return <section id="servicos" className="plans" data-theme="dark">
   <div className="bg-word plans-word" data-speed-x=".3" aria-hidden="true">{t.plansSection.word}</div>
   <div className="plans-copy" data-speed=".1">
@@ -348,12 +388,12 @@ function Plans(){
      <p className="plan-payment">{t.payment.parts.map((x,i)=><Fragment key={i}>{i>0&&" · "}<span>{x}</span></Fragment>)}</p>
      {p.note&&<p className="plan-note">{p.note}</p>}
      <ul className="plan-items">{p.items.map(x=><li key={x}><Check/>{x}</li>)}</ul>
-     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={()=>setSelected(i)} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>{t.plansSection.seeDetails}<ArrowRight className="btn-arrow"/></button>
+     <button className={"btn "+(p.featured?"btn-light":"btn-outline")+" plan-button"} onClick={e=>{const card=e.currentTarget.closest<HTMLElement>(".plan-card");if(card)setSelected({index:i,card})}} aria-haspopup="dialog"><span className="btn-dash" aria-hidden="true"/>{t.plansSection.seeDetails}<ArrowRight className="btn-arrow"/></button>
     </article>
    </div>)}
   </div>
   <p className="plans-aside" aria-hidden="true" data-speed="-.12">{t.plansSection.aside[0]}<br/>{t.plansSection.aside[1]}<br/><span><i className="dot"/>{t.plansSection.aside[2]}</span></p>
-  <PlanDialog index={selected} onClose={()=>setSelected(null)}/>
+  <PlanDialog selected={selected} onClose={()=>setSelected(null)}/>
  </section>
 }
 
