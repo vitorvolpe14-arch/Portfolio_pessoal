@@ -20,6 +20,7 @@ Prévia de link (WhatsApp, Instagram, Facebook): `public/og/pt.jpg`, `en.jpg` e 
 - **Logo 3D (Blender):** a raposa do topo (preta) e do contato (branca) é uma escultura 3D renderizada no Blender, com as mesmas cores da logo vetorizada.
   - `public/fox3d/black/` e `public/fox3d/white/`: um quadro WebP a cada 3° de giro (preta de -72° a +81°, branca de -39° a +51°; o quadro de frente é o `24.webp` na preta e o `13.webp` na branca).
   - `src/fox3d.ts` desenha num `<canvas>` o quadro do ângulo atual, que segue o mouse e a rolagem (com transição suave entre quadros). No topo, a logo entra girando de -70° até ficar de frente. Os quadros de frente e da entrada carregam primeiro; os do contato só quando a seção se aproxima.
+  - Abertura (`src/intro.ts`): na primeira visita da sessão, uma bola de areia explode em 3D, forma a raposa com "VOLPE" e a raposa desliza até a logo do topo. Pula com clique, rolagem, Esc ou Espaço e não aparece com "reduzir movimento". Usa o three.js r170 de `src/vendor/`, carregado só nessa hora.
   - `tools/fox3d/`: scripts que geram a escultura e os quadros (relevo a partir da arte vetorizada, malha, cena do Blender, calibração de cor). Ver o README de lá.
 - **Logo (vetorizada):** a raposa foi traçada da arte original com Potrace, incluindo o sombreamento da escultura em faixas de tom (volume e vincos), e está em SVG, nítida em qualquer tamanho.
   - `public/fox-vector-black.svg` e `public/fox-vector-white.svg`: arte vetorizada, usada como base da escultura 3D e da calibração de cor.
