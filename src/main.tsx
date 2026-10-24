@@ -8,6 +8,14 @@ import{foxTurn,type FoxTone}from"./fox3d";
 document.documentElement.classList.add("js");
 
 const reducedMotion=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Abertura com a areia (src/intro.ts): só na primeira visita da sessão e sem "reduzir movimento". */
+const introOn=(()=>{
+ if(reducedMotion())return false;
+ try{if(sessionStorage.getItem("volpe-intro"))return false;sessionStorage.setItem("volpe-intro","1")}catch{/* sem armazenamento: mostra mesmo assim */}
+ return true;
+})();
+if(introOn)document.documentElement.classList.add("intro-running");
 const vars=(v:Record<string,string|number>)=>v as CSSProperties;
 
 /** Idioma atual (pelo endereço: /, /en/ ou /it/) e os textos dele. */
@@ -232,7 +240,7 @@ function Hero(){
    <div className="hero-word" data-speed=".3" data-speed-x="-.35">Volpe</div>
    <div className="hero-rings" data-speed=".2" data-depth=".2"><i/><i/><i/><b/></div>
    <span className="hero-line hero-line-a" data-speed=".08"/><span className="hero-line hero-line-b" data-speed="-.1"/>
-   <FoxLogo tone="black" speed=".16" depth=".45" turn={64} intro={-70}/>
+   <FoxLogo tone="black" speed=".16" depth=".45" turn={64} intro={introOn?undefined:-70}/>
    {orbs.map((o,i)=><span key={i} className={"orb orb-"+i} data-speed={o.speed} data-depth={o.depth} style={vars({"--x":o.x+"%","--y":o.y+"%","--size":o.size+"px","--blur":o.blur+"px"})}/>)}
   </div>
 
@@ -444,6 +452,11 @@ function App(){
  useEffect(()=>{const onPop=()=>setLangState(langFromPath(location.pathname));window.addEventListener("popstate",onPop);return()=>window.removeEventListener("popstate",onPop)},[]);
  useDocumentLang(lang);
  useReveal();useParallax();useInPageLinks();
+ useEffect(()=>{
+  if(!introOn)return;
+  const done=()=>document.documentElement.classList.remove("intro-running");
+  import("./intro").then(m=>m.playIntro({target:()=>document.querySelector(".hero .logo3d")?.getBoundingClientRect()??null,skipLabel:lang==="en"?"Skip":lang==="it"?"Salta":"Pular"})).catch(()=>{}).finally(done);
+ },[]);
  const t=copy[lang];
  return <LangContext.Provider value={{lang,t,setLang}}>
   <a className="skip-link" href="#projetos">{t.skip}</a>
