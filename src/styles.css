@@ -185,7 +185,7 @@ h2 em{font-style:italic}
 .plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);align-items:stretch}
 .plan-slot{display:flex}
 .plan-slot>.plan-card{flex:1}
-.plan-card{position:relative;display:flex;flex-direction:column;padding:clamp(26px,2.2vw,34px) clamp(22px,2.2vw,34px) clamp(22px,2vw,28px);border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 40%,rgba(0,0,0,.18)),rgba(10,10,10,.28);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9);transition:transform .6s var(--ease),border-color .6s,box-shadow .6s}
+.plan-card{position:relative;display:flex;flex-direction:column;padding:clamp(26px,2.2vw,34px) clamp(22px,2.2vw,34px) clamp(22px,2vw,28px);border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 40%,rgba(0,0,0,.06)),rgba(10,10,10,.1);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);text-shadow:0 1px 10px rgba(0,0,0,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9);transition:transform .6s var(--ease),border-color .6s,box-shadow .6s}
 .plan-grid{position:relative}
 /* luz atrás dos cards: é ela que o vidro desfoca e reflete */
 .plan-grid::before{content:"";position:absolute;inset:-14% -8%;z-index:-1;pointer-events:none;background:radial-gradient(34% 40% at 16% 14%,rgba(255,255,255,.34),transparent 70%),radial-gradient(30% 38% at 52% 4%,rgba(255,255,255,.3),transparent 70%),radial-gradient(32% 40% at 90% 62%,rgba(255,255,255,.24),transparent 70%),radial-gradient(28% 34% at 40% 92%,rgba(255,255,255,.16),transparent 70%);filter:blur(34px)}
@@ -194,7 +194,7 @@ h2 em{font-style:italic}
 /* borda de vidro: clara no canto superior esquerdo, some no meio */
 .plan-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.6),rgba(255,255,255,.07) 34%,rgba(255,255,255,.03) 66%,rgba(255,255,255,.26));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:opacity .6s}
 .plan-card:hover{transform:translateY(-6px)}
-.plan-card.is-featured{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.025) 42%,rgba(0,0,0,.26)),rgba(16,16,16,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 0 70px -14px rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9)}
+.plan-card.is-featured{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.025) 42%,rgba(0,0,0,.1)),rgba(16,16,16,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 0 70px -14px rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9)}
 .plan-card.is-featured::after{background:linear-gradient(150deg,rgba(255,255,255,.9),rgba(255,255,255,.14) 36%,rgba(255,255,255,.06) 66%,rgba(255,255,255,.42))}
 .js .plan-card.is-featured[data-reveal].is-visible{transform:translateY(-10px)}
 .plan-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);padding:6px 16px 7px;border-radius:0 0 10px 10px;background:#fff;color:var(--black);font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
