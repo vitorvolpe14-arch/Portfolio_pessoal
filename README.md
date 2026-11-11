@@ -1,16 +1,16 @@
 # Portfolio Pessoal
 
-Portfólio da Volpe — Vitor Volpato. Site em React + Vite com visual cinematográfico em vidro (glassmorphism), bastante parallax, tons cobre e a raposa Volpe em 3D como elemento central.
+Portfólio da Volpe — Vitor Volpato. Site em React + Vite com visual cinematográfico em vidro (glassmorphism), bastante parallax, paleta preto, branco e neon e a raposa Volpe em 3D como elemento central.
 
 ## Estrutura
 Hero → Projetos → Planos → Sobre/Processo → Contato.
 
 ## Design
-- **Fontes** (Google Fonts, carregadas no `index.html`): Syne nos títulos, Instrument Serif em itálico só nas palavras de destaque (`*palavra*`), Geist no texto e Geist Mono nos rótulos, números e botões. Os preços usam Geist, porque os algarismos da Syne confundem (o zero parece a letra "o").
-- **Paleta** (variáveis no topo de `src/styles.css`): papel/creme e tinta/preto alternam as seções. Cobre é a luz e a ênfase (brilhos atrás do vidro, palavras em itálico, filete da logo). Neon é só sinal: o que está ativo, em destaque ou é a ação principal.
+- **Fontes** (Google Fonts, carregadas no `index.html`): Bodoni Moda nos títulos (o itálico da própria família marca as palavras de destaque, `*palavra*`) e Jost no texto, rótulos, botões e preços. Para trocar, mude o link no `index.html` e as variáveis `--display` e `--sans` em `src/styles.css`.
+- **Paleta** (variáveis no topo de `src/styles.css`): preto, branco e neon, sem tons quentes (creme, areia ou cobre). Seções claras (cinza bem claro) e pretas se alternam, e a luz atrás do vidro é branca. Neon é só sinal: o que está ativo, em destaque ou é a ação principal. A arte da raposa é exibida em escala de cinza para acompanhar.
 - **Vidro:** a classe `glass` dá o fundo translúcido com desfoque, o reflexo e a borda de luz. A receita muda sozinha entre seção clara e escura (`data-theme`). Com `data-tilt="5"` o cartão inclina e reflete a luz conforme o ponteiro (o número é a inclinação máxima, em graus).
 - **Parallax** (atributos no HTML, lidos por `useParallax` em `src/main.tsx`): `data-speed` (vertical conforme o scroll), `data-speed-x` (horizontal), `data-rotate` (giro) e `data-depth` (conforme o ponteiro). Cada seção tem luzes e esferas de vidro em profundidades diferentes (`Ambient`) e sobe por cima da anterior, com o topo arredondado.
-- **Logo 3D** (`FoxLogo`): espessura em camadas com filete de cobre, chanfro de luz e brilho que acompanham o ponteiro, sombra suave e disco de vidro atrás. Gira com o scroll e com o ponteiro, e dá para arrastar (volta com um balanço de mola).
+- **Logo 3D** (`FoxLogo`): espessura em camadas com filete neon, chanfro de luz e brilho que acompanham o ponteiro, sombra suave e disco de vidro atrás. Gira com o scroll e com o ponteiro, e dá para arrastar (volta com um balanço de mola).
 - Com "reduzir movimento" ligado no sistema, parallax, inclinação e animações ficam desligados.
 
 ## Idiomas

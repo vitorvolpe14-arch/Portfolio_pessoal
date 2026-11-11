@@ -268,7 +268,7 @@ function Header(){
 
 /**
  * Camadas da espessura da logo 3D: afinam em perfil circular para trás, deixando a borda arredondada.
- * A da frente (is-edge) é o chanfro claro e duas do meio (is-inlay) formam o filete de cobre na lateral.
+ * A da frente (is-edge) é o chanfro claro e duas do meio (is-inlay) formam o filete neon na lateral.
  * A quantidade (22) também está no CSS, em .logo3d-layer.
  */
 const DEPTH=22;
@@ -306,7 +306,7 @@ function FoxLogo({tone,speed,depth}:{tone:"black"|"white";speed:string;depth:str
  </>
 }
 
-type Glow={tone:"copper"|"light"|"deep";x:number;y:number;size:number;speed:number;depth:number};
+type Glow={tone:"light"|"shade";x:number;y:number;size:number;speed:number;depth:number};
 type Bead={x:number;y:number;size:number;speed:number;depth:number;blur?:number;rotate?:number};
 
 /** Esfera de vidro solta no fundo: quanto maior a velocidade (negativa), mais "à frente" ela parece. */
@@ -315,7 +315,7 @@ function Orb({bead,index}:{bead:Bead;index:number}){
   style={{...vars({"--x":bead.x+"%","--y":bead.y+"%","--size":bead.size+"px"}),filter:bead.blur?`blur(${bead.blur}px)`:undefined}}/>
 }
 
-/** Luzes e esferas de vidro ao fundo de uma seção, cada uma numa profundidade: é o que o vidro dos cards desfoca. */
+/** Luzes (brancas, ou sombras suaves nas seções claras) e esferas de vidro ao fundo de uma seção, cada uma numa profundidade: é o que o vidro dos cards desfoca. */
 function Ambient({glows,beads=[]}:{glows:Glow[];beads?:Bead[]}){
  return <div className="ambient" aria-hidden="true">
   {glows.map((g,i)=><span key={i} className={"glow glow-"+g.tone} data-speed={g.speed} data-depth={g.depth} style={vars({"--x":g.x+"%","--y":g.y+"%","--size":g.size+"vmax"})}/>)}
@@ -324,9 +324,9 @@ function Ambient({glows,beads=[]}:{glows:Glow[];beads?:Bead[]}){
 }
 
 const heroGlows:Glow[]=[
- {tone:"copper",x:66,y:62,size:46,speed:.26,depth:.3},
+ {tone:"shade",x:66,y:62,size:46,speed:.26,depth:.3},
  {tone:"light",x:40,y:14,size:40,speed:.14,depth:-.2},
- {tone:"deep",x:92,y:10,size:30,speed:.1,depth:-.3},
+ {tone:"shade",x:92,y:10,size:30,speed:.1,depth:-.3},
 ];
 const heroBeads:Bead[]=[
  {x:45,y:22,size:30,speed:-.22,depth:.9},
@@ -380,8 +380,8 @@ function ProjectMark({logo}:{logo:Project["logo"]}){
 }
 
 const projectGlows:Glow[]=[
- {tone:"copper",x:72,y:34,size:48,speed:.24,depth:.4},
- {tone:"deep",x:50,y:74,size:34,speed:-.2,depth:-.3},
+ {tone:"shade",x:72,y:34,size:48,speed:.24,depth:.4},
+ {tone:"shade",x:50,y:74,size:34,speed:-.2,depth:-.3},
  {tone:"light",x:94,y:84,size:36,speed:.12,depth:.2},
  {tone:"light",x:12,y:20,size:34,speed:-.14,depth:.3},
 ];
@@ -497,9 +497,9 @@ function PlanDialog({selected,onClose}:{selected:{index:number;card:HTMLElement}
 }
 
 const planGlows:Glow[]=[
- {tone:"copper",x:40,y:22,size:38,speed:.22,depth:.5},
+ {tone:"light",x:40,y:22,size:38,speed:.22,depth:.5},
  {tone:"light",x:66,y:8,size:26,speed:-.16,depth:-.4},
- {tone:"copper",x:90,y:70,size:40,speed:-.24,depth:.6},
+ {tone:"light",x:90,y:70,size:40,speed:-.24,depth:.6},
  {tone:"light",x:52,y:96,size:24,speed:.3,depth:.3},
 ];
 const planBeads:Bead[]=[
@@ -544,8 +544,8 @@ function Plans(){
 }
 
 const aboutGlows:Glow[]=[
- {tone:"copper",x:84,y:30,size:46,speed:.24,depth:.4},
- {tone:"deep",x:62,y:70,size:32,speed:-.2,depth:-.3},
+ {tone:"shade",x:84,y:30,size:46,speed:.24,depth:.4},
+ {tone:"shade",x:62,y:70,size:32,speed:-.2,depth:-.3},
  {tone:"light",x:20,y:60,size:40,speed:.12,depth:.2},
 ];
 const aboutBeads:Bead[]=[
@@ -590,9 +590,9 @@ function CopyEmail(){
 }
 
 const contactGlows:Glow[]=[
- {tone:"copper",x:76,y:54,size:46,speed:.2,depth:.3},
+ {tone:"light",x:76,y:54,size:46,speed:.2,depth:.3},
  {tone:"light",x:88,y:10,size:22,speed:-.14,depth:-.3},
- {tone:"copper",x:10,y:92,size:32,speed:-.2,depth:.5},
+ {tone:"light",x:10,y:92,size:32,speed:-.2,depth:.5},
 ];
 const contactBeads:Bead[]=[
  {x:58,y:16,size:36,speed:-.3,depth:1.1,rotate:2},
