@@ -1,16 +1,24 @@
 # Portfolio Pessoal
 
-Portfólio da Volpe — Vitor Volpato. Site em React + Vite com visual escuro/cinematográfico, tons cobre e a raposa Volpe como elemento central.
+Portfólio da Volpe — Vitor Volpato. Site em React + Vite com visual cinematográfico em vidro (glassmorphism), bastante parallax, tons cobre e a raposa Volpe em 3D como elemento central.
 
 ## Estrutura
 Hero → Projetos → Planos → Sobre/Processo → Contato.
+
+## Design
+- **Fontes** (Google Fonts, carregadas no `index.html`): Syne nos títulos, Instrument Serif em itálico só nas palavras de destaque (`*palavra*`), Geist no texto e Geist Mono nos rótulos, números e botões. Os preços usam Geist, porque os algarismos da Syne confundem (o zero parece a letra "o").
+- **Paleta** (variáveis no topo de `src/styles.css`): papel/creme e tinta/preto alternam as seções. Cobre é a luz e a ênfase (brilhos atrás do vidro, palavras em itálico, filete da logo). Neon é só sinal: o que está ativo, em destaque ou é a ação principal.
+- **Vidro:** a classe `glass` dá o fundo translúcido com desfoque, o reflexo e a borda de luz. A receita muda sozinha entre seção clara e escura (`data-theme`). Com `data-tilt="5"` o cartão inclina e reflete a luz conforme o ponteiro (o número é a inclinação máxima, em graus).
+- **Parallax** (atributos no HTML, lidos por `useParallax` em `src/main.tsx`): `data-speed` (vertical conforme o scroll), `data-speed-x` (horizontal), `data-rotate` (giro) e `data-depth` (conforme o ponteiro). Cada seção tem luzes e esferas de vidro em profundidades diferentes (`Ambient`) e sobe por cima da anterior, com o topo arredondado.
+- **Logo 3D** (`FoxLogo`): espessura em camadas com filete de cobre, chanfro de luz e brilho que acompanham o ponteiro, sombra suave e disco de vidro atrás. Gira com o scroll e com o ponteiro, e dá para arrastar (volta com um balanço de mola).
+- Com "reduzir movimento" ligado no sistema, parallax, inclinação e animações ficam desligados.
 
 ## Idiomas
 Português em `/`, inglês em `/en/` e italiano em `/it/`. O seletor PT · EN · IT no topo troca o idioma sem recarregar a página e atualiza o endereço.
 
 No build, `vite.config.ts` gera `dist/en/index.html` e `dist/it/index.html`. Cada versão sai com idioma, título, descrição, endereço canônico e links `hreflang` próprios, para o Google indexar as três. `public/sitemap.xml` lista as três versões.
 
-Prévia de link (WhatsApp, Instagram, Facebook): `public/og/pt.jpg`, `en.jpg` e `it.jpg`, imagens de 1200×630 com o visual do topo do site, uma por idioma (`og:image`). Ao trocar a imagem, mantenha o tamanho e use o [Depurador de compartilhamento do Facebook](https://developers.facebook.com/tools/debug/) ("Extrair novamente") para atualizar a prévia no Instagram e no Facebook.
+Prévia de link (WhatsApp, Instagram, Facebook): `public/og/pt.jpg`, `en.jpg` e `it.jpg`, imagens de 1200×630 com o visual do topo do site (mesmas fontes e cores), uma por idioma (`og:image`). Ao trocar a imagem, mantenha o tamanho e use o [Depurador de compartilhamento do Facebook](https://developers.facebook.com/tools/debug/) ("Extrair novamente") para atualizar a prévia no Instagram e no Facebook.
 
 ## Editar conteúdo
 - **Textos, projetos, planos, preços e stack:** `src/content.ts`.
